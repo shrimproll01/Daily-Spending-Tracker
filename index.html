@@ -4,28 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catatan Pengeluaran</title>
+<meta name="theme-color" content="#0D0D0D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#EEF2EF; --surface:#FFFFFF; --ink:#16302B; --muted:#5E7570; --line:#D5DED9;
-  --pine:#1F5C4D; --bar:#2F7A66; --barsoft:#BFD6CD; --mark:#E9A319; --over:#C4493B;
+  color-scheme:dark;
+  --bg:#0D0D0D; --surface:#171717; --ink:#F5F5F5; --muted:#A3A3A3; --line:#292929;
+  --pine:#FF8A3D; --pine-hover:#FFA05F; --bar:#FF8A3D; --barsoft:#2A2A2A;
+  --mark:#FFD166; --over:#FF6B6B;
   --radius:10px;
   --font:'Bricolage Grotesque','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
 }
-@media (prefers-color-scheme:dark){
-  :root{--bg:#0F1A17; --surface:#16241F; --ink:#E3EEE9; --muted:#8FA69F; --line:#26372F;
-    --pine:#5CC2A6; --bar:#3E9A83; --barsoft:#2A4A40; --mark:#F0B23A; --over:#E5766A;}
-}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-padding-top:12px}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;
   font-variant-numeric:tabular-nums}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
-:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
-.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 56px}
+:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+.f input:focus-visible,.f select:focus-visible{outline:none;border-color:var(--pine);box-shadow:0 0 0 3px rgba(255,138,61,.15)}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
 
 /* header */
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
@@ -35,32 +36,34 @@ button{cursor:pointer}
 .nav .label{min-width:150px;text-align:center;font-weight:600;text-transform:capitalize}
 .nav .now{width:auto;padding:0 12px;font-size:.875rem}
 
-.grid{display:grid;gap:16px;grid-template-columns:1fr;
-  grid-template-areas:"sum" "chart" "form" "list" "cats" "tools"}
+/* layout */
+.hero{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+.stack{display:flex;flex-direction:column;gap:16px;min-width:0}
 @media (min-width:900px){
-  .grid{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);
-    grid-template-areas:"sum form" "chart form" "list cats" "list tools";align-items:start}
+  .hero{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);align-items:stretch}
 }
-.sum{grid-area:sum}.chartbox{grid-area:chart}.formbox{grid-area:form}
-.listbox{grid-area:list}.catbox{grid-area:cats}.tools{grid-area:tools}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
 .panel h2{margin:0 0 12px;font-size:1rem;font-weight:600}
+.ledger{display:grid;gap:16px;grid-template-columns:minmax(0,1fr);margin-top:16px;align-items:start}
+@media (min-width:900px){.ledger{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}}
 
 /* summary */
 .total{font-size:clamp(2rem,7vw,3rem);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:2px 0 4px}
+.total .cur{color:var(--muted);font-size:.55em;font-weight:600;margin-right:.1em}
+.total .num{color:var(--pine)}
 .sub{color:var(--muted);font-size:.9rem;margin:0}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);margin:16px 0 0;border-top:1px solid var(--line)}
-.stats div{padding:12px 10px 0 0}
-.stats div+div{padding-left:12px;border-left:1px solid var(--line)}
-.stats dt{color:var(--muted);font-size:.8rem}
-.stats dd{margin:2px 0 0;font-weight:600;font-size:.95rem}
-.budget{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);margin:18px 0 0;border-top:1px solid var(--line)}
+.stats>div{display:flex;flex-direction:column;padding:12px 10px 0 0;min-width:0}
+.stats>div+div{padding-left:14px;border-left:1px solid var(--line)}
+.stats b{font-size:1.1rem;font-weight:600}
+.stats span{color:var(--muted);font-size:.8rem}
+.budget{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
 .budget-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
 .budget label{font-size:.875rem;color:var(--muted)}
 .money{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:0 10px}
 .money span{color:var(--muted);font-size:.9rem;margin-right:6px}
 .money input{border:0;background:transparent;padding:9px 0;width:130px;outline:none}
-.money:focus-within{outline:2px solid var(--mark);outline-offset:1px}
+.money:focus-within{border-color:var(--pine);box-shadow:0 0 0 3px rgba(255,138,61,.15)}
 .meter{height:8px;background:var(--barsoft);border-radius:99px;overflow:hidden;margin-top:12px}
 .meter i{display:block;height:100%;background:var(--bar);border-radius:99px}
 .meter.over i{background:var(--over)}
@@ -70,54 +73,62 @@ button{cursor:pointer}
 /* chart */
 .chart-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
 .chip{border:1px solid var(--line);background:var(--bg);border-radius:99px;padding:3px 12px;font-size:.8rem}
-.bars{position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);gap:3px;height:150px;margin-top:14px;align-items:end}
+.bars{position:relative;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:3px;height:150px;margin-top:14px;align-items:end;border-bottom:1px solid var(--line)}
 .bar{position:relative;height:100%;display:flex;align-items:flex-end;background:none;border:0;padding:0;border-radius:3px}
 .bar i{display:block;width:100%;min-height:2px;background:var(--barsoft);border-radius:3px 3px 0 0;transition:height .25s}
 .bar.has i{background:var(--bar)}
 .bar.high i{background:var(--over)}
-.bar.sel i{background:var(--mark)}
-.bar:hover i{filter:brightness(.92)}
+.bars.filtering .bar:not(.sel) i{opacity:.35}
+.bar.sel:not(.has) i{background:var(--pine)}
+.bar:hover i{filter:brightness(1.15)}
+.chart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;min-height:190px;margin-top:14px;border:1px dashed var(--line);border-radius:8px;padding:16px}
+.chart-empty b{font-weight:600}
+.chart-empty span{color:var(--muted);font-size:.875rem;max-width:34ch}
 .limit{position:absolute;left:0;right:0;border-top:1.5px dashed var(--muted);opacity:.7;pointer-events:none}
 .limit b{position:absolute;right:0;top:-18px;font-size:.7rem;font-weight:400;color:var(--muted);background:var(--surface);padding:0 3px}
-.days{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:3px;margin-top:6px;font-size:.65rem;color:var(--muted);text-align:center}
-.days span.today{color:var(--ink);font-weight:800}
+.days{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:3px;margin-top:6px;font-size:.7rem;color:var(--muted);text-align:center}
+.days span{overflow:visible;white-space:nowrap}
+.days span.skip{visibility:hidden}
+.days span.today{color:var(--pine);font-weight:800;visibility:visible}
 .days span.today::after{content:"";display:block;width:4px;height:4px;border-radius:50%;background:var(--mark);margin:1px auto 0}
-@media (max-width:600px){.days span.skip{visibility:hidden}}
 
 /* form */
-form{display:grid;gap:12px}
+.formbox{display:flex;flex-direction:column}
+.formbox h2 .plus{color:var(--pine);font-weight:800;margin-right:6px}
+form{display:flex;flex-direction:column;gap:14px;flex:1}
 .f{display:grid;gap:4px}
 .f label{font-size:.85rem;color:var(--muted)}
 .f input,.f select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
-.f .money input{padding:10px 0;width:100%;font-size:1.15rem;font-weight:600}
+.f .money input{border:0;border-radius:0;background:transparent;padding:12px 0;width:100%;font-size:1.3rem;font-weight:600}
+.f .money input:focus-visible{border:0;box-shadow:none}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .btns{display:flex;gap:8px}
-.primary{flex:1;background:var(--pine);color:#fff;border:0;border-radius:8px;padding:11px 14px;font-weight:600}
-@media (prefers-color-scheme:dark){.primary{color:#0F1A17}}
+form .btns{margin-top:auto}
+.primary{flex:1;background:var(--pine);color:#0D0D0D;border:0;border-radius:8px;padding:12px 14px;font-weight:600}
+.primary:hover{background:var(--pine-hover)}
 .ghost{background:transparent;border:1px solid var(--line);border-radius:8px;padding:11px 14px}
 .hint{color:var(--muted);font-size:.8rem;margin:0;min-height:1.2em}
 
-/* list */
+/* ledger: catatan + kategori */
 .day{padding:12px 0;border-top:1px solid var(--line)}
 .day:first-of-type{border-top:0;padding-top:0}
-.day-h{display:flex;justify-content:space-between;gap:8px;font-weight:600;margin-bottom:6px}
-.day-h span:first-child{text-transform:capitalize}
-.item{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:6px 0;font-size:.95rem}
-.item small{color:var(--muted);display:block}
+.day-h{display:flex;justify-content:space-between;gap:8px;font-weight:600;margin-bottom:4px}
+.item{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:6px 0;font-size:.95rem}
+.ico{width:34px;height:34px;border-radius:50%;background:rgba(255,138,61,.12);border:1px solid rgba(255,138,61,.3);display:grid;place-items:center;font-size:1rem}
+.item small{color:var(--muted);display:block;line-height:1.3}
 .item .amt{font-weight:600}
 .mini{border:0;background:none;color:var(--muted);padding:4px 6px;border-radius:6px;font-size:.8rem}
 .mini:hover{color:var(--ink);background:var(--bg)}
 .acts{display:flex;gap:2px}
-.empty{color:var(--muted);margin:0}
-
-/* categories */
-.cat{margin-bottom:12px}
-.cat-h{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:4px}
+.empty{color:var(--muted);margin:0;font-size:.9rem}
+.cat{margin-bottom:14px}
+.cat-h{display:flex;justify-content:space-between;gap:8px;font-size:.9rem;margin-bottom:4px}
 .cat .meter{margin-top:0;height:6px}
 
-.tools p{margin:0 0 12px;color:var(--muted);font-size:.875rem}
-.tools .btns{flex-wrap:wrap}
-.tools .ghost{padding:8px 12px;font-size:.875rem}
+/* data */
+.data{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:16px;padding:0 2px;color:var(--muted);font-size:.85rem}
+.data p{margin:0}
+.data .ghost{padding:7px 12px;font-size:.85rem}
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
 </style>
 </head>
@@ -129,84 +140,97 @@ form{display:grid;gap:12px}
       <button type="button" id="prev" aria-label="Bulan sebelumnya">‹</button>
       <div class="label" id="monthLabel" aria-live="polite"></div>
       <button type="button" id="next" aria-label="Bulan berikutnya">›</button>
-      <button type="button" id="today" class="now">Bulan ini</button>
+      <button type="button" id="today" class="now" hidden>Bulan ini</button>
     </div>
   </header>
 
-  <main class="grid">
-    <section class="panel sum" aria-label="Ringkasan bulan">
-      <p class="sub">Total pengeluaran</p>
-      <p class="total" id="total">Rp0</p>
-      <p class="sub" id="totalSub"></p>
-      <dl class="stats">
-        <div><dt>Rata-rata per hari</dt><dd id="avg">-</dd></div>
-        <div><dt>Hari termahal</dt><dd id="maxDay">-</dd></div>
-        <div><dt>Jumlah catatan</dt><dd id="count">0</dd></div>
-      </dl>
-      <div class="budget">
-        <div class="budget-row">
-          <label for="budget">Budget bulanan</label>
-          <div class="money"><span>Rp</span><input id="budget" inputmode="numeric" placeholder="Belum diatur" autocomplete="off"></div>
-        </div>
-        <div id="budgetInfo"></div>
-      </div>
-    </section>
-
-    <section class="panel chartbox" aria-label="Grafik harian">
-      <div class="chart-head">
-        <h2>Pengeluaran per hari</h2>
-        <button type="button" class="chip" id="clearDay" hidden>Tampilkan semua hari</button>
-      </div>
-      <div class="bars" id="bars"></div>
-      <div class="days" id="daysRow"></div>
-      <p class="hint" id="chartHint" style="margin-top:10px">Klik satu hari untuk melihat catatannya.</p>
-    </section>
-
-    <section class="panel formbox" aria-label="Tambah pengeluaran">
-      <h2 id="formTitle">Tambah pengeluaran</h2>
-      <form id="form" autocomplete="off">
-        <div class="f">
-          <label for="amount">Jumlah</label>
-          <div class="money"><span>Rp</span><input id="amount" inputmode="numeric" placeholder="0" required></div>
-        </div>
-        <div class="row2">
-          <div class="f"><label for="date">Tanggal</label><input type="date" id="date" required></div>
-          <div class="f"><label for="cat">Kategori</label>
-            <select id="cat">
-              <option>Makan &amp; minum</option><option>Transportasi</option><option>Belanja</option>
-              <option>Tagihan</option><option>Hiburan</option><option>Kesehatan</option><option>Lainnya</option>
-            </select>
+  <main>
+    <div class="hero">
+      <div class="stack">
+        <section class="panel" aria-label="Ringkasan bulan">
+          <p class="sub">Total pengeluaran</p>
+          <p class="total" id="total"><span class="cur">Rp</span> <span class="num">0</span></p>
+          <p class="sub" id="totalSub"></p>
+          <div class="stats">
+            <div><b id="avg">-</b><span>per hari</span></div>
+            <div><b id="maxDay">-</b><span id="maxLbl">tertinggi</span></div>
+            <div><b id="count">0</b><span>catatan</span></div>
           </div>
-        </div>
-        <div class="f"><label for="noteIn">Catatan (opsional)</label><input id="noteIn" maxlength="80" placeholder="Contoh: makan siang"></div>
-        <div class="btns">
-          <button class="primary" id="submitBtn" type="submit">Simpan</button>
-          <button class="ghost" id="cancelEdit" type="button" hidden>Batal</button>
-        </div>
-        <p class="hint" id="msg" role="status" aria-live="polite"></p>
-      </form>
-    </section>
+          <div class="budget">
+            <div class="budget-row">
+              <label for="budget">Budget bulanan</label>
+              <div class="money"><span>Rp</span><input id="budget" inputmode="numeric" placeholder="Belum diatur" autocomplete="off"></div>
+            </div>
+            <div id="budgetInfo"></div>
+          </div>
+        </section>
 
-    <section class="panel listbox" aria-label="Daftar pengeluaran">
-      <h2 id="listTitle">Catatan bulan ini</h2>
-      <div id="list"></div>
-    </section>
+        <section class="panel" aria-label="Grafik harian">
+          <div class="chart-head">
+            <h2>Pengeluaran per hari</h2>
+            <button type="button" class="chip" id="clearDay" hidden>Tampilkan semua hari</button>
+          </div>
+          <div class="bars" id="bars"></div>
+          <div class="days" id="daysRow"></div>
+          <div class="chart-empty" id="chartEmpty" hidden>
+            <b>Belum ada pengeluaran</b>
+            <span>Tambahkan transaksi untuk melihat grafik pengeluaran harian.</span>
+          </div>
+          <p class="hint" id="chartHint" style="margin-top:10px">Klik satu hari untuk melihat catatannya.</p>
+        </section>
+      </div>
 
-    <section class="panel catbox" aria-label="Per kategori">
-      <h2>Per kategori</h2>
-      <div id="cats"></div>
-    </section>
+      <section class="panel formbox" aria-label="Tambah pengeluaran">
+        <h2 id="formTitle"><span class="plus">+</span>Tambah pengeluaran</h2>
+        <form id="form" autocomplete="off">
+          <div class="f">
+            <label for="amount">Jumlah</label>
+            <div class="money"><span>Rp</span><input id="amount" inputmode="numeric" placeholder="35.000" required></div>
+          </div>
+          <div class="row2">
+            <div class="f"><label for="date">Tanggal</label><input type="date" id="date" required></div>
+            <div class="f"><label for="cat">Kategori</label>
+              <select id="cat">
+                <option value="Makan">🍜 Makan</option>
+                <option value="Transport">🚗 Transport</option>
+                <option value="Belanja">🛍️ Belanja</option>
+                <option value="Tagihan">🧾 Tagihan</option>
+                <option value="Hiburan">🎬 Hiburan</option>
+                <option value="Kesehatan">💊 Kesehatan</option>
+                <option value="Lainnya">📦 Lainnya</option>
+              </select>
+            </div>
+          </div>
+          <div class="f"><label for="noteIn">Catatan (opsional)</label><input id="noteIn" maxlength="80" placeholder="Contoh: makan siang"></div>
+          <p class="hint" id="msg" role="status" aria-live="polite"></p>
+          <div class="btns">
+            <button class="primary" id="submitBtn" type="submit">Tambahkan</button>
+            <button class="ghost" id="cancelEdit" type="button" hidden>Batal</button>
+          </div>
+        </form>
+      </section>
+    </div>
 
-    <section class="panel tools" aria-label="Data">
-      <h2>Data kamu</h2>
-      <p>Semua data tersimpan di browser ini saja. Unduh cadangan secara berkala supaya aman.</p>
+    <div class="ledger">
+      <section class="panel" aria-label="Catatan bulan ini">
+        <h2 id="listTitle">Catatan bulan ini</h2>
+        <div id="list"></div>
+      </section>
+      <section class="panel" aria-label="Per kategori">
+        <h2>Per kategori</h2>
+        <div id="cats"></div>
+      </section>
+    </div>
+
+    <footer class="data">
+      <p>Data tersimpan di browser ini saja. Unduh cadangan secara berkala supaya aman.</p>
       <div class="btns">
         <button type="button" class="ghost" id="exportCsv">Unduh CSV</button>
         <button type="button" class="ghost" id="exportJson">Cadangkan (JSON)</button>
         <button type="button" class="ghost" id="importBtn">Pulihkan</button>
         <input type="file" id="importFile" accept="application/json,.json" hidden>
       </div>
-    </section>
+    </footer>
   </main>
 </div>
 
@@ -218,23 +242,44 @@ form{display:grid;gap:12px}
   var view = { y: now.getFullYear(), m: now.getMonth(), day: null };
   var editId = null;
 
+  var ICON = { 'Makan':'🍜', 'Transport':'🚗', 'Belanja':'🛍️', 'Tagihan':'🧾', 'Hiburan':'🎬', 'Kesehatan':'💊', 'Lainnya':'📦' };
+  var OLDCAT = { 'Makan & minum':'Makan', 'Transportasi':'Transport' };
+  function fixCat(c){ return OLDCAT[c] || c; }
+
   function $(id){ return document.getElementById(id); }
   function pad(n){ return String(n).padStart(2,'0'); }
   function iso(y,m,d){ return y + '-' + pad(m+1) + '-' + pad(d); }
-  function rp(n){ return 'Rp' + Math.round(n).toLocaleString('id-ID'); }
+  function rp(n){ return 'Rp ' + Math.round(n).toLocaleString('id-ID'); }
+  // ringkas untuk angka perkiraan (rata-rata, tertinggi)
+  function approx(n){
+    n = Math.round(n);
+    if (n >= 1e6) return 'Rp' + (Math.round(n/1e5)/10).toLocaleString('id-ID') + 'jt';
+    if (n >= 1e3) return 'Rp' + Math.round(n/1e3).toLocaleString('id-ID') + 'K';
+    return 'Rp' + n;
+  }
+  // ringkas hanya kalau angkanya bulat, supaya tidak menyembunyikan nilai asli
+  function short(n){
+    if (n >= 1e6 && n % 1e5 === 0) return (n/1e6).toLocaleString('id-ID') + 'jt';
+    if (n >= 1e3 && n < 1e6 && n % 1e3 === 0) return (n/1e3).toLocaleString('id-ID') + 'K';
+    return n.toLocaleString('id-ID');
+  }
   function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
   function parseDate(s){ var p = s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
   function digits(s){ return Number(String(s).replace(/\D/g,'')) || 0; }
   function daysIn(y,m){ return new Date(y, m+1, 0).getDate(); }
+  function monthName(y,m,style){ return new Date(y,m,1).toLocaleDateString('id-ID',{month:style}); }
 
   function load(){
     try {
       var raw = localStorage.getItem(KEY);
       if (raw) {
         var d = JSON.parse(raw);
-        if (d && Array.isArray(d.items)) { state.items = d.items; state.budget = Number(d.budget) || 0; }
+        if (d && Array.isArray(d.items)) {
+          state.items = d.items.map(function(i){ i.cat = fixCat(i.cat); return i; });
+          state.budget = Number(d.budget) || 0;
+        }
       }
-    } catch(e) { /* storage tidak tersedia, jalan tanpa penyimpanan */ }
+    } catch(e) { /* penyimpanan tidak tersedia, jalan tanpa simpan */ }
   }
   function save(){
     try { localStorage.setItem(KEY, JSON.stringify(state)); }
@@ -251,7 +296,6 @@ form{display:grid;gap:12px}
     var p = view.y + '-' + pad(view.m+1);
     return state.items.filter(function(i){ return i.date.indexOf(p) === 0; });
   }
-
   function defaultDate(){
     if (view.day) return iso(view.y, view.m, view.day);
     if (view.y === now.getFullYear() && view.m === now.getMonth()) return iso(view.y, view.m, now.getDate());
@@ -270,20 +314,21 @@ form{display:grid;gap:12px}
       byCat[i.cat] = (byCat[i.cat] || 0) + i.amount;
     });
 
-    $('monthLabel').textContent = new Date(y,m,1).toLocaleDateString('id-ID',{month:'long',year:'numeric'});
-    $('total').textContent = rp(total);
-    $('count').textContent = items.length;
-
     var isCur = (y === now.getFullYear() && m === now.getMonth());
     var isFuture = (y > now.getFullYear()) || (y === now.getFullYear() && m > now.getMonth());
     var elapsed = isCur ? now.getDate() : (isFuture ? 0 : dim);
+
+    $('monthLabel').textContent = new Date(y,m,1).toLocaleDateString('id-ID',{month:'long',year:'numeric'});
+    $('today').hidden = isCur;
+    $('total').innerHTML = '<span class="cur">Rp</span> <span class="num">' + Math.round(total).toLocaleString('id-ID') + '</span>';
     $('totalSub').textContent = items.length ? '' : 'Belum ada catatan di bulan ini.';
-    $('avg').textContent = elapsed && total ? rp(total/elapsed) : '-';
+    $('count').textContent = items.length;
+    $('avg').textContent = elapsed && total ? approx(total/elapsed) : '-';
     var mx = Math.max.apply(null, daily);
     if (mx > 0) {
-      var md = daily.indexOf(mx) + 1;
-      $('maxDay').textContent = md + ' ' + new Date(y,m,1).toLocaleDateString('id-ID',{month:'short'}) + ' · ' + rp(mx);
-    } else { $('maxDay').textContent = '-'; }
+      $('maxDay').textContent = approx(mx);
+      $('maxLbl').textContent = 'tertinggi · ' + (daily.indexOf(mx)+1) + ' ' + monthName(y,m,'short');
+    } else { $('maxDay').textContent = '-'; $('maxLbl').textContent = 'tertinggi'; }
 
     renderBudget(total, dim, elapsed);
     renderChart(daily, dim, mx);
@@ -318,18 +363,25 @@ form{display:grid;gap:12px}
     bars.style.setProperty('--n', dim); row.style.setProperty('--n', dim);
     var h = '', r = '';
     var isCur = (y === now.getFullYear() && m === now.getMonth());
+    var mLong = monthName(y,m,'long');
     for (var d = 1; d <= dim; d++) {
       var v = daily[d-1];
       var cls = 'bar' + (v > 0 ? ' has' : '') + (dailyBudget && v > dailyBudget ? ' high' : '') + (view.day === d ? ' sel' : '');
-      var label = d + ' ' + new Date(y,m,1).toLocaleDateString('id-ID',{month:'long'}) + ': ' + (v ? rp(v) : 'tidak ada pengeluaran');
+      var label = d + ' ' + mLong + ': ' + (v ? rp(v) : 'tidak ada pengeluaran');
       h += '<button type="button" class="' + cls + '" data-d="' + d + '" title="' + label + '" aria-label="' + label + '"><i style="height:' + (v / scale * 100).toFixed(1) + '%"></i></button>';
-      var skip = (d !== 1 && d % 5 !== 0) ? ' skip' : '';
-      r += '<span class="' + (isCur && d === now.getDate() ? 'today' : '') + skip + '">' + d + '</span>';
+      var isToday = isCur && d === now.getDate();
+      var skip = (!isToday && d !== 1 && d % 5 !== 0) ? ' skip' : '';
+      r += '<span class="' + (isToday ? 'today' : '') + skip + '">' + d + '</span>';
     }
     if (dailyBudget) {
       h += '<div class="limit" style="bottom:' + (dailyBudget / scale * 100).toFixed(1) + '%"><b>batas harian ' + rp(dailyBudget) + '</b></div>';
     }
     bars.innerHTML = h; row.innerHTML = r;
+    var empty = (mx === 0);
+    bars.hidden = empty; row.hidden = empty;
+    $('chartEmpty').hidden = !empty;
+    $('chartHint').hidden = empty;
+    bars.classList.toggle('filtering', !!view.day);
     $('clearDay').hidden = !view.day;
   }
 
@@ -337,7 +389,7 @@ form{display:grid;gap:12px}
     var list = $('list');
     var shown = view.day ? items.filter(function(i){ return parseDate(i.date).getDate() === view.day; }) : items;
     $('listTitle').textContent = view.day
-      ? 'Catatan tanggal ' + view.day + ' ' + new Date(view.y,view.m,1).toLocaleDateString('id-ID',{month:'long'})
+      ? 'Catatan tanggal ' + view.day + ' ' + monthName(view.y, view.m, 'long')
       : 'Catatan bulan ini';
     if (!shown.length) {
       list.innerHTML = '<p class="empty">' + (view.day ? 'Tidak ada pengeluaran di hari ini.' : 'Belum ada catatan. Isi formulir untuk menambahkan pengeluaran pertama.') + '</p>';
@@ -349,10 +401,11 @@ form{display:grid;gap:12px}
     list.innerHTML = dates.map(function(dt){
       var g = groups[dt], sum = g.reduce(function(a,i){ return a + i.amount; }, 0);
       var title = parseDate(dt).toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
-      return '<div class="day"><div class="day-h"><span>' + title + '</span><span>' + rp(sum) + '</span></div>' +
+      return '<div class="day"><div class="day-h"><span>' + title + '</span><span>' + short(sum) + '</span></div>' +
         g.slice().sort(function(a,b){ return b.id - a.id; }).map(function(i){
-          return '<div class="item"><div>' + esc(i.note || i.cat) + (i.note ? '<small>' + esc(i.cat) + '</small>' : '') + '</div>' +
-            '<div class="amt">' + rp(i.amount) + '</div>' +
+          return '<div class="item"><div class="ico" aria-hidden="true">' + (ICON[i.cat] || '📦') + '</div>' +
+            '<div>' + esc(i.note || i.cat) + (i.note ? '<small>' + esc(i.cat) + '</small>' : '') + '</div>' +
+            '<div class="amt" title="' + rp(i.amount) + '">' + short(i.amount) + '</div>' +
             '<div class="acts"><button class="mini" data-edit="' + i.id + '" aria-label="Ubah catatan">Ubah</button>' +
             '<button class="mini" data-del="' + i.id + '" aria-label="Hapus catatan">Hapus</button></div></div>';
         }).join('') + '</div>';
@@ -361,15 +414,15 @@ form{display:grid;gap:12px}
 
   function renderCats(byCat, total){
     var keys = Object.keys(byCat).sort(function(a,b){ return byCat[b] - byCat[a]; });
-    if (!keys.length) { $('cats').innerHTML = '<p class="empty">Belum ada data.</p>'; return; }
+    if (!keys.length) { $('cats').innerHTML = '<p class="empty">Belum ada data</p>'; return; }
     $('cats').innerHTML = keys.map(function(k){
       var p = total ? byCat[k] / total * 100 : 0;
-      return '<div class="cat"><div class="cat-h"><span>' + esc(k) + '</span><span>' + rp(byCat[k]) + ' · ' + Math.round(p) + '%</span></div>' +
+      return '<div class="cat"><div class="cat-h"><span>' + (ICON[k] || '📦') + ' ' + esc(k) + '</span><span>' + short(byCat[k]) + ' · ' + Math.round(p) + '%</span></div>' +
         '<div class="meter"><i style="width:' + p.toFixed(1) + '%"></i></div></div>';
     }).join('');
   }
 
-  /* interactions */
+  /* interaksi */
   function shiftMonth(delta){
     var d = new Date(view.y, view.m + delta, 1);
     view.y = d.getFullYear(); view.m = d.getMonth(); view.day = null;
@@ -388,11 +441,10 @@ form{display:grid;gap:12px}
     render();
   });
 
-  function money(input, onChange){
+  function money(input){
     input.addEventListener('input', function(){
       var n = digits(input.value);
       input.value = n ? n.toLocaleString('id-ID') : '';
-      if (onChange) onChange(n);
     });
   }
   money($('amount'));
@@ -403,8 +455,8 @@ form{display:grid;gap:12px}
 
   function stopEdit(){
     editId = null;
-    $('formTitle').textContent = 'Tambah pengeluaran';
-    $('submitBtn').textContent = 'Simpan';
+    $('formTitle').innerHTML = '<span class="plus">+</span>Tambah pengeluaran';
+    $('submitBtn').textContent = 'Tambahkan';
     $('cancelEdit').hidden = true;
     $('amount').value = ''; $('noteIn').value = '';
   }
@@ -453,7 +505,7 @@ form{display:grid;gap:12px}
     }
   });
 
-  /* export / import */
+  /* ekspor / impor */
   function download(name, text, type){
     var a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([text], {type: type}));
@@ -479,7 +531,7 @@ form{display:grid;gap:12px}
         var d = JSON.parse(rd.result);
         if (!d || !Array.isArray(d.items)) throw new Error('format');
         var clean = d.items.filter(function(i){ return i && /^\d{4}-\d{2}-\d{2}$/.test(i.date) && Number(i.amount) > 0; })
-          .map(function(i){ return { id: i.id || Date.now() + Math.random(), date: i.date, amount: Number(i.amount), cat: String(i.cat || 'Lainnya'), note: String(i.note || '') }; });
+          .map(function(i){ return { id: i.id || Date.now() + Math.random(), date: i.date, amount: Number(i.amount), cat: fixCat(String(i.cat || 'Lainnya')), note: String(i.note || '') }; });
         if (!confirm('Pulihkan ' + clean.length + ' catatan? Data yang ada sekarang akan diganti.')) return;
         state.items = clean; state.budget = Number(d.budget) || 0;
         save(); stopEdit(); render(); say('Data berhasil dipulihkan.');
