@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catatan Pengeluaran</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2EF; --surface:#FFFFFF; --ink:#16302B; --muted:#5E7570; --line:#D5DED9;
+  --pine:#1F5C4D; --bar:#2F7A66; --barsoft:#BFD6CD; --mark:#E9A319; --over:#C4493B;
+  --radius:10px;
+  --font:'Bricolage Grotesque','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0F1A17; --surface:#16241F; --ink:#E3EEE9; --muted:#8FA69F; --line:#26372F;
+    --pine:#5CC2A6; --bar:#3E9A83; --barsoft:#2A4A40; --mark:#F0B23A; --over:#E5766A;}
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:12px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;
+  font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 56px}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.top h1{margin:0;font-size:1.25rem;font-weight:600}
+.nav{display:flex;align-items:center;gap:6px}
+.nav button{width:38px;height:38px;border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);font-size:1.1rem}
+.nav .label{min-width:150px;text-align:center;font-weight:600;text-transform:capitalize}
+.nav .now{width:auto;padding:0 12px;font-size:.875rem}
+
+.grid{display:grid;gap:16px;grid-template-columns:1fr;
+  grid-template-areas:"sum" "chart" "form" "list" "cats" "tools"}
+@media (min-width:900px){
+  .grid{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);
+    grid-template-areas:"sum form" "chart form" "list cats" "list tools";align-items:start}
+}
+.sum{grid-area:sum}.chartbox{grid-area:chart}.formbox{grid-area:form}
+.listbox{grid-area:list}.catbox{grid-area:cats}.tools{grid-area:tools}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.panel h2{margin:0 0 12px;font-size:1rem;font-weight:600}
+
+/* summary */
+.total{font-size:clamp(2rem,7vw,3rem);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:2px 0 4px}
+.sub{color:var(--muted);font-size:.9rem;margin:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);margin:16px 0 0;border-top:1px solid var(--line)}
+.stats div{padding:12px 10px 0 0}
+.stats div+div{padding-left:12px;border-left:1px solid var(--line)}
+.stats dt{color:var(--muted);font-size:.8rem}
+.stats dd{margin:2px 0 0;font-weight:600;font-size:.95rem}
+.budget{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.budget-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.budget label{font-size:.875rem;color:var(--muted)}
+.money{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:0 10px}
+.money span{color:var(--muted);font-size:.9rem;margin-right:6px}
+.money input{border:0;background:transparent;padding:9px 0;width:130px;outline:none}
+.money:focus-within{outline:2px solid var(--mark);outline-offset:1px}
+.meter{height:8px;background:var(--barsoft);border-radius:99px;overflow:hidden;margin-top:12px}
+.meter i{display:block;height:100%;background:var(--bar);border-radius:99px}
+.meter.over i{background:var(--over)}
+.note{font-size:.875rem;margin:8px 0 0}
+.over-t{color:var(--over);font-weight:600}
+
+/* chart */
+.chart-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:99px;padding:3px 12px;font-size:.8rem}
+.bars{position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);gap:3px;height:150px;margin-top:14px;align-items:end}
+.bar{position:relative;height:100%;display:flex;align-items:flex-end;background:none;border:0;padding:0;border-radius:3px}
+.bar i{display:block;width:100%;min-height:2px;background:var(--barsoft);border-radius:3px 3px 0 0;transition:height .25s}
+.bar.has i{background:var(--bar)}
+.bar.high i{background:var(--over)}
+.bar.sel i{background:var(--mark)}
+.bar:hover i{filter:brightness(.92)}
+.limit{position:absolute;left:0;right:0;border-top:1.5px dashed var(--muted);opacity:.7;pointer-events:none}
+.limit b{position:absolute;right:0;top:-18px;font-size:.7rem;font-weight:400;color:var(--muted);background:var(--surface);padding:0 3px}
+.days{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:3px;margin-top:6px;font-size:.65rem;color:var(--muted);text-align:center}
+.days span.today{color:var(--ink);font-weight:800}
+.days span.today::after{content:"";display:block;width:4px;height:4px;border-radius:50%;background:var(--mark);margin:1px auto 0}
+@media (max-width:600px){.days span.skip{visibility:hidden}}
+
+/* form */
+form{display:grid;gap:12px}
+.f{display:grid;gap:4px}
+.f label{font-size:.85rem;color:var(--muted)}
+.f input,.f select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.f .money input{padding:10px 0;width:100%;font-size:1.15rem;font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns{display:flex;gap:8px}
+.primary{flex:1;background:var(--pine);color:#fff;border:0;border-radius:8px;padding:11px 14px;font-weight:600}
+@media (prefers-color-scheme:dark){.primary{color:#0F1A17}}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:8px;padding:11px 14px}
+.hint{color:var(--muted);font-size:.8rem;margin:0;min-height:1.2em}
+
+/* list */
+.day{padding:12px 0;border-top:1px solid var(--line)}
+.day:first-of-type{border-top:0;padding-top:0}
+.day-h{display:flex;justify-content:space-between;gap:8px;font-weight:600;margin-bottom:6px}
+.day-h span:first-child{text-transform:capitalize}
+.item{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:6px 0;font-size:.95rem}
+.item small{color:var(--muted);display:block}
+.item .amt{font-weight:600}
+.mini{border:0;background:none;color:var(--muted);padding:4px 6px;border-radius:6px;font-size:.8rem}
+.mini:hover{color:var(--ink);background:var(--bg)}
+.acts{display:flex;gap:2px}
+.empty{color:var(--muted);margin:0}
+
+/* categories */
+.cat{margin-bottom:12px}
+.cat-h{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:4px}
+.cat .meter{margin-top:0;height:6px}
+
+.tools p{margin:0 0 12px;color:var(--muted);font-size:.875rem}
+.tools .btns{flex-wrap:wrap}
+.tools .ghost{padding:8px 12px;font-size:.875rem}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Catatan Pengeluaran</h1>
+    <div class="nav">
+      <button type="button" id="prev" aria-label="Bulan sebelumnya">‹</button>
+      <div class="label" id="monthLabel" aria-live="polite"></div>
+      <button type="button" id="next" aria-label="Bulan berikutnya">›</button>
+      <button type="button" id="today" class="now">Bulan ini</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="panel sum" aria-label="Ringkasan bulan">
+      <p class="sub">Total pengeluaran</p>
+      <p class="total" id="total">Rp0</p>
+      <p class="sub" id="totalSub"></p>
+      <dl class="stats">
+        <div><dt>Rata-rata per hari</dt><dd id="avg">-</dd></div>
+        <div><dt>Hari termahal</dt><dd id="maxDay">-</dd></div>
+        <div><dt>Jumlah catatan</dt><dd id="count">0</dd></div>
+      </dl>
+      <div class="budget">
+        <div class="budget-row">
+          <label for="budget">Budget bulanan</label>
+          <div class="money"><span>Rp</span><input id="budget" inputmode="numeric" placeholder="Belum diatur" autocomplete="off"></div>
+        </div>
+        <div id="budgetInfo"></div>
+      </div>
+    </section>
+
+    <section class="panel chartbox" aria-label="Grafik harian">
+      <div class="chart-head">
+        <h2>Pengeluaran per hari</h2>
+        <button type="button" class="chip" id="clearDay" hidden>Tampilkan semua hari</button>
+      </div>
+      <div class="bars" id="bars"></div>
+      <div class="days" id="daysRow"></div>
+      <p class="hint" id="chartHint" style="margin-top:10px">Klik satu hari untuk melihat catatannya.</p>
+    </section>
+
+    <section class="panel formbox" aria-label="Tambah pengeluaran">
+      <h2 id="formTitle">Tambah pengeluaran</h2>
+      <form id="form" autocomplete="off">
+        <div class="f">
+          <label for="amount">Jumlah</label>
+          <div class="money"><span>Rp</span><input id="amount" inputmode="numeric" placeholder="0" required></div>
+        </div>
+        <div class="row2">
+          <div class="f"><label for="date">Tanggal</label><input type="date" id="date" required></div>
+          <div class="f"><label for="cat">Kategori</label>
+            <select id="cat">
+              <option>Makan &amp; minum</option><option>Transportasi</option><option>Belanja</option>
+              <option>Tagihan</option><option>Hiburan</option><option>Kesehatan</option><option>Lainnya</option>
+            </select>
+          </div>
+        </div>
+        <div class="f"><label for="noteIn">Catatan (opsional)</label><input id="noteIn" maxlength="80" placeholder="Contoh: makan siang"></div>
+        <div class="btns">
+          <button class="primary" id="submitBtn" type="submit">Simpan</button>
+          <button class="ghost" id="cancelEdit" type="button" hidden>Batal</button>
+        </div>
+        <p class="hint" id="msg" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="panel listbox" aria-label="Daftar pengeluaran">
+      <h2 id="listTitle">Catatan bulan ini</h2>
+      <div id="list"></div>
+    </section>
+
+    <section class="panel catbox" aria-label="Per kategori">
+      <h2>Per kategori</h2>
+      <div id="cats"></div>
+    </section>
+
+    <section class="panel tools" aria-label="Data">
+      <h2>Data kamu</h2>
+      <p>Semua data tersimpan di browser ini saja. Unduh cadangan secara berkala supaya aman.</p>
+      <div class="btns">
+        <button type="button" class="ghost" id="exportCsv">Unduh CSV</button>
+        <button type="button" class="ghost" id="exportJson">Cadangkan (JSON)</button>
+        <button type="button" class="ghost" id="importBtn">Pulihkan</button>
+        <input type="file" id="importFile" accept="application/json,.json" hidden>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  var KEY = 'pengeluaran:v1';
+  var state = { items: [], budget: 0 };
+  var now = new Date();
+  var view = { y: now.getFullYear(), m: now.getMonth(), day: null };
+  var editId = null;
+
+  function $(id){ return document.getElementById(id); }
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function iso(y,m,d){ return y + '-' + pad(m+1) + '-' + pad(d); }
+  function rp(n){ return 'Rp' + Math.round(n).toLocaleString('id-ID'); }
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; }); }
+  function parseDate(s){ var p = s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+  function digits(s){ return Number(String(s).replace(/\D/g,'')) || 0; }
+  function daysIn(y,m){ return new Date(y, m+1, 0).getDate(); }
+
+  function load(){
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var d = JSON.parse(raw);
+        if (d && Array.isArray(d.items)) { state.items = d.items; state.budget = Number(d.budget) || 0; }
+      }
+    } catch(e) { /* storage tidak tersedia, jalan tanpa penyimpanan */ }
+  }
+  function save(){
+    try { localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch(e) { say('Data tidak bisa disimpan di browser ini. Unduh cadangan agar tidak hilang.'); }
+  }
+  var msgTimer;
+  function say(t){
+    $('msg').textContent = t;
+    clearTimeout(msgTimer);
+    if (t) msgTimer = setTimeout(function(){ $('msg').textContent = ''; }, 3500);
+  }
+
+  function monthItems(){
+    var p = view.y + '-' + pad(view.m+1);
+    return state.items.filter(function(i){ return i.date.indexOf(p) === 0; });
+  }
+
+  function defaultDate(){
+    if (view.day) return iso(view.y, view.m, view.day);
+    if (view.y === now.getFullYear() && view.m === now.getMonth()) return iso(view.y, view.m, now.getDate());
+    return iso(view.y, view.m, 1);
+  }
+
+  function render(){
+    var y = view.y, m = view.m, dim = daysIn(y,m);
+    var items = monthItems();
+    var daily = new Array(dim).fill(0);
+    var byCat = {};
+    var total = 0;
+    items.forEach(function(i){
+      var d = parseDate(i.date).getDate();
+      daily[d-1] += i.amount; total += i.amount;
+      byCat[i.cat] = (byCat[i.cat] || 0) + i.amount;
+    });
+
+    $('monthLabel').textContent = new Date(y,m,1).toLocaleDateString('id-ID',{month:'long',year:'numeric'});
+    $('total').textContent = rp(total);
+    $('count').textContent = items.length;
+
+    var isCur = (y === now.getFullYear() && m === now.getMonth());
+    var isFuture = (y > now.getFullYear()) || (y === now.getFullYear() && m > now.getMonth());
+    var elapsed = isCur ? now.getDate() : (isFuture ? 0 : dim);
+    $('totalSub').textContent = items.length ? '' : 'Belum ada catatan di bulan ini.';
+    $('avg').textContent = elapsed && total ? rp(total/elapsed) : '-';
+    var mx = Math.max.apply(null, daily);
+    if (mx > 0) {
+      var md = daily.indexOf(mx) + 1;
+      $('maxDay').textContent = md + ' ' + new Date(y,m,1).toLocaleDateString('id-ID',{month:'short'}) + ' · ' + rp(mx);
+    } else { $('maxDay').textContent = '-'; }
+
+    renderBudget(total, dim, elapsed);
+    renderChart(daily, dim, mx);
+    renderList(items);
+    renderCats(byCat, total);
+    if (!editId) $('date').value = defaultDate();
+  }
+
+  function renderBudget(total, dim, elapsed){
+    var b = state.budget, box = $('budgetInfo');
+    if (document.activeElement !== $('budget')) $('budget').value = b ? b.toLocaleString('id-ID') : '';
+    if (!b) { box.innerHTML = ''; return; }
+    var pct = Math.min(100, total / b * 100);
+    var left = b - total;
+    var html = '<div class="meter ' + (left < 0 ? 'over' : '') + '"><i style="width:' + pct.toFixed(1) + '%"></i></div>';
+    if (left >= 0) {
+      html += '<p class="note">Sisa ' + rp(left) + ' dari budget.';
+      var daysLeft = dim - elapsed;
+      if (daysLeft > 0 && elapsed > 0) html += ' Bisa dipakai sekitar ' + rp(left / daysLeft) + ' per hari untuk ' + daysLeft + ' hari ke depan.';
+      html += '</p>';
+    } else {
+      html += '<p class="note over-t">Melebihi budget sebesar ' + rp(-left) + '.</p>';
+    }
+    box.innerHTML = html;
+  }
+
+  function renderChart(daily, dim, mx){
+    var y = view.y, m = view.m;
+    var dailyBudget = state.budget ? state.budget / dim : 0;
+    var scale = Math.max(mx, dailyBudget, 1);
+    var bars = $('bars'), row = $('daysRow');
+    bars.style.setProperty('--n', dim); row.style.setProperty('--n', dim);
+    var h = '', r = '';
+    var isCur = (y === now.getFullYear() && m === now.getMonth());
+    for (var d = 1; d <= dim; d++) {
+      var v = daily[d-1];
+      var cls = 'bar' + (v > 0 ? ' has' : '') + (dailyBudget && v > dailyBudget ? ' high' : '') + (view.day === d ? ' sel' : '');
+      var label = d + ' ' + new Date(y,m,1).toLocaleDateString('id-ID',{month:'long'}) + ': ' + (v ? rp(v) : 'tidak ada pengeluaran');
+      h += '<button type="button" class="' + cls + '" data-d="' + d + '" title="' + label + '" aria-label="' + label + '"><i style="height:' + (v / scale * 100).toFixed(1) + '%"></i></button>';
+      var skip = (d !== 1 && d % 5 !== 0) ? ' skip' : '';
+      r += '<span class="' + (isCur && d === now.getDate() ? 'today' : '') + skip + '">' + d + '</span>';
+    }
+    if (dailyBudget) {
+      h += '<div class="limit" style="bottom:' + (dailyBudget / scale * 100).toFixed(1) + '%"><b>batas harian ' + rp(dailyBudget) + '</b></div>';
+    }
+    bars.innerHTML = h; row.innerHTML = r;
+    $('clearDay').hidden = !view.day;
+  }
+
+  function renderList(items){
+    var list = $('list');
+    var shown = view.day ? items.filter(function(i){ return parseDate(i.date).getDate() === view.day; }) : items;
+    $('listTitle').textContent = view.day
+      ? 'Catatan tanggal ' + view.day + ' ' + new Date(view.y,view.m,1).toLocaleDateString('id-ID',{month:'long'})
+      : 'Catatan bulan ini';
+    if (!shown.length) {
+      list.innerHTML = '<p class="empty">' + (view.day ? 'Tidak ada pengeluaran di hari ini.' : 'Belum ada catatan. Isi formulir untuk menambahkan pengeluaran pertama.') + '</p>';
+      return;
+    }
+    var groups = {};
+    shown.forEach(function(i){ (groups[i.date] = groups[i.date] || []).push(i); });
+    var dates = Object.keys(groups).sort().reverse();
+    list.innerHTML = dates.map(function(dt){
+      var g = groups[dt], sum = g.reduce(function(a,i){ return a + i.amount; }, 0);
+      var title = parseDate(dt).toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
+      return '<div class="day"><div class="day-h"><span>' + title + '</span><span>' + rp(sum) + '</span></div>' +
+        g.slice().sort(function(a,b){ return b.id - a.id; }).map(function(i){
+          return '<div class="item"><div>' + esc(i.note || i.cat) + (i.note ? '<small>' + esc(i.cat) + '</small>' : '') + '</div>' +
+            '<div class="amt">' + rp(i.amount) + '</div>' +
+            '<div class="acts"><button class="mini" data-edit="' + i.id + '" aria-label="Ubah catatan">Ubah</button>' +
+            '<button class="mini" data-del="' + i.id + '" aria-label="Hapus catatan">Hapus</button></div></div>';
+        }).join('') + '</div>';
+    }).join('');
+  }
+
+  function renderCats(byCat, total){
+    var keys = Object.keys(byCat).sort(function(a,b){ return byCat[b] - byCat[a]; });
+    if (!keys.length) { $('cats').innerHTML = '<p class="empty">Belum ada data.</p>'; return; }
+    $('cats').innerHTML = keys.map(function(k){
+      var p = total ? byCat[k] / total * 100 : 0;
+      return '<div class="cat"><div class="cat-h"><span>' + esc(k) + '</span><span>' + rp(byCat[k]) + ' · ' + Math.round(p) + '%</span></div>' +
+        '<div class="meter"><i style="width:' + p.toFixed(1) + '%"></i></div></div>';
+    }).join('');
+  }
+
+  /* interactions */
+  function shiftMonth(delta){
+    var d = new Date(view.y, view.m + delta, 1);
+    view.y = d.getFullYear(); view.m = d.getMonth(); view.day = null;
+    stopEdit(); render();
+  }
+  $('prev').onclick = function(){ shiftMonth(-1); };
+  $('next').onclick = function(){ shiftMonth(1); };
+  $('today').onclick = function(){ view.y = now.getFullYear(); view.m = now.getMonth(); view.day = null; stopEdit(); render(); };
+  $('clearDay').onclick = function(){ view.day = null; render(); };
+
+  $('bars').addEventListener('click', function(e){
+    var b = e.target.closest('.bar'); if (!b) return;
+    var d = +b.getAttribute('data-d');
+    view.day = (view.day === d) ? null : d;
+    if (!editId) $('date').value = defaultDate();
+    render();
+  });
+
+  function money(input, onChange){
+    input.addEventListener('input', function(){
+      var n = digits(input.value);
+      input.value = n ? n.toLocaleString('id-ID') : '';
+      if (onChange) onChange(n);
+    });
+  }
+  money($('amount'));
+  money($('budget'));
+  $('budget').addEventListener('change', function(){
+    state.budget = digits($('budget').value); save(); render();
+  });
+
+  function stopEdit(){
+    editId = null;
+    $('formTitle').textContent = 'Tambah pengeluaran';
+    $('submitBtn').textContent = 'Simpan';
+    $('cancelEdit').hidden = true;
+    $('amount').value = ''; $('noteIn').value = '';
+  }
+  $('cancelEdit').onclick = function(){ stopEdit(); render(); };
+
+  $('form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var amount = digits($('amount').value), date = $('date').value;
+    if (!amount) { say('Isi jumlah pengeluaran lebih dari nol.'); $('amount').focus(); return; }
+    if (!date) { say('Pilih tanggalnya dulu.'); return; }
+    var data = { date: date, amount: amount, cat: $('cat').value, note: $('noteIn').value.trim() };
+    if (editId) {
+      state.items = state.items.map(function(i){ return i.id === editId ? Object.assign({}, i, data) : i; });
+      save(); stopEdit(); say('Perubahan disimpan.');
+    } else {
+      data.id = Date.now() + Math.floor(Math.random()*1000);
+      state.items.push(data);
+      save(); say('Pengeluaran ' + rp(amount) + ' disimpan.');
+      $('amount').value = ''; $('noteIn').value = '';
+    }
+    var dd = parseDate(date);
+    if (dd.getFullYear() !== view.y || dd.getMonth() !== view.m) { view.y = dd.getFullYear(); view.m = dd.getMonth(); view.day = null; }
+    var keep = $('date').value;
+    render();
+    $('date').value = keep;
+    $('amount').focus();
+  });
+
+  $('list').addEventListener('click', function(e){
+    var ed = e.target.getAttribute('data-edit'), del = e.target.getAttribute('data-del');
+    if (ed) {
+      var it = state.items.filter(function(i){ return String(i.id) === ed; })[0]; if (!it) return;
+      editId = it.id;
+      $('amount').value = it.amount.toLocaleString('id-ID');
+      $('date').value = it.date; $('cat').value = it.cat; $('noteIn').value = it.note || '';
+      $('formTitle').textContent = 'Ubah pengeluaran';
+      $('submitBtn').textContent = 'Simpan perubahan';
+      $('cancelEdit').hidden = false;
+      $('amount').focus();
+      $('form').scrollIntoView({behavior:'smooth', block:'center'});
+    } else if (del) {
+      if (!confirm('Hapus catatan ini?')) return;
+      state.items = state.items.filter(function(i){ return String(i.id) !== del; });
+      if (editId && String(editId) === del) stopEdit();
+      save(); render();
+    }
+  });
+
+  /* export / import */
+  function download(name, text, type){
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], {type: type}));
+    a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  $('exportCsv').onclick = function(){
+    var rows = state.items.slice().sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+    var csv = 'Tanggal,Kategori,Catatan,Jumlah\n' + rows.map(function(i){
+      return [i.date, '"' + i.cat.replace(/"/g,'""') + '"', '"' + (i.note||'').replace(/"/g,'""') + '"', i.amount].join(',');
+    }).join('\n');
+    download('pengeluaran.csv', '\ufeff' + csv, 'text/csv;charset=utf-8');
+  };
+  $('exportJson').onclick = function(){
+    download('cadangan-pengeluaran-' + iso(now.getFullYear(), now.getMonth(), now.getDate()) + '.json', JSON.stringify(state, null, 2), 'application/json');
+  };
+  $('importBtn').onclick = function(){ $('importFile').click(); };
+  $('importFile').onchange = function(e){
+    var f = e.target.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){
+      try {
+        var d = JSON.parse(rd.result);
+        if (!d || !Array.isArray(d.items)) throw new Error('format');
+        var clean = d.items.filter(function(i){ return i && /^\d{4}-\d{2}-\d{2}$/.test(i.date) && Number(i.amount) > 0; })
+          .map(function(i){ return { id: i.id || Date.now() + Math.random(), date: i.date, amount: Number(i.amount), cat: String(i.cat || 'Lainnya'), note: String(i.note || '') }; });
+        if (!confirm('Pulihkan ' + clean.length + ' catatan? Data yang ada sekarang akan diganti.')) return;
+        state.items = clean; state.budget = Number(d.budget) || 0;
+        save(); stopEdit(); render(); say('Data berhasil dipulihkan.');
+      } catch(err) { say('File tidak dikenali. Pakai file cadangan JSON dari halaman ini.'); }
+      $('importFile').value = '';
+    };
+    rd.readAsText(f);
+  };
+
+  load(); render();
+})();
+</script>
+</body>
+</html>
