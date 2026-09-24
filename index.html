@@ -2924,6 +2924,7 @@ html, body {
   var THEME_KEY = 'pengeluaran:theme';
   var SUPABASE_URL = 'https://jrpgsssxkguazsowgqdt.supabase.co';
   var SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_1BlceJtFUcp5kUJTo9wCGg_b3MXAB9h';
+  var SALDO_URL = 'https://shrimproll01.github.io/Daily-Spending-Tracker/';
   var supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
   });
@@ -3828,9 +3829,8 @@ html, body {
     this.disabled = true;
     setRecoveryMessage(c.sending, '');
     try{
-      var resetRedirectUrl = window.location.origin + window.location.pathname;
       var resetResult = await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: resetRedirectUrl
+        redirectTo: SALDO_URL
       });
       if (resetResult.error) throw resetResult.error;
       setRecoveryMessage('', '');
@@ -3900,7 +3900,7 @@ html, body {
         var signupResult = await supabaseClient.auth.signUp({
           email: email,
           password: password,
-          options: { emailRedirectTo: window.location.href.split('#')[0], data: { first_name: $('authFirstName').value.trim(), last_name: $('authLastName').value.trim() } }
+          options: { emailRedirectTo: SALDO_URL, data: { first_name: $('authFirstName').value.trim(), last_name: $('authLastName').value.trim() } }
         });
 
         // With Supabase 'Confirm email' disabled, a new account returns a session
@@ -3929,7 +3929,7 @@ html, body {
   });
   async function oauth(provider){
     setAuthMessage('Menghubungkan ke ' + (provider === 'google' ? 'Google' : 'Apple') + '…', '');
-    var result = await supabaseClient.auth.signInWithOAuth({ provider: provider, options: { redirectTo: window.location.href.split('#')[0] } });
+    var result = await supabaseClient.auth.signInWithOAuth({ provider: provider, options: { redirectTo: SALDO_URL } });
     if (result.error) setAuthMessage(result.error.message || 'Login provider gagal.', 'error');
   }
   $('googleBtn').onclick = function(){ oauth('google').catch(function(err){ setAuthMessage(err.message || 'Login Google gagal.', 'error'); }); };
