@@ -864,7 +864,7 @@ body {
 /* Final spacing: 6cm between hero paragraph and step layout */
 .auth-visual{justify-content:flex-start!important}
 .auth-visual-copy{margin-bottom:0!important}
-.auth-steps{margin-top:.8cm!important}
+.auth-steps{margin-top:-0.5cm!important}
 
 /* Premium rolling kicker: smooth, continuous vertical slot animation */
 .auth-kicker{
@@ -1753,6 +1753,10 @@ body {
   }
 }
 
+
+/* Final desktop step alignment */
+@media (min-width:701px){.auth-steps{margin-top:-0.5cm!important;}}
+@media (max-width:700px){.auth-steps{margin-top:16px!important;}}
 </style>
 
 <style>
@@ -1961,6 +1965,88 @@ body {
 }
 @media (max-width:860px){
   .auth-gate::after{display:none!important;}
+}
+</style>
+
+<style>
+/* FINAL: align language selector with the left-side brand baseline */
+@media (min-width:861px){
+  .auth-language{
+    position:absolute!important;
+    top:56px!important;
+    right:28px!important;
+    width:142px!important;
+    height:42px!important;
+    margin:0!important;
+    z-index:60!important;
+  }
+  .auth-language select{
+    width:142px!important;
+    min-width:142px!important;
+    max-width:142px!important;
+    height:42px!important;
+    padding:0 31px 0 13px!important;
+    border-radius:13px!important;
+    box-sizing:border-box!important;
+  }
+}
+@media (max-width:860px){
+  .auth-language{
+    position:absolute!important;
+    top:20px!important;
+    right:16px!important;
+    z-index:60!important;
+  }
+  .auth-inner{
+    padding-top:78px!important;
+  }
+}
+@media (max-width:560px){
+  .auth-language{top:16px!important;right:14px!important;width:162px!important;height:44px!important;}
+  .auth-language select{width:162px!important;min-width:162px!important;max-width:162px!important;height:44px!important;}
+  .auth-inner{padding-top:74px!important;}
+}
+</style>
+
+<style>
+/* FINAL BALANCE: lower the right auth content to align with the left brand/hero */
+@media (min-width:861px){
+  .auth-panel .auth-inner{
+    transform:translateY(44px)!important;
+  }
+}
+@media (max-width:860px){
+  .auth-panel .auth-inner{
+    transform:none!important;
+  }
+}
+</style>
+
+<style id="final-step-balance-fix">
+/* Final left-column balance: keep step cards below the supporting copy without overlap. */
+@media (min-width:701px){
+  .auth-visual-copy{
+    margin-bottom:0!important;
+  }
+  .auth-steps{
+    margin-top:24px!important;
+    transform:none!important;
+  }
+}
+@media (max-width:700px){
+  .auth-steps{
+    margin-top:20px!important;
+    transform:none!important;
+  }
+}
+</style>
+
+<style>
+/* FINAL: bring security note closer to account switch */
+.auth-switch{margin-bottom:0!important;}
+.auth-foot{margin-top:5px!important; line-height:1.35!important;}
+@media (max-width:700px){
+  .auth-foot{margin-top:6px!important;}
 }
 </style>
 </head>
