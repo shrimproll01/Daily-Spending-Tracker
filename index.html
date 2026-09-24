@@ -2148,6 +2148,330 @@ body {
 }
 </style>
 
+
+<style>
+/* ---------- PASSWORD RECOVERY FLOW ---------- */
+.auth-account-view{display:block}
+.auth-recovery-view{position:relative;width:100%;padding:6px 2px 0;text-align:center}
+.recovery-back{position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.055);color:rgba(247,249,255,.86);display:grid;place-items:center;backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 8px 24px rgba(0,0,0,.16);transition:background .15s,border-color .15s,transform .15s}
+.recovery-back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.recovery-back:hover{background:rgba(255,255,255,.085);border-color:rgba(255,255,255,.24)}
+.recovery-back:active{transform:scale(.96)}
+.recovery-logo{width:66px;height:66px;margin:2px auto 15px;display:grid;place-items:center;border-radius:20px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 12px 34px rgba(0,0,0,.14);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);overflow:hidden}
+.recovery-logo img{width:54px;height:54px;object-fit:contain;display:block}
+.recovery-progress{display:flex;align-items:center;justify-content:center;gap:0;margin:0 auto 22px;width:min(100%,190px)}
+.recovery-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.20);box-shadow:inset 0 1px 0 rgba(255,255,255,.10);transition:background .2s,box-shadow .2s,transform .2s}
+.recovery-dot.is-on{background:#f6f5f2;box-shadow:0 0 0 4px rgba(255,255,255,.07),0 0 14px rgba(255,255,255,.22);transform:scale(1.08)}
+.recovery-line{height:1px;flex:1;background:rgba(255,255,255,.13);margin:0 7px;transition:background .2s,box-shadow .2s}
+.recovery-line.is-on{background:rgba(255,255,255,.42);box-shadow:0 0 10px rgba(255,255,255,.12)}
+.recovery-title{font-size:clamp(1.95rem,3.1vw,2.7rem);line-height:1.08;letter-spacing:-.05em;font-weight:650;color:#f5f7ff;margin:0 0 10px;text-shadow:0 8px 28px rgba(0,0,0,.18)}
+.recovery-sub{max-width:43ch;margin:0 auto 27px;color:rgba(224,228,243,.64);font-size:.92rem;line-height:1.55}
+.recovery-screen{width:100%}
+.recovery-field{margin-bottom:17px!important;text-align:left}
+.recovery-primary{width:100%;min-height:54px!important;border-radius:13px!important}
+.recovery-msg{margin:12px 0 0!important;min-height:20px}
+.recovery-mail-icon{width:68px;height:68px;margin:2px auto 19px;border-radius:20px;display:grid;place-items:center;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 12px 34px rgba(0,0,0,.14);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%)}
+.recovery-mail-icon svg{width:29px;height:29px;fill:none;stroke:#f5f7ff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.recovery-mini-title{font-size:1.12rem;line-height:1.2;letter-spacing:-.025em;font-weight:650;color:#f5f7ff;margin:0 0 8px}
+.recovery-sent-text,.recovery-sent-note{max-width:42ch;margin:0 auto;color:rgba(224,228,243,.64);font-size:.88rem;line-height:1.55}
+.recovery-email-chip{display:inline-block;max-width:100%;margin:15px auto 0;padding:9px 13px;border-radius:12px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);color:#f3f5fb;font-size:.83rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.recovery-sent-note{margin-top:16px;color:rgba(224,228,243,.52)}
+.recovery-secondary{width:100%;min-height:50px;margin-top:23px;border-radius:13px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.045);color:#f4f6ff;font:600 .9rem/1 var(--font);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);transition:background .15s,border-color .15s}
+.recovery-secondary:hover{background:rgba(255,255,255,.075);border-color:rgba(255,255,255,.20)}
+.recovery-link{margin-top:15px;padding:0;border:0;background:none;color:rgba(245,238,232,.82);font:600 .8rem/1.4 var(--font);cursor:pointer}
+.recovery-link:hover{text-decoration:underline;text-underline-offset:3px;color:#fff}
+.recovery-password-wrap{position:relative;width:100%}
+.recovery-password-wrap input{padding-right:52px!important}
+.recovery-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:50%;background:transparent;color:#888;display:grid;place-items:center;padding:0;cursor:pointer}
+.recovery-eye:hover{background:#242424;color:#ddd}
+.recovery-eye svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.recovery-eye .eye-closed{display:none}
+.recovery-eye.is-visible .eye-open{display:none}
+.recovery-eye.is-visible .eye-closed{display:block}
+.recovery-password-note{margin:-5px 0 19px;text-align:left;color:rgba(205,211,230,.50);font-size:.77rem;line-height:1.4}
+@media (max-width:700px){
+  .auth-recovery-view{padding-top:4px}
+  .recovery-back{width:38px;height:38px}
+  .recovery-logo{width:62px;height:62px;margin-top:5px}
+  .recovery-logo img{width:50px;height:50px}
+  .recovery-progress{margin-bottom:20px}
+  .recovery-title{font-size:clamp(1.78rem,7vw,2.2rem)}
+  .recovery-sub{font-size:.86rem;margin-bottom:24px}
+}
+</style>
+
+
+<style id="final-auth-center-polish">
+/* FINAL AUTH CENTER POLISH
+   Desktop: vertically + horizontally center the right auth content.
+   Tablet/mobile: center the auth content within the available viewport while
+   keeping the language switch floating at the top-right. */
+
+@media (min-width:861px){
+  .auth-panel{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-height:100dvh!important;
+    padding:36px clamp(28px,5vw,76px)!important;
+    overflow:auto!important;
+    background:
+      radial-gradient(62% 48% at 82% 18%,rgba(119,96,255,.18),transparent 72%),
+      radial-gradient(44% 42% at 16% 78%,rgba(49,169,255,.08),transparent 74%),
+      linear-gradient(160deg,rgba(10,13,34,.86),rgba(4,7,19,.96))!important;
+    box-shadow:
+      inset 1px 0 0 rgba(255,255,255,.035),
+      inset 0 1px 0 rgba(255,255,255,.012),
+      inset 0 -1px 0 rgba(0,0,0,.12)!important;
+  }
+
+  .auth-panel .auth-inner{
+    position:relative!important;
+    width:min(100%,560px)!important;
+    margin:0 auto!important;
+    padding:0!important;
+    transform:none!important;
+  }
+
+  .auth-panel .auth-title{
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  .auth-panel .auth-sub{
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+
+  .auth-language{
+    top:22px!important;
+    right:28px!important;
+  }
+}
+
+@media (max-width:860px){
+  .auth-panel{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-height:100dvh!important;
+    width:100%!important;
+    padding:
+      calc(78px + env(safe-area-inset-top,0px))
+      max(18px,env(safe-area-inset-right))
+      calc(32px + env(safe-area-inset-bottom,0px))
+      max(18px,env(safe-area-inset-left))!important;
+    overflow:auto!important;
+    background:
+      radial-gradient(72% 42% at 78% 10%,rgba(113,79,255,.18),transparent 74%),
+      radial-gradient(58% 48% at 12% 82%,rgba(45,165,255,.10),transparent 74%),
+      linear-gradient(160deg,#0a0d22,#050713)!important;
+  }
+
+  .auth-panel .auth-inner{
+    position:relative!important;
+    z-index:3!important;
+    width:min(100%,520px)!important;
+    margin:auto!important;
+    padding:0!important;
+    transform:none!important;
+  }
+
+  .auth-language{
+    position:absolute!important;
+    top:16px!important;
+    right:16px!important;
+    z-index:60!important;
+  }
+}
+
+/* On shorter phones, keep the beginning of the form comfortably reachable
+   instead of forcing a tall auth flow to center beyond the scroll bounds. */
+@media (max-width:700px) and (max-height:779px){
+  .auth-panel{
+    align-items:flex-start!important;
+  }
+  .auth-panel .auth-inner{
+    margin:0 auto!important;
+  }
+}
+
+@media (max-width:560px){
+  .auth-panel{
+    padding-left:max(16px,env(safe-area-inset-left))!important;
+    padding-right:max(16px,env(safe-area-inset-right))!important;
+  }
+  .auth-panel .auth-inner{
+    width:100%!important;
+    max-width:430px!important;
+  }
+  .auth-language{
+    top:14px!important;
+    right:14px!important;
+    width:162px!important;
+    height:44px!important;
+  }
+  .auth-language select{
+    width:162px!important;
+    min-width:162px!important;
+    max-width:162px!important;
+    height:44px!important;
+  }
+}
+<style id="final-precision-responsive-auth">
+/* FINAL PRECISION PASS — desktop / tablet / mobile
+   Goals: clean top controls, balanced vertical rhythm, no header overlap. */
+
+.auth-panel{position:relative!important;box-sizing:border-box!important;}
+
+/* The recovery back control is global to the panel so it can share the
+   exact same vertical baseline as the language selector. */
+.recovery-back-global{
+  display:none!important;
+  position:absolute!important;
+  z-index:80!important;
+  width:44px!important;
+  height:44px!important;
+  padding:0!important;
+  margin:0!important;
+  border-radius:50%!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  background:rgba(255,255,255,.055)!important;
+  color:rgba(247,249,255,.90)!important;
+  place-items:center!important;
+  backdrop-filter:blur(18px) saturate(140%)!important;
+  -webkit-backdrop-filter:blur(18px) saturate(140%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 8px 24px rgba(0,0,0,.16)!important;
+}
+.recovery-back-global svg{width:20px!important;height:20px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;}
+.auth-gate.recovery-open .recovery-back-global{display:grid!important;}
+
+/* Keep the header controls on the same horizontal baseline. */
+@media (min-width:861px){
+  .auth-panel{
+    min-height:100dvh!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    padding:72px clamp(30px,5vw,76px) 52px!important;
+    overflow:auto!important;
+  }
+  .auth-panel .auth-inner{
+    width:min(100%,560px)!important;
+    margin:0 auto!important;
+    padding:0!important;
+    position:relative!important;
+    transform:translateY(18px)!important;
+  }
+  .auth-gate.signup-mode .auth-panel .auth-inner{transform:translateY(26px)!important;}
+  .auth-gate.recovery-open .auth-panel .auth-inner{transform:translateY(28px)!important;}
+
+  .auth-language{
+    position:absolute!important;
+    top:24px!important;
+    right:28px!important;
+    width:154px!important;
+    height:44px!important;
+    margin:0!important;
+    z-index:80!important;
+  }
+  .auth-language select{
+    width:154px!important;
+    min-width:154px!important;
+    max-width:154px!important;
+    height:44px!important;
+    padding:0 34px 0 14px!important;
+    border-radius:14px!important;
+    box-sizing:border-box!important;
+  }
+  .recovery-back-global{top:24px!important;left:28px!important;}
+
+  /* Recovery content needs a little more air under the top controls. */
+  .auth-gate.recovery-open .auth-recovery-view{
+    padding-top:8px!important;
+  }
+}
+
+/* Tablet + iPad: keep the whole auth stack optically centered, with a
+   dedicated safe header zone above it. */
+@media (max-width:860px){
+  .auth-panel{
+    min-height:100dvh!important;
+    width:100%!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    padding:96px max(20px,env(safe-area-inset-right)) max(34px,env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))!important;
+    overflow:auto!important;
+  }
+  .auth-panel .auth-inner{
+    position:relative!important;
+    width:min(100%,520px)!important;
+    margin:0 auto!important;
+    padding:0!important;
+    transform:none!important;
+  }
+  .auth-language{
+    position:absolute!important;
+    top:18px!important;
+    right:max(16px,env(safe-area-inset-right))!important;
+    width:152px!important;
+    height:44px!important;
+    margin:0!important;
+    z-index:80!important;
+  }
+  .auth-language select{
+    width:152px!important;
+    min-width:152px!important;
+    max-width:152px!important;
+    height:44px!important;
+    padding:0 34px 0 14px!important;
+    border-radius:14px!important;
+  }
+  .recovery-back-global{top:18px!important;left:max(16px,env(safe-area-inset-left))!important;}
+
+  .auth-gate.recovery-open .auth-recovery-view{padding-top:8px!important;}
+}
+
+/* Phone: slightly tighter but still centered; the header controls remain
+   outside the title's visual zone. */
+@media (max-width:560px){
+  .auth-panel{
+    padding:88px max(16px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))!important;
+  }
+  .auth-panel .auth-inner{width:100%!important;max-width:430px!important;}
+  .auth-language{
+    top:14px!important;
+    right:max(14px,env(safe-area-inset-right))!important;
+    width:150px!important;
+    height:42px!important;
+  }
+  .auth-language select{
+    width:150px!important;
+    min-width:150px!important;
+    max-width:150px!important;
+    height:42px!important;
+    padding:0 32px 0 13px!important;
+    border-radius:13px!important;
+  }
+  .recovery-back-global{top:14px!important;left:max(14px,env(safe-area-inset-left))!important;width:42px!important;height:42px!important;}
+  .recovery-back-global svg{width:19px!important;height:19px!important;}
+}
+
+/* Very short screens: prefer a sensible top start over clipping the lower
+   part of a long signup form. Horizontal centering remains exact. */
+@media (max-width:700px) and (max-height:779px){
+  .auth-panel{align-items:flex-start!important;padding-top:88px!important;}
+}
+
+/* Narrow landscape tablet / phone. */
+@media (max-width:900px) and (orientation:landscape){
+  .auth-panel{align-items:flex-start!important;padding-top:84px!important;}
+}
+</style>
+
+</style>
+
 </head>
 <body>
 <div class="auth-gate" id="authGate">
@@ -2178,6 +2502,9 @@ body {
   </section>
 
   <section class="auth-panel" id="authPanel">
+    <button type="button" class="recovery-back recovery-back-global" id="recoveryBack" aria-label="Back to login" title="Back to login">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+    </button>
     <div class="auth-language" aria-label="Language selection">
       <select id="authLanguage" aria-label="Language">
         <option value="en">English</option>
@@ -2203,6 +2530,7 @@ body {
       </select>
     </div>
     <div class="auth-inner">
+      <div id="authAccountView" class="auth-account-view">
       <h2 class="auth-title" id="authTitle">Create your account.</h2>
       <p class="auth-sub" id="authSub">Start tracking your spending and keep your finances organized.</p>
 
@@ -2238,6 +2566,72 @@ body {
 
       <div class="auth-switch"><span id="authSwitchText">Already have an account?</span> <button type="button" id="authSwitch">Log in</button></div>
       <div class="auth-foot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 5 6v5c0 4.7 2.9 8.8 7 10 4.1-1.2 7-5.3 7-10V6l-7-3Z"/><path d="m9.5 12 1.7 1.7 3.5-3.5"/></svg> <span id="authFootText">Your data is protected with account-based access</span></div>
+      </div>
+      <div class="auth-recovery-view" id="authRecoveryView" hidden>
+        <div class="recovery-logo" aria-hidden="true">
+          <img src="data:image/png;base64,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" alt="" width="54" height="54">
+        </div>
+
+        <div class="recovery-progress" aria-hidden="true">
+          <span class="recovery-dot is-on" id="recoveryDot1"></span>
+          <span class="recovery-line" id="recoveryLine1"></span>
+          <span class="recovery-dot" id="recoveryDot2"></span>
+          <span class="recovery-line" id="recoveryLine2"></span>
+          <span class="recovery-dot" id="recoveryDot3"></span>
+        </div>
+
+        <h2 class="recovery-title" id="recoveryTitle">Forgot password?</h2>
+        <p class="recovery-sub" id="recoverySub">Enter your email and we’ll send you a secure password reset link.</p>
+
+        <div class="recovery-screen" id="recoveryForgotScreen">
+          <div class="auth-field recovery-field">
+            <label for="recoveryEmail" id="recoveryEmailLabel">Email</label>
+            <input id="recoveryEmail" type="email" autocomplete="email" inputmode="email" placeholder="e.g. johnfrans@gmail.com">
+          </div>
+
+          <button type="button" class="auth-primary recovery-primary" id="recoverySend">Send reset link</button>
+
+          <p class="auth-msg recovery-msg" id="recoveryMsg" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="recovery-screen" id="recoverySentScreen" hidden>
+          <div class="recovery-mail-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+          </div>
+          <h3 class="recovery-mini-title" id="recoverySentTitle">Check your email.</h3>
+          <p class="recovery-sent-text" id="recoverySentText">We sent a password reset link to your email address.</p>
+          <div class="recovery-email-chip" id="recoveryEmailChip"></div>
+          <p class="recovery-sent-note" id="recoverySentNote">Open the email and follow the link. You’ll return here to create a new password.</p>
+          <button type="button" class="recovery-secondary" id="recoveryResend">Send again</button>
+          <button type="button" class="recovery-link" id="recoveryBackFromSent">Back to login</button>
+        </div>
+
+        <div class="recovery-screen" id="recoveryResetScreen" hidden>
+          <div class="auth-field recovery-field">
+            <label for="recoveryNewPassword" id="recoveryNewPasswordLabel">New Password</label>
+            <div class="recovery-password-wrap">
+              <input id="recoveryNewPassword" type="password" autocomplete="new-password" minlength="6" placeholder="Enter your new password">
+              <button type="button" class="recovery-eye" id="recoveryNewToggle" aria-label="Show password" title="Show password">
+                <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.2 12s3.4-6 9.8-6 9.8 6 9.8 6-3.4 6-9.8 6-9.8-6-9.8-6Z"/><circle cx="12" cy="12" r="2.7"/></svg>
+                <svg class="eye-closed" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 5.2A10.7 10.7 0 0 1 12 5c6.4 0 9.8 7 9.8 7a16.4 16.4 0 0 1-3.1 3.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="auth-field recovery-field">
+            <label for="recoveryConfirmPassword" id="recoveryConfirmLabel">Confirm Password</label>
+            <div class="recovery-password-wrap">
+              <input id="recoveryConfirmPassword" type="password" autocomplete="new-password" minlength="6" placeholder="Confirm your new password">
+              <button type="button" class="recovery-eye" id="recoveryConfirmToggle" aria-label="Show password" title="Show password">
+                <svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.2 12s3.4-6 9.8-6 9.8 6 9.8 6-3.4 6-9.8 6-9.8-6-9.8-6Z"/><circle cx="12" cy="12" r="2.7"/></svg>
+                <svg class="eye-closed" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 5.2A10.7 10.7 0 0 1 12 5c6.4 0 9.8 7 9.8 7a16.4 16.4 0 0 1-3.1 3.9"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+              </button>
+            </div>
+          </div>
+          <p class="recovery-password-note" id="recoveryPasswordNote">Use at least 6 characters.</p>
+          <button type="button" class="auth-primary recovery-primary" id="recoveryUpdate">Reset password</button>
+          <p class="auth-msg recovery-msg" id="recoveryUpdateMsg" role="status" aria-live="polite"></p>
+        </div>
+      </div>
     </div>
   </section>
 </div>
@@ -3020,6 +3414,48 @@ body {
     uk:{forgot:'Забули пароль?', sending:'Надсилаємо посилання для скидання…', sent:'Перевірте електронну пошту для посилання на скидання пароля.', needEmail:'Спочатку введіть електронну адресу.'},
     bn:{forgot:'পাসওয়ার্ড ভুলে গেছেন?', sending:'রিসেট লিংক পাঠানো হচ্ছে…', sent:'পাসওয়ার্ড রিসেট লিংকের জন্য ইমেইল দেখুন।', needEmail:'আগে আপনার ইমেইল লিখুন।'}
   };
+  var recoveryCopy = {
+    en:{
+      forgotTitle:'Forgot password?', forgotSub:'Enter your email and we’ll send you a secure password reset link.',
+      email:'Email', emailPlaceholder:'e.g. johnfrans@gmail.com', send:'Send reset link',
+      sending:'Sending reset link…', checkTitle:'Check your email.', sent:'We sent a password reset link to your email address.',
+      sentNote:'Open the email and follow the link. You’ll return here to create a new password.', again:'Send again',
+      back:'Back to login', resetTitle:'Create new password.', resetSub:'Choose a new password for your Saldo account.',
+      newPassword:'New Password', newPlaceholder:'Enter your new password', confirm:'Confirm Password', confirmPlaceholder:'Confirm your new password',
+      passwordNote:'Use at least 6 characters.', update:'Reset password', updating:'Updating password…', mismatch:'Passwords do not match.',
+      updated:'Password updated. You can now log in with your new password.', invalid:'Password must be at least 6 characters.',
+      show:'Show password', hide:'Hide password', generic:'Something went wrong.'
+    },
+    id:{
+      forgotTitle:'Lupa password?', forgotSub:'Masukkan email kamu dan kami akan mengirim link reset password yang aman.',
+      email:'Email', emailPlaceholder:'contoh: johnfrans@gmail.com', send:'Kirim link reset',
+      sending:'Mengirim link reset…', checkTitle:'Cek email kamu.', sent:'Link reset password sudah dikirim ke email kamu.',
+      sentNote:'Buka email tersebut dan ikuti linknya. Kamu akan kembali ke sini untuk membuat password baru.', again:'Kirim lagi',
+      back:'Kembali ke login', resetTitle:'Buat password baru.', resetSub:'Pilih password baru untuk akun Saldo kamu.',
+      newPassword:'Password Baru', newPlaceholder:'Masukkan password baru', confirm:'Konfirmasi Password', confirmPlaceholder:'Konfirmasi password baru',
+      passwordNote:'Gunakan minimal 6 karakter.', update:'Reset password', updating:'Memperbarui password…', mismatch:'Password tidak sama.',
+      updated:'Password berhasil diperbarui. Sekarang kamu bisa login dengan password baru.', invalid:'Password minimal 6 karakter.',
+      show:'Tampilkan password', hide:'Sembunyikan password', generic:'Terjadi kesalahan.'
+    },
+    es:{forgotTitle:'¿Olvidaste tu contraseña?',forgotSub:'Introduce tu correo y te enviaremos un enlace seguro para restablecerla.',email:'Correo electrónico',emailPlaceholder:'p. ej. juan@email.com',send:'Enviar enlace',sending:'Enviando enlace…',checkTitle:'Revisa tu correo.',sent:'Enviamos un enlace para restablecer tu contraseña.',sentNote:'Abre el correo y sigue el enlace. Volverás aquí para crear una contraseña nueva.',again:'Enviar de nuevo',back:'Volver al inicio de sesión',resetTitle:'Crea una nueva contraseña.',resetSub:'Elige una nueva contraseña para tu cuenta de Saldo.',newPassword:'Nueva contraseña',newPlaceholder:'Introduce tu nueva contraseña',confirm:'Confirmar contraseña',confirmPlaceholder:'Confirma tu nueva contraseña',passwordNote:'Usa al menos 6 caracteres.',update:'Restablecer contraseña',updating:'Actualizando contraseña…',mismatch:'Las contraseñas no coinciden.',updated:'Contraseña actualizada. Ya puedes iniciar sesión con tu nueva contraseña.',invalid:'La contraseña debe tener al menos 6 caracteres.',show:'Mostrar contraseña',hide:'Ocultar contraseña',generic:'Algo salió mal.'},
+    pt:{forgotTitle:'Esqueceu a senha?',forgotSub:'Digite seu e-mail e enviaremos um link seguro para redefinir sua senha.',email:'E-mail',emailPlaceholder:'ex.: joao@email.com',send:'Enviar link',sending:'Enviando link…',checkTitle:'Verifique seu e-mail.',sent:'Enviamos um link para redefinir sua senha.',sentNote:'Abra o e-mail e siga o link. Você voltará aqui para criar uma nova senha.',again:'Enviar novamente',back:'Voltar ao login',resetTitle:'Crie uma nova senha.',resetSub:'Escolha uma nova senha para sua conta Saldo.',newPassword:'Nova senha',newPlaceholder:'Digite sua nova senha',confirm:'Confirmar senha',confirmPlaceholder:'Confirme sua nova senha',passwordNote:'Use pelo menos 6 caracteres.',update:'Redefinir senha',updating:'Atualizando senha…',mismatch:'As senhas não coincidem.',updated:'Senha atualizada. Agora você pode entrar com sua nova senha.',invalid:'A senha deve ter pelo menos 6 caracteres.',show:'Mostrar senha',hide:'Ocultar senha',generic:'Algo deu errado.'},
+    fr:{forgotTitle:'Mot de passe oublié ?',forgotSub:'Entrez votre e-mail et nous vous enverrons un lien sécurisé pour réinitialiser votre mot de passe.',email:'E-mail',emailPlaceholder:'ex. jean@email.com',send:'Envoyer le lien',sending:'Envoi du lien…',checkTitle:'Consultez votre e-mail.',sent:'Nous avons envoyé un lien de réinitialisation à votre adresse e-mail.',sentNote:'Ouvrez l’e-mail et suivez le lien. Vous reviendrez ici pour créer un nouveau mot de passe.',again:'Renvoyer',back:'Retour à la connexion',resetTitle:'Créez un nouveau mot de passe.',resetSub:'Choisissez un nouveau mot de passe pour votre compte Saldo.',newPassword:'Nouveau mot de passe',newPlaceholder:'Entrez votre nouveau mot de passe',confirm:'Confirmer le mot de passe',confirmPlaceholder:'Confirmez votre nouveau mot de passe',passwordNote:'Utilisez au moins 6 caractères.',update:'Réinitialiser le mot de passe',updating:'Mise à jour du mot de passe…',mismatch:'Les mots de passe ne correspondent pas.',updated:'Mot de passe mis à jour. Vous pouvez maintenant vous connecter.',invalid:'Le mot de passe doit contenir au moins 6 caractères.',show:'Afficher le mot de passe',hide:'Masquer le mot de passe',generic:'Une erreur s’est produite.'},
+    de:{forgotTitle:'Passwort vergessen?',forgotSub:'Gib deine E-Mail ein und wir senden dir einen sicheren Link zum Zurücksetzen.',email:'E-Mail',emailPlaceholder:'z. B. max@email.com',send:'Reset-Link senden',sending:'Reset-Link wird gesendet…',checkTitle:'Prüfe deine E-Mail.',sent:'Wir haben einen Link zum Zurücksetzen deines Passworts gesendet.',sentNote:'Öffne die E-Mail und folge dem Link. Du kommst zurück, um ein neues Passwort zu erstellen.',again:'Erneut senden',back:'Zurück zum Login',resetTitle:'Neues Passwort erstellen.',resetSub:'Wähle ein neues Passwort für dein Saldo-Konto.',newPassword:'Neues Passwort',newPlaceholder:'Neues Passwort eingeben',confirm:'Passwort bestätigen',confirmPlaceholder:'Neues Passwort bestätigen',passwordNote:'Mindestens 6 Zeichen.',update:'Passwort zurücksetzen',updating:'Passwort wird aktualisiert…',mismatch:'Die Passwörter stimmen nicht überein.',updated:'Passwort aktualisiert. Du kannst dich jetzt mit deinem neuen Passwort anmelden.',invalid:'Das Passwort muss mindestens 6 Zeichen lang sein.',show:'Passwort anzeigen',hide:'Passwort verbergen',generic:'Etwas ist schiefgelaufen.'},
+    it:{forgotTitle:'Password dimenticata?',forgotSub:'Inserisci la tua e-mail e ti invieremo un link sicuro per reimpostare la password.',email:'E-mail',emailPlaceholder:'es. marco@email.com',send:'Invia link',sending:'Invio del link…',checkTitle:'Controlla la tua e-mail.',sent:'Abbiamo inviato un link per reimpostare la password.',sentNote:'Apri l’e-mail e segui il link. Tornerai qui per creare una nuova password.',again:'Invia di nuovo',back:'Torna al login',resetTitle:'Crea una nuova password.',resetSub:'Scegli una nuova password per il tuo account Saldo.',newPassword:'Nuova password',newPlaceholder:'Inserisci la nuova password',confirm:'Conferma password',confirmPlaceholder:'Conferma la nuova password',passwordNote:'Usa almeno 6 caratteri.',update:'Reimposta password',updating:'Aggiornamento password…',mismatch:'Le password non coincidono.',updated:'Password aggiornata. Ora puoi accedere con la nuova password.',invalid:'La password deve avere almeno 6 caratteri.',show:'Mostra password',hide:'Nascondi password',generic:'Qualcosa è andato storto.'},
+    nl:{forgotTitle:'Wachtwoord vergeten?',forgotSub:'Voer je e-mailadres in en we sturen je een veilige resetlink.',email:'E-mail',emailPlaceholder:'bijv. jan@email.com',send:'Resetlink sturen',sending:'Resetlink wordt verzonden…',checkTitle:'Controleer je e-mail.',sent:'We hebben een link gestuurd om je wachtwoord te resetten.',sentNote:'Open de e-mail en volg de link. Je komt hier terug om een nieuw wachtwoord te maken.',again:'Opnieuw sturen',back:'Terug naar inloggen',resetTitle:'Nieuw wachtwoord maken.',resetSub:'Kies een nieuw wachtwoord voor je Saldo-account.',newPassword:'Nieuw wachtwoord',newPlaceholder:'Voer je nieuwe wachtwoord in',confirm:'Wachtwoord bevestigen',confirmPlaceholder:'Bevestig je nieuwe wachtwoord',passwordNote:'Gebruik minimaal 6 tekens.',update:'Wachtwoord resetten',updating:'Wachtwoord bijwerken…',mismatch:'Wachtwoorden komen niet overeen.',updated:'Wachtwoord bijgewerkt. Je kunt nu inloggen met je nieuwe wachtwoord.',invalid:'Het wachtwoord moet minimaal 6 tekens bevatten.',show:'Wachtwoord tonen',hide:'Wachtwoord verbergen',generic:'Er ging iets mis.'},
+    tr:{forgotTitle:'Şifreni mi unuttun?',forgotSub:'E-postanı gir, sana güvenli bir şifre sıfırlama bağlantısı gönderelim.',email:'E-posta',emailPlaceholder:'örn. ahmet@email.com',send:'Bağlantı gönder',sending:'Bağlantı gönderiliyor…',checkTitle:'E-postanı kontrol et.',sent:'Şifre sıfırlama bağlantısını e-postana gönderdik.',sentNote:'E-postayı açıp bağlantıyı takip et. Yeni şifre oluşturmak için buraya döneceksin.',again:'Tekrar gönder',back:'Girişe dön',resetTitle:'Yeni şifre oluştur.',resetSub:'Saldo hesabın için yeni bir şifre seç.',newPassword:'Yeni şifre',newPlaceholder:'Yeni şifreni gir',confirm:'Şifreyi onayla',confirmPlaceholder:'Yeni şifreni onayla',passwordNote:'En az 6 karakter kullan.',update:'Şifreyi sıfırla',updating:'Şifre güncelleniyor…',mismatch:'Şifreler eşleşmiyor.',updated:'Şifren güncellendi. Artık yeni şifrenle giriş yapabilirsin.',invalid:'Şifre en az 6 karakter olmalı.',show:'Şifreyi göster',hide:'Şifreyi gizle',generic:'Bir şeyler ters gitti.'},
+    ar:{forgotTitle:'هل نسيت كلمة المرور؟',forgotSub:'أدخل بريدك الإلكتروني وسنرسل لك رابطًا آمنًا لإعادة تعيين كلمة المرور.',email:'البريد الإلكتروني',emailPlaceholder:'مثال: email@example.com',send:'إرسال الرابط',sending:'جارٍ إرسال الرابط…',checkTitle:'تحقق من بريدك الإلكتروني.',sent:'أرسلنا رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.',sentNote:'افتح البريد واتبع الرابط. ستعود إلى هنا لإنشاء كلمة مرور جديدة.',again:'إرسال مرة أخرى',back:'العودة إلى تسجيل الدخول',resetTitle:'أنشئ كلمة مرور جديدة.',resetSub:'اختر كلمة مرور جديدة لحساب Saldo.',newPassword:'كلمة المرور الجديدة',newPlaceholder:'أدخل كلمة المرور الجديدة',confirm:'تأكيد كلمة المرور',confirmPlaceholder:'أكد كلمة المرور الجديدة',passwordNote:'استخدم 6 أحرف على الأقل.',update:'إعادة تعيين كلمة المرور',updating:'جارٍ تحديث كلمة المرور…',mismatch:'كلمتا المرور غير متطابقتين.',updated:'تم تحديث كلمة المرور. يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة.',invalid:'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.',show:'إظهار كلمة المرور',hide:'إخفاء كلمة المرور',generic:'حدث خطأ ما.'},
+    hi:{forgotTitle:'पासवर्ड भूल गए?',forgotSub:'अपना ईमेल दर्ज करें और हम सुरक्षित पासवर्ड रीसेट लिंक भेजेंगे।',email:'ईमेल',emailPlaceholder:'उदा. john@email.com',send:'रीसेट लिंक भेजें',sending:'रीसेट लिंक भेजा जा रहा है…',checkTitle:'अपना ईमेल देखें।',sent:'हमने आपके ईमेल पर पासवर्ड रीसेट लिंक भेज दिया है।',sentNote:'ईमेल खोलें और लिंक पर जाएँ। नया पासवर्ड बनाने के लिए आप यहाँ वापस आएँगे।',again:'फिर से भेजें',back:'लॉग इन पर वापस जाएँ',resetTitle:'नया पासवर्ड बनाएं।',resetSub:'अपने Saldo खाते के लिए नया पासवर्ड चुनें।',newPassword:'नया पासवर्ड',newPlaceholder:'नया पासवर्ड दर्ज करें',confirm:'पासवर्ड की पुष्टि करें',confirmPlaceholder:'नए पासवर्ड की पुष्टि करें',passwordNote:'कम से कम 6 अक्षर उपयोग करें।',update:'पासवर्ड रीसेट करें',updating:'पासवर्ड अपडेट हो रहा है…',mismatch:'पासवर्ड मेल नहीं खाते।',updated:'पासवर्ड अपडेट हो गया। अब आप नए पासवर्ड से लॉग इन कर सकते हैं।',invalid:'पासवर्ड कम से कम 6 अक्षरों का होना चाहिए।',show:'पासवर्ड दिखाएं',hide:'पासवर्ड छिपाएं',generic:'कुछ गलत हो गया।'},
+    bn:{forgotTitle:'পাসওয়ার্ড ভুলে গেছেন?',forgotSub:'আপনার ইমেইল দিন, আমরা নিরাপদ পাসওয়ার্ড রিসেট লিংক পাঠাব।',email:'ইমেইল',emailPlaceholder:'যেমন: john@email.com',send:'রিসেট লিংক পাঠান',sending:'রিসেট লিংক পাঠানো হচ্ছে…',checkTitle:'আপনার ইমেইল দেখুন।',sent:'আমরা আপনার ইমেইলে পাসওয়ার্ড রিসেট লিংক পাঠিয়েছি।',sentNote:'ইমেইল খুলে লিংকে যান। নতুন পাসওয়ার্ড তৈরি করতে আপনি এখানে ফিরে আসবেন।',again:'আবার পাঠান',back:'লগইনে ফিরে যান',resetTitle:'নতুন পাসওয়ার্ড তৈরি করুন।',resetSub:'আপনার Saldo অ্যাকাউন্টের জন্য নতুন পাসওয়ার্ড বেছে নিন।',newPassword:'নতুন পাসওয়ার্ড',newPlaceholder:'নতুন পাসওয়ার্ড লিখুন',confirm:'পাসওয়ার্ড নিশ্চিত করুন',confirmPlaceholder:'নতুন পাসওয়ার্ড নিশ্চিত করুন',passwordNote:'কমপক্ষে ৬ অক্ষর ব্যবহার করুন।',update:'পাসওয়ার্ড রিসেট করুন',updating:'পাসওয়ার্ড আপডেট হচ্ছে…',mismatch:'পাসওয়ার্ড মিলছে না।',updated:'পাসওয়ার্ড আপডেট হয়েছে। এখন নতুন পাসওয়ার্ড দিয়ে লগইন করুন।',invalid:'পাসওয়ার্ডে কমপক্ষে ৬ অক্ষর থাকতে হবে।',show:'পাসওয়ার্ড দেখান',hide:'পাসওয়ার্ড লুকান',generic:'কিছু ভুল হয়েছে।'},
+    zh:{forgotTitle:'忘记密码？',forgotSub:'输入你的邮箱，我们会发送安全的密码重置链接。',email:'邮箱',emailPlaceholder:'例如：john@email.com',send:'发送重置链接',sending:'正在发送重置链接…',checkTitle:'请检查你的邮箱。',sent:'密码重置链接已发送到你的邮箱。',sentNote:'打开邮件并点击链接。你会返回这里创建新密码。',again:'重新发送',back:'返回登录',resetTitle:'创建新密码。',resetSub:'为你的 Saldo 账户设置新密码。',newPassword:'新密码',newPlaceholder:'输入新密码',confirm:'确认密码',confirmPlaceholder:'确认新密码',passwordNote:'至少使用 6 个字符。',update:'重置密码',updating:'正在更新密码…',mismatch:'两次输入的密码不一致。',updated:'密码已更新。现在可以使用新密码登录。',invalid:'密码至少需要 6 个字符。',show:'显示密码',hide:'隐藏密码',generic:'出了点问题。'},
+    ja:{forgotTitle:'パスワードをお忘れですか？',forgotSub:'メールアドレスを入力すると、安全なパスワード再設定リンクを送信します。',email:'メール',emailPlaceholder:'例：john@email.com',send:'再設定リンクを送信',sending:'再設定リンクを送信中…',checkTitle:'メールを確認してください。',sent:'パスワード再設定リンクをメールに送信しました。',sentNote:'メールを開いてリンクを押してください。新しいパスワードを作成するため、ここに戻ります。',again:'もう一度送信',back:'ログインに戻る',resetTitle:'新しいパスワードを作成。',resetSub:'Saldo アカウントの新しいパスワードを設定してください。',newPassword:'新しいパスワード',newPlaceholder:'新しいパスワードを入力',confirm:'パスワードを確認',confirmPlaceholder:'新しいパスワードを確認',passwordNote:'6文字以上を使用してください。',update:'パスワードを再設定',updating:'パスワードを更新中…',mismatch:'パスワードが一致しません。',updated:'パスワードを更新しました。新しいパスワードでログインできます。',invalid:'パスワードは6文字以上で入力してください。',show:'パスワードを表示',hide:'パスワードを隠す',generic:'エラーが発生しました。'},
+    ko:{forgotTitle:'비밀번호를 잊으셨나요?',forgotSub:'이메일을 입력하면 안전한 비밀번호 재설정 링크를 보내드립니다.',email:'이메일',emailPlaceholder:'예: john@email.com',send:'재설정 링크 보내기',sending:'재설정 링크를 보내는 중…',checkTitle:'이메일을 확인하세요.',sent:'비밀번호 재설정 링크를 이메일로 보냈습니다.',sentNote:'이메일을 열고 링크를 누르세요. 새 비밀번호를 만들기 위해 여기로 돌아옵니다.',again:'다시 보내기',back:'로그인으로 돌아가기',resetTitle:'새 비밀번호 만들기.',resetSub:'Saldo 계정의 새 비밀번호를 선택하세요.',newPassword:'새 비밀번호',newPlaceholder:'새 비밀번호 입력',confirm:'비밀번호 확인',confirmPlaceholder:'새 비밀번호 확인',passwordNote:'6자 이상 입력하세요.',update:'비밀번호 재설정',updating:'비밀번호 업데이트 중…',mismatch:'비밀번호가 일치하지 않습니다.',updated:'비밀번호가 업데이트되었습니다. 새 비밀번호로 로그인하세요.',invalid:'비밀번호는 6자 이상이어야 합니다.',show:'비밀번호 표시',hide:'비밀번호 숨기기',generic:'문제가 발생했습니다.'},
+    vi:{forgotTitle:'Quên mật khẩu?',forgotSub:'Nhập email của bạn và chúng tôi sẽ gửi liên kết đặt lại mật khẩu an toàn.',email:'Email',emailPlaceholder:'vd. john@email.com',send:'Gửi liên kết',sending:'Đang gửi liên kết…',checkTitle:'Kiểm tra email của bạn.',sent:'Chúng tôi đã gửi liên kết đặt lại mật khẩu đến email của bạn.',sentNote:'Mở email và làm theo liên kết. Bạn sẽ quay lại đây để tạo mật khẩu mới.',again:'Gửi lại',back:'Quay lại đăng nhập',resetTitle:'Tạo mật khẩu mới.',resetSub:'Chọn mật khẩu mới cho tài khoản Saldo của bạn.',newPassword:'Mật khẩu mới',newPlaceholder:'Nhập mật khẩu mới',confirm:'Xác nhận mật khẩu',confirmPlaceholder:'Xác nhận mật khẩu mới',passwordNote:'Dùng ít nhất 6 ký tự.',update:'Đặt lại mật khẩu',updating:'Đang cập nhật mật khẩu…',mismatch:'Mật khẩu không khớp.',updated:'Đã cập nhật mật khẩu. Bạn có thể đăng nhập bằng mật khẩu mới.',invalid:'Mật khẩu phải có ít nhất 6 ký tự.',show:'Hiện mật khẩu',hide:'Ẩn mật khẩu',generic:'Đã xảy ra lỗi.'},
+    tl:{forgotTitle:'Nakalimutan ang password?',forgotSub:'Ilagay ang iyong email at magpapadala kami ng secure na password reset link.',email:'Email',emailPlaceholder:'hal. john@email.com',send:'Ipadala ang reset link',sending:'Ipinapadala ang reset link…',checkTitle:'Tingnan ang iyong email.',sent:'Nagpadala kami ng password reset link sa iyong email.',sentNote:'Buksan ang email at sundin ang link. Babalik ka rito para gumawa ng bagong password.',again:'Ipadala muli',back:'Bumalik sa login',resetTitle:'Gumawa ng bagong password.',resetSub:'Pumili ng bagong password para sa iyong Saldo account.',newPassword:'Bagong Password',newPlaceholder:'Ilagay ang bagong password',confirm:'Kumpirmahin ang Password',confirmPlaceholder:'Kumpirmahin ang bagong password',passwordNote:'Gumamit ng hindi bababa sa 6 na character.',update:'I-reset ang password',updating:'Ina-update ang password…',mismatch:'Hindi tugma ang mga password.',updated:'Na-update na ang password. Maaari ka nang mag-login gamit ang bagong password.',invalid:'Dapat ay hindi bababa sa 6 na character ang password.',show:'Ipakita ang password',hide:'Itago ang password',generic:'May nangyaring error.'},
+    th:{forgotTitle:'ลืมรหัสผ่าน?',forgotSub:'กรอกอีเมลของคุณ แล้วเราจะส่งลิงก์รีเซ็ตรหัสผ่านที่ปลอดภัยให้',email:'อีเมล',emailPlaceholder:'เช่น john@email.com',send:'ส่งลิงก์รีเซ็ต',sending:'กำลังส่งลิงก์รีเซ็ต…',checkTitle:'ตรวจสอบอีเมลของคุณ',sent:'เราได้ส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของคุณแล้ว',sentNote:'เปิดอีเมลและกดลิงก์ คุณจะกลับมาที่นี่เพื่อสร้างรหัสผ่านใหม่',again:'ส่งอีกครั้ง',back:'กลับสู่การเข้าสู่ระบบ',resetTitle:'สร้างรหัสผ่านใหม่',resetSub:'เลือกรหัสผ่านใหม่สำหรับบัญชี Saldo ของคุณ',newPassword:'รหัสผ่านใหม่',newPlaceholder:'กรอกรหัสผ่านใหม่',confirm:'ยืนยันรหัสผ่าน',confirmPlaceholder:'ยืนยันรหัสผ่านใหม่',passwordNote:'ใช้至少 6 ตัวอักษร',update:'รีเซ็ตรหัสผ่าน',updating:'กำลังอัปเดตรหัสผ่าน…',mismatch:'รหัสผ่านไม่ตรงกัน',updated:'อัปเดตรหัสผ่านแล้ว ตอนนี้คุณสามารถเข้าสู่ระบบด้วยรหัสผ่านใหม่ได้',invalid:'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',show:'แสดงรหัสผ่าน',hide:'ซ่อนรหัสผ่าน',generic:'เกิดข้อผิดพลาด'},
+    ru:{forgotTitle:'Забыли пароль?',forgotSub:'Введите e-mail, и мы отправим защищённую ссылку для сброса пароля.',email:'Электронная почта',emailPlaceholder:'например, ivan@email.com',send:'Отправить ссылку',sending:'Отправляем ссылку…',checkTitle:'Проверьте почту.',sent:'Мы отправили ссылку для сброса пароля на вашу почту.',sentNote:'Откройте письмо и перейдите по ссылке. Вы вернётесь сюда, чтобы создать новый пароль.',again:'Отправить снова',back:'Вернуться ко входу',resetTitle:'Создайте новый пароль.',resetSub:'Выберите новый пароль для аккаунта Saldo.',newPassword:'Новый пароль',newPlaceholder:'Введите новый пароль',confirm:'Подтвердите пароль',confirmPlaceholder:'Подтвердите новый пароль',passwordNote:'Не менее 6 символов.',update:'Сбросить пароль',updating:'Обновление пароля…',mismatch:'Пароли не совпадают.',updated:'Пароль обновлён. Теперь можно войти с новым паролем.',invalid:'Пароль должен содержать не менее 6 символов.',show:'Показать пароль',hide:'Скрыть пароль',generic:'Что-то пошло не так.'},
+    uk:{forgotTitle:'Забули пароль?',forgotSub:'Введіть електронну пошту, і ми надішлемо захищене посилання для скидання.',email:'Електронна пошта',emailPlaceholder:'наприклад, ivan@email.com',send:'Надіслати посилання',sending:'Надсилаємо посилання…',checkTitle:'Перевірте пошту.',sent:'Ми надіслали посилання для скидання пароля на вашу пошту.',sentNote:'Відкрийте лист і перейдіть за посиланням. Ви повернетеся сюди, щоб створити новий пароль.',again:'Надіслати ще раз',back:'Повернутися до входу',resetTitle:'Створіть новий пароль.',resetSub:'Оберіть новий пароль для облікового запису Saldo.',newPassword:'Новий пароль',newPlaceholder:'Введіть новий пароль',confirm:'Підтвердіть пароль',confirmPlaceholder:'Підтвердіть новий пароль',passwordNote:'Щонайменше 6 символів.',update:'Скинути пароль',updating:'Оновлення пароля…',mismatch:'Паролі не збігаються.',updated:'Пароль оновлено. Тепер ви можете увійти з новим паролем.',invalid:'Пароль має містити щонайменше 6 символів.',show:'Показати пароль',hide:'Приховати пароль',generic:'Щось пішло не так.'}
+  };
   function applyAuthLanguage(){
     var c = authCopy[authLang] || authCopy.en, login = authMode === 'login';
     $('authLanguage').value = authLang;
@@ -3051,10 +3487,13 @@ body {
     $('passwordToggle').setAttribute('title', visible ? c.hide : c.show);
     try { localStorage.setItem('saldo:auth-language', authLang); } catch(e) {}
     $('authPanel').setAttribute('dir', authLang === 'ar' ? 'rtl' : 'ltr');
+    applyRecoveryLanguage();
   }
   function setAuthMode(mode){
     authMode = mode;
     var login = mode === 'login';
+    $('authGate').classList.toggle('signup-mode', !login);
+    $('authGate').classList.toggle('login-mode', login);
     $('authNameRow').hidden = login;
     $('authPassword').autocomplete = login ? 'current-password' : 'new-password';
     $('tabLogin').classList.toggle('active', login);
@@ -3067,6 +3506,115 @@ body {
   $('tabLogin').onclick = function(){ setAuthMode('login'); $('authEmail').focus(); };
   $('tabSignup').onclick = function(){ setAuthMode('signup'); $('authFirstName').focus(); };
   $('authLanguage').onchange = function(){ authLang = this.value; applyAuthLanguage(); };
+  var recoveryScreen = 'forgot';
+  var lastResetEmail = '';
+  function recoveryText(){ return recoveryCopy[authLang] || recoveryCopy.en; }
+  function maskedEmail(email){
+    var parts = String(email || '').split('@');
+    if (parts.length !== 2) return email || '';
+    var local = parts[0], domain = parts[1];
+    var shown = local.length <= 2 ? (local.charAt(0) || '') + '•' : local.charAt(0) + '••••' + local.slice(-1);
+    return shown + '@' + domain;
+  }
+  function applyRecoveryLanguage(){
+    if (!$('authRecoveryView')) return;
+    var c = recoveryText();
+    $('recoveryEmailLabel').textContent = c.email;
+    $('recoveryEmail').placeholder = c.emailPlaceholder;
+    $('recoveryNewPasswordLabel').textContent = c.newPassword;
+    $('recoveryNewPassword').placeholder = c.newPlaceholder;
+    $('recoveryConfirmLabel').textContent = c.confirm;
+    $('recoveryConfirmPassword').placeholder = c.confirmPlaceholder;
+    $('recoveryPasswordNote').textContent = c.passwordNote;
+    $('recoverySend').textContent = c.send;
+    $('recoveryResend').textContent = c.again;
+    $('recoveryBack').setAttribute('aria-label', c.back);
+    $('recoveryBack').setAttribute('title', c.back);
+    $('recoveryBackFromSent').textContent = c.back;
+    $('recoveryUpdate').textContent = c.update;
+    var visibleNew = $('recoveryNewPassword').type === 'text';
+    var visibleConfirm = $('recoveryConfirmPassword').type === 'text';
+    $('recoveryNewToggle').setAttribute('aria-label', visibleNew ? c.hide : c.show);
+    $('recoveryNewToggle').setAttribute('title', visibleNew ? c.hide : c.show);
+    $('recoveryConfirmToggle').setAttribute('aria-label', visibleConfirm ? c.hide : c.show);
+    $('recoveryConfirmToggle').setAttribute('title', visibleConfirm ? c.hide : c.show);
+    updateRecoveryScreen(recoveryScreen, true);
+  }
+  function setRecoveryMessage(text, kind, target){
+    var el = $(target || 'recoveryMsg');
+    el.textContent = text || '';
+    el.className = 'auth-msg recovery-msg' + (kind ? ' ' + kind : '');
+  }
+  function setRecoveryProgress(step){
+    var one=$('recoveryDot1'), two=$('recoveryDot2'), three=$('recoveryDot3'), l1=$('recoveryLine1'), l2=$('recoveryLine2');
+    [one,two,three].forEach(function(el){ el.classList.remove('is-on'); });
+    [l1,l2].forEach(function(el){ el.classList.remove('is-on'); });
+    one.classList.add('is-on');
+    if (step >= 2){ two.classList.add('is-on'); l1.classList.add('is-on'); }
+    if (step >= 3){ three.classList.add('is-on'); l2.classList.add('is-on'); }
+  }
+  function updateRecoveryScreen(screen, translateOnly){
+    recoveryScreen = screen || recoveryScreen;
+    var c = recoveryText();
+    var forgot = recoveryScreen === 'forgot';
+    var sent = recoveryScreen === 'sent';
+    var reset = recoveryScreen === 'reset';
+    $('recoveryForgotScreen').hidden = !forgot;
+    $('recoverySentScreen').hidden = !sent;
+    $('recoveryResetScreen').hidden = !reset;
+    if (forgot){
+      $('recoveryTitle').textContent = c.forgotTitle;
+      $('recoverySub').textContent = c.forgotSub;
+      setRecoveryProgress(1);
+    } else if (sent){
+      $('recoveryTitle').textContent = c.checkTitle;
+      $('recoverySub').textContent = c.sent;
+      $('recoverySentTitle').textContent = c.checkTitle;
+      $('recoverySentText').textContent = lastResetEmail ? c.sent : c.sent;
+      $('recoveryEmailChip').textContent = maskedEmail(lastResetEmail);
+      $('recoverySentNote').textContent = c.sentNote;
+      setRecoveryProgress(2);
+    } else if (reset){
+      $('recoveryTitle').textContent = c.resetTitle;
+      $('recoverySub').textContent = c.resetSub;
+      setRecoveryProgress(3);
+    }
+    if (!translateOnly){
+      $('recoveryMsg').textContent = '';
+      $('recoveryUpdateMsg').textContent = '';
+    }
+  }
+  function showRecovery(screen){
+    $('authAccountView').hidden = true;
+    $('authRecoveryView').hidden = false;
+    $('authGate').classList.add('recovery-open');
+    updateRecoveryScreen(screen || 'forgot', false);
+    if (screen === 'forgot') setTimeout(function(){ $('recoveryEmail').focus(); }, 30);
+  }
+  function exitRecovery(){
+    $('authRecoveryView').hidden = true;
+    $('authAccountView').hidden = false;
+    $('authGate').classList.remove('recovery-open');
+    recoveryScreen = 'forgot';
+    setAuthMode('login');
+    $('authEmail').value = lastResetEmail || $('authEmail').value;
+    setAuthMessage('', '');
+    setTimeout(function(){ $('authEmail').focus(); }, 30);
+  }
+  function isRecoveryLink(){
+    var hash = window.location.hash || '';
+    var search = window.location.search || '';
+    return /(?:^|[&#])type=recovery(?:&|$)/.test(hash) || /(?:^|[?&])type=recovery(?:&|$)/.test(search);
+  }
+  function toggleRecoveryPassword(inputId, btnId){
+    var input=$(inputId), btn=$(btnId), visible=input.type==='password';
+    input.type=visible?'text':'password';
+    btn.classList.toggle('is-visible',visible);
+    var c=recoveryText();
+    btn.setAttribute('aria-label',visible?c.hide:c.show);
+    btn.setAttribute('title',visible?c.hide:c.show);
+  }
+
   function showAuth(){
     $('authGate').hidden = false;
     $('app').hidden = true;
@@ -3102,30 +3650,75 @@ body {
     this.setAttribute('aria-label', visible ? authCopy[authLang].hide : authCopy[authLang].show);
     this.setAttribute('title', visible ? authCopy[authLang].hide : authCopy[authLang].show);
   };
-  $('authForgot').onclick = async function(){
+  $('authForgot').onclick = function(){
     if (authMode !== 'login') return;
-    var email = $('authEmail').value.trim();
-    var rc = authResetCopy[authLang] || authResetCopy.en;
-    if (!email) {
-      setAuthMessage(rc.needEmail, 'error');
-      $('authEmail').focus();
-      return;
-    }
+    lastResetEmail = $('authEmail').value.trim();
+    $('recoveryEmail').value = lastResetEmail;
+    setRecoveryMessage('', '');
+    setRecoveryMessage('', '', 'recoveryUpdateMsg');
+    showRecovery('forgot');
+  };
+  $('recoverySend').onclick = async function(){
+    var c = recoveryText();
+    var email = $('recoveryEmail').value.trim();
+    if (!email){ setRecoveryMessage(c.invalid || c.email, 'error'); $('recoveryEmail').focus(); return; }
+    if (!/^\S+@\S+\.\S+$/.test(email)) { setRecoveryMessage(c.invalid, 'error'); $('recoveryEmail').focus(); return; }
+    lastResetEmail = email;
     this.disabled = true;
-    setAuthMessage(rc.sending, '');
-    try {
+    setRecoveryMessage(c.sending, '');
+    try{
       var resetResult = await supabaseClient.auth.resetPasswordForEmail(email, {
         redirectTo: window.location.href.split('#')[0]
       });
       if (resetResult.error) throw resetResult.error;
-      setAuthMessage(rc.sent, 'ok');
-    } catch(err) {
+      setRecoveryMessage('', '');
+      $('recoveryEmailChip').textContent = maskedEmail(lastResetEmail);
+      showRecovery('sent');
+    }catch(err){
       console.error(err);
-      setAuthMessage(err && err.message ? err.message : authCopy[authLang].generic, 'error');
-    } finally {
+      setRecoveryMessage(err && err.message ? err.message : c.generic, 'error');
+    }finally{
       this.disabled = false;
     }
   };
+  $('recoveryResend').onclick = function(){ $('recoveryEmail').value = lastResetEmail; showRecovery('forgot'); };
+  $('recoveryBack').onclick = exitRecovery;
+  $('recoveryBackFromSent').onclick = exitRecovery;
+  $('recoveryNewToggle').onclick = function(){ toggleRecoveryPassword('recoveryNewPassword','recoveryNewToggle'); };
+  $('recoveryConfirmToggle').onclick = function(){ toggleRecoveryPassword('recoveryConfirmPassword','recoveryConfirmToggle'); };
+  $('recoveryUpdate').onclick = async function(){
+    var c = recoveryText();
+    var pw = $('recoveryNewPassword').value;
+    var cpw = $('recoveryConfirmPassword').value;
+    if (pw.length < 6){ setRecoveryMessage(c.invalid,'error','recoveryUpdateMsg'); return; }
+    if (pw !== cpw){ setRecoveryMessage(c.mismatch,'error','recoveryUpdateMsg'); return; }
+    this.disabled = true;
+    setRecoveryMessage(c.updating,'','recoveryUpdateMsg');
+    try{
+      var updateResult = await supabaseClient.auth.updateUser({password:pw});
+      if (updateResult.error) throw updateResult.error;
+      await supabaseClient.auth.signOut();
+      $('authEmail').value = lastResetEmail || '';
+      $('authPassword').value = '';
+      $('authPassword').type = 'password';
+      $('passwordToggle').classList.remove('is-visible');
+      $('passwordToggle').setAttribute('aria-pressed','false');
+      $('authRecoveryView').hidden = true;
+      $('authAccountView').hidden = false;
+      $('authGate').classList.remove('recovery-open');
+      setAuthMode('login');
+      showAuth();
+      setAuthMessage(c.updated,'ok');
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+    }catch(err){
+      console.error(err);
+      setRecoveryMessage(err && err.message ? err.message : c.generic,'error','recoveryUpdateMsg');
+    }finally{
+      this.disabled = false;
+    }
+  };
+  applyRecoveryLanguage();
+
   $('authForm').addEventListener('submit', async function(e){
     e.preventDefault();
     var email = $('authEmail').value.trim();
@@ -3194,9 +3787,17 @@ body {
     $('passwordToggle').setAttribute('title',authCopy[authLang].show);
   };
   supabaseClient.auth.onAuthStateChange(function(event, session){
+    if (event === 'PASSWORD_RECOVERY') {
+      currentUser = session && session.user ? session.user : null;
+      lastResetEmail = currentUser && currentUser.email ? currentUser.email : lastResetEmail;
+      showAuth();
+      showRecovery('reset');
+      return;
+    }
     if (event === 'SIGNED_OUT') {
       currentUser = null;
       state = { items: [], budget: 0, lastBackup: '' };
+      if (recoveryScreen === 'reset') exitRecovery();
       showAuth();
     }
   });
@@ -3315,7 +3916,12 @@ body {
     try {
       var sessionResult = await supabaseClient.auth.getSession();
       if (sessionResult.error) throw sessionResult.error;
-      if (sessionResult.data.session) {
+      if (isRecoveryLink() && sessionResult.data.session) {
+        currentUser = sessionResult.data.session.user;
+        lastResetEmail = currentUser.email || lastResetEmail;
+        showAuth();
+        showRecovery('reset');
+      } else if (sessionResult.data.session) {
         await showApp(sessionResult.data.session);
       } else {
         showAuth();
