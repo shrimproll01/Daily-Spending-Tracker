@@ -523,6 +523,9 @@ body {
 .auth-card{width:min(430px,100%);background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.22)}
 .auth-brand{font-size:1.15rem;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
 .auth-title{font-size:1.6rem;font-weight:600;letter-spacing:-.03em;margin:18px 0 8px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin:18px 0 18px;background:var(--surface2);border:1px solid var(--line);border-radius:11px}
+.auth-tab{height:38px;border:0;border-radius:8px;background:transparent;color:var(--muted);font:inherit;font-size:.82rem;font-weight:600;cursor:pointer}
+.auth-tab.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 5px rgba(0,0,0,.18)}
 .auth-sub{color:var(--muted);font-size:.9rem;margin-bottom:22px}
 .auth-field{display:grid;gap:7px;margin-top:14px}
 .auth-field label{font-size:.78rem;color:var(--muted);font-weight:500}
@@ -530,6 +533,14 @@ body {
 .auth-actions{display:grid;gap:9px;margin-top:20px}
 .auth-actions button{min-height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);font-weight:500}
 .auth-actions .auth-primary{background:var(--accent);border-color:var(--accent);color:var(--onpine)}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0 12px;color:var(--muted);font-size:.74rem}
+.auth-divider::before,.auth-divider::after{content:"";height:1px;background:var(--line);flex:1}
+.auth-socials{display:grid;gap:9px}
+.auth-social{min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--ink);display:flex;align-items:center;justify-content:center;gap:10px;font-weight:500;cursor:pointer}
+.auth-social:hover{border-color:var(--line2);background:var(--hover)}
+.social-icon{width:20px;height:20px;display:grid;place-items:center;font-size:15px;font-weight:700}
+.social-icon.apple{font-size:17px}
+
 .auth-actions button:hover{border-color:var(--line2);background:var(--hover)}
 .auth-actions .auth-primary:hover{background:var(--pine-hover);border-color:var(--pine-hover)}
 .auth-switch{margin-top:15px;text-align:center;color:var(--muted);font-size:.82rem}
@@ -549,6 +560,10 @@ body {
 <div class="auth-gate" id="authGate">
   <div class="auth-card">
     <div class="auth-brand">Daily Spending Tracker</div>
+    <div class="auth-tabs" role="tablist" aria-label="Autentikasi">
+      <button type="button" class="auth-tab active" id="signInTab" role="tab" aria-selected="true">Sign In</button>
+      <button type="button" class="auth-tab" id="signUpTab" role="tab" aria-selected="false">Sign Up</button>
+    </div>
     <div class="auth-title" id="authTitle">Masuk ke akun</div>
     <p class="auth-sub" id="authSub">Data pengeluaranmu tersimpan di cloud dan bisa dipakai di HP, Mac, atau perangkat lain dengan akun yang sama.</p>
     <form id="authForm" autocomplete="on">
@@ -562,6 +577,11 @@ body {
       </div>
       <div class="auth-actions">
         <button class="auth-primary" id="authSubmit" type="submit">Masuk</button>
+      </div>
+      <div class="auth-divider"><span>atau</span></div>
+      <div class="auth-socials">
+        <button type="button" class="auth-social" id="googleLogin"><span class="social-icon">G</span><span>Lanjut dengan Google</span></button>
+        <button type="button" class="auth-social" id="appleLogin"><span class="social-icon apple">●</span><span>Lanjut dengan Apple</span></button>
       </div>
       <p class="auth-msg" id="authMsg" role="status" aria-live="polite"></p>
     </form>
@@ -1253,6 +1273,10 @@ body {
   function setAuthMode(mode){
     authMode = mode;
     var login = mode === 'login';
+    $('signInTab').classList.toggle('active', login);
+    $('signUpTab').classList.toggle('active', !login);
+    $('signInTab').setAttribute('aria-selected', login ? 'true' : 'false');
+    $('signUpTab').setAttribute('aria-selected', login ? 'false' : 'true');
     $('authTitle').textContent = login ? 'Masuk ke akun' : 'Buat akun';
     $('authSub').textContent = login
       ? 'Data pengeluaranmu tersimpan di cloud dan bisa dipakai di HP, Mac, atau perangkat lain dengan akun yang sama.'
@@ -1284,10 +1308,38 @@ body {
       render();
     }
   }
+  $('signInTab').onclick = function(){
+    setAuthMode('login');
+    $('authEmail').focus();
+  };
+  $('signUpTab').onclick = function(){
+    setAuthMode('signup');
+    $('authEmail').focus();
+  };
   $('authSwitch').onclick = function(){
     setAuthMode(authMode === 'login' ? 'signup' : 'login');
     $('authEmail').focus();
   };
+  async function socialLogin(provider){
+    setAuthMessage('Membuka login ' + (provider === 'apple' ? 'Apple' : 'Google') + '…', '');
+    $('googleLogin').disabled = true;
+    $('appleLogin').disabled = true;
+    try {
+      var result = await supabaseClient.auth.signInWithOAuth({
+        provider: provider,
+        options: { redirectTo: window.location.href.split('#')[0] }
+      });
+      if (result.error) throw result.error;
+    } catch(err) {
+      console.error(err);
+      setAuthMessage(err && err.message ? err.message : 'Login gagal.', 'error');
+    } finally {
+      $('googleLogin').disabled = false;
+      $('appleLogin').disabled = false;
+    }
+  }
+  $('googleLogin').onclick = function(){ socialLogin('google'); };
+  $('appleLogin').onclick = function(){ socialLogin('apple'); };
   $('authForm').addEventListener('submit', async function(e){
     e.preventDefault();
     var email = $('authEmail').value.trim();
