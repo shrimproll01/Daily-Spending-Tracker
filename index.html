@@ -2472,6 +2472,145 @@ body {
 
 </style>
 
+
+<style id="final-horizontal-overflow-fix">
+/* FINAL HORIZONTAL SCROLL LOCK — keep auth panel from exposing a side-scrollbar. */
+html, body {
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden !important;
+  overscroll-behavior-x:none;
+}
+.auth-gate {
+  width:100%;
+  max-width:100%;
+  overflow:hidden !important;
+}
+.auth-panel {
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  overscroll-behavior-x:none;
+}
+.auth-panel::before,
+.auth-panel::after {
+  max-width:none;
+  pointer-events:none;
+}
+@media (max-width:860px){
+  .auth-panel {
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+  }
+}
+</style>
+
+<style id="final-recovery-liquid-glass-fix">
+/* FINAL RECOVERY GLASS + AUTOFILL FIX
+   Keep the password-recovery UI visibly transparent even when Safari/Chrome
+   applies its yellow autofill treatment. */
+.auth-recovery-view .auth-field input,
+.auth-recovery-view .recovery-primary,
+.auth-recovery-view .recovery-secondary,
+.auth-recovery-view .recovery-email-chip {
+  background:rgba(255,255,255,.075)!important;
+  border:1px solid rgba(255,255,255,.19)!important;
+  color:#F5EEE8!important;
+  backdrop-filter:blur(22px) saturate(140%)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(140%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.13),
+    inset 0 -1px 0 rgba(0,0,0,.10),
+    0 10px 28px rgba(0,0,0,.12)!important;
+}
+.auth-recovery-view .auth-field input:focus {
+  background:rgba(255,255,255,.09)!important;
+  border-color:rgba(255,255,255,.30)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    0 0 0 3px rgba(255,255,255,.08),
+    0 12px 30px rgba(0,0,0,.12)!important;
+}
+.auth-recovery-view .auth-field input::placeholder {
+  color:rgba(245,238,232,.48)!important;
+}
+/* Safari / Chrome autofill: paint the same glass surface instead of yellow. */
+.auth-recovery-view input:-webkit-autofill,
+.auth-recovery-view input:-webkit-autofill:hover,
+.auth-recovery-view input:-webkit-autofill:focus,
+.auth-recovery-view input:-webkit-autofill:active {
+  -webkit-text-fill-color:#F5EEE8!important;
+  caret-color:#F5EEE8!important;
+  -webkit-box-shadow:
+    0 0 0 1000px rgba(255,255,255,.075) inset,
+    inset 0 1px 0 rgba(255,255,255,.13),
+    0 10px 28px rgba(0,0,0,.12)!important;
+  box-shadow:
+    0 0 0 1000px rgba(255,255,255,.075) inset,
+    inset 0 1px 0 rgba(255,255,255,.13),
+    0 10px 28px rgba(0,0,0,.12)!important;
+  transition:background-color 9999s ease-out 0s!important;
+}
+.auth-recovery-view .recovery-primary {
+  background:rgba(255,255,255,.105)!important;
+  border-color:rgba(255,255,255,.28)!important;
+  color:#F5EEE8!important;
+  font-weight:600!important;
+  text-shadow:0 1px 8px rgba(0,0,0,.12);
+}
+.auth-recovery-view .recovery-primary:hover:not(:disabled) {
+  background:rgba(255,255,255,.15)!important;
+  border-color:rgba(255,255,255,.36)!important;
+}
+.auth-recovery-view .recovery-primary:disabled {
+  opacity:.62!important;
+}
+.auth-recovery-view .recovery-secondary {
+  background:rgba(255,255,255,.065)!important;
+  border-color:rgba(255,255,255,.18)!important;
+  color:#F5EEE8!important;
+}
+.auth-recovery-view .recovery-secondary:hover {
+  background:rgba(255,255,255,.11)!important;
+}
+.auth-recovery-view .auth-field label,
+.auth-recovery-view .recovery-password-note,
+.auth-recovery-view .recovery-sent-text,
+.auth-recovery-view .recovery-sent-note {
+  color:rgba(245,238,232,.70)!important;
+}
+.auth-recovery-view .recovery-title,
+.auth-recovery-view .recovery-mini-title {
+  color:#F5EEE8!important;
+}
+
+/* Recovery content is centered inside the available panel without touching
+   the floating language/back controls. */
+@media (min-width:861px){
+  .auth-gate.recovery-open .auth-panel .auth-inner {
+    width:min(100%,560px)!important;
+    margin:0 auto!important;
+    transform:translateY(34px)!important;
+  }
+}
+@media (max-width:860px){
+  .auth-gate.recovery-open .auth-panel .auth-inner {
+    width:min(100%,520px)!important;
+    margin:0 auto!important;
+  }
+}
+@media (max-width:560px){
+  .auth-gate.recovery-open .auth-panel .auth-inner {
+    width:100%!important;
+    max-width:430px!important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="auth-gate" id="authGate">
@@ -3476,12 +3615,34 @@ body {
     $('authSubmit').textContent = login ? c.login : c.signup;
     $('authSwitchText').textContent = login ? c.switchSignupText : c.switchLoginText;
     $('authSwitch').textContent = login ? c.switchSignup : c.switchLogin;
-    $('googleText').textContent = c.google;
-    $('appleText').textContent = c.apple;
+    var oauthLabels = {
+      en:{google:'Continue with Google',apple:'Continue with Apple'},
+      id:{google:'Lanjutkan dengan Google',apple:'Lanjutkan dengan Apple'},
+      es:{google:'Continuar con Google',apple:'Continuar con Apple'},
+      pt:{google:'Continuar com Google',apple:'Continuar com Apple'},
+      fr:{google:'Continuer avec Google',apple:'Continuer avec Apple'},
+      de:{google:'Mit Google fortfahren',apple:'Mit Apple fortfahren'},
+      it:{google:'Continua con Google',apple:'Continua con Apple'},
+      nl:{google:'Doorgaan met Google',apple:'Doorgaan met Apple'},
+      tr:{google:'Google ile devam et',apple:'Apple ile devam et'},
+      ar:{google:'المتابعة باستخدام Google',apple:'المتابعة باستخدام Apple'},
+      hi:{google:'Google के साथ जारी रखें',apple:'Apple के साथ जारी रखें'},
+      bn:{google:'Google দিয়ে চালিয়ে যান',apple:'Apple দিয়ে চালিয়ে যান'},
+      zh:{google:'使用 Google 继续',apple:'使用 Apple 继续'},
+      ja:{google:'Googleで続行',apple:'Appleで続行'},
+      ko:{google:'Google로 계속',apple:'Apple로 계속'},
+      vi:{google:'Tiếp tục với Google',apple:'Tiếp tục với Apple'},
+      tl:{google:'Magpatuloy gamit ang Google',apple:'Magpatuloy gamit ang Apple'},
+      th:{google:'ดำเนินการต่อด้วย Google',apple:'ดำเนินการต่อด้วย Apple'},
+      ru:{google:'Продолжить с Google',apple:'Продолжить с Apple'},
+      uk:{google:'Продовжити з Google',apple:'Продовжити з Apple'}
+    }[authLang] || {google:'Continue with Google',apple:'Continue with Apple'};
+    $('googleText').textContent = oauthLabels.google;
+    $('appleText').textContent = oauthLabels.apple;
     $('authOr').textContent = c.or;
     $('authFootText').textContent = c.foot;
-    $('googleBtn').setAttribute('aria-label', c.google);
-    $('appleBtn').setAttribute('aria-label', c.apple);
+    $('googleBtn').setAttribute('aria-label', oauthLabels.google);
+    $('appleBtn').setAttribute('aria-label', oauthLabels.apple);
     var visible = $('authPassword').type === 'text';
     $('passwordToggle').setAttribute('aria-label', visible ? c.hide : c.show);
     $('passwordToggle').setAttribute('title', visible ? c.hide : c.show);
@@ -3667,8 +3828,9 @@ body {
     this.disabled = true;
     setRecoveryMessage(c.sending, '');
     try{
+      var resetRedirectUrl = window.location.origin + window.location.pathname;
       var resetResult = await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.href.split('#')[0]
+        redirectTo: resetRedirectUrl
       });
       if (resetResult.error) throw resetResult.error;
       setRecoveryMessage('', '');
@@ -3939,3 +4101,92 @@ body {
 
 </body>
 </html>
+
+<style id="final-oauth-copy-layout">
+/* FINAL OAUTH COPY + COMPACT BALANCE */
+.auth-oauth-top .oauth-btn{
+  min-height:50px!important;
+  padding:0 14px!important;
+}
+.auth-oauth-top .oauth-btn .oauth-content{
+  width:auto!important;
+  min-width:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+}
+.auth-oauth-top .oauth-btn .oauth-icon,
+.auth-oauth-top .oauth-btn .apple-wrap{
+  flex:0 0 23px!important;
+  width:23px!important;
+  height:23px!important;
+  min-width:23px!important;
+  min-height:23px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0!important;
+  overflow:visible!important;
+}
+.auth-oauth-top .oauth-btn .oauth-icon.google,
+.auth-oauth-top .oauth-btn .oauth-icon.google svg{
+  width:23px!important;
+  height:23px!important;
+  min-width:23px!important;
+  min-height:23px!important;
+  display:block!important;
+}
+.auth-oauth-top .oauth-btn .apple-svg{
+  width:22px!important;
+  height:22px!important;
+  min-width:22px!important;
+  min-height:22px!important;
+  display:block!important;
+  transform:translateY(-.2px)!important;
+}
+.auth-oauth-top .oauth-btn .oauth-content > span:last-child{
+  flex:0 1 auto!important;
+  min-width:0!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  font-size:14.5px!important;
+  line-height:1.15!important;
+  font-weight:500!important;
+  letter-spacing:0!important;
+}
+@media (max-width:700px){
+  .auth-oauth-top .oauth-btn{
+    min-height:48px!important;
+    padding:0 14px!important;
+  }
+  .auth-oauth-top .oauth-btn .oauth-content{gap:9px!important}
+  .auth-oauth-top .oauth-btn .oauth-icon,
+  .auth-oauth-top .oauth-btn .apple-wrap{
+    flex-basis:22px!important;
+    width:22px!important;
+    height:22px!important;
+    min-width:22px!important;
+    min-height:22px!important;
+  }
+  .auth-oauth-top .oauth-btn .oauth-icon.google,
+  .auth-oauth-top .oauth-btn .oauth-icon.google svg{
+    width:22px!important;
+    height:22px!important;
+    min-width:22px!important;
+    min-height:22px!important;
+  }
+  .auth-oauth-top .oauth-btn .apple-svg{
+    width:21px!important;
+    height:21px!important;
+    min-width:21px!important;
+    min-height:21px!important;
+  }
+  .auth-oauth-top .oauth-btn .oauth-content > span:last-child{
+    font-size:14px!important;
+  }
+}
+</style>
+
