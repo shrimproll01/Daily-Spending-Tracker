@@ -4190,3 +4190,34 @@ html, body {
 }
 </style>
 
+
+<style id="final-apple-optical-balance">
+/* Apple mark: slightly larger optical size to match the Google mark visually. */
+.auth-oauth-top .oauth-btn .apple-svg{
+  width:25px!important;
+  height:25px!important;
+  min-width:25px!important;
+  min-height:25px!important;
+  transform:translateY(-.2px)!important;
+}
+@media (max-width:700px){
+  .auth-oauth-top .oauth-btn .apple-svg{
+    width:26px!important;
+    height:26px!important;
+    min-width:26px!important;
+    min-height:26px!important;
+  }
+}
+</style>
+
+<style id="final-apple-vertical-optical-fix">
+/* Optical correction: lift the Apple glyph slightly so its visual center matches Google. */
+.auth-oauth-top .oauth-btn .apple-svg{
+  transform:translateY(-1.35px)!important;
+}
+@media (max-width:700px){
+  .auth-oauth-top .oauth-btn .apple-svg{
+    transform:translateY(-1.1px)!important;
+  }
+}
+</style>
