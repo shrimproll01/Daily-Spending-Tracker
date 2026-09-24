@@ -566,7 +566,7 @@ body {
 .auth-social{min-height:44px;border:1px solid #292929;border-radius:10px;background:#121212;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:9px;font-weight:500;font-size:.78rem;cursor:pointer;transition:border-color .15s,background .15s}
 .auth-social:hover{border-color:#3a3a3a;background:#181818}
 .social-icon{width:18px;height:18px;display:grid;place-items:center}
-.auth-social svg{width:18px;height:18px}
+.auth-social svg{width:20px;height:20px;display:block;flex:0 0 20px}.google-icon svg{width:19px;height:19px}.apple-icon svg{width:19px;height:19px}.apple-icon{color:#f2f0ec}
 .auth-switch{margin-top:20px;text-align:center;color:#77736e;font-size:.76rem}
 .auth-switch button{border:0;background:none;color:#f5a05e;padding:0;font:inherit;cursor:pointer;font-weight:500}
 .auth-switch button:hover{text-decoration:underline}
@@ -806,6 +806,84 @@ button, input, select, textarea {
   }
 }
 
+
+/* ---------- auth polish: responsive device sizing ---------- */
+.auth-gate{padding:clamp(20px,3vw,40px)}
+.auth-shell{width:min(1180px,100%);min-height:min(700px,calc(100svh - clamp(40px,6vw,80px)));grid-template-columns:minmax(0,1.03fr) minmax(0,.97fr);border-radius:26px}
+.auth-visual{padding:clamp(32px,3.2vw,48px)}
+.auth-panel{padding:clamp(42px,4vw,68px) clamp(36px,5vw,76px)}
+.auth-card{width:min(410px,100%)}
+.auth-card-head{margin-bottom:22px}
+.auth-title{font-size:clamp(1.5rem,2vw,1.9rem);line-height:1.12}
+.auth-sub{font-size:.82rem;max-width:38ch;line-height:1.55}
+.auth-tabs{margin-bottom:24px}
+.auth-field{margin-top:16px}
+.auth-field input{height:50px}
+.auth-actions{margin-top:22px}
+.auth-actions .auth-primary{min-height:48px}
+.auth-social{min-height:46px}
+
+@media (min-width:1200px){
+  .auth-shell{min-height:700px}
+  .auth-hero{max-width:430px;padding:76px 0 58px}
+  .auth-hero h2{font-size:clamp(2.5rem,3.8vw,3.45rem)}
+}
+
+@media (min-width:821px) and (max-width:1199px){
+  .auth-shell{min-height:620px;border-radius:22px}
+  .auth-visual{padding:30px}
+  .auth-hero{padding:52px 0 42px}
+  .auth-hero h2{font-size:clamp(2rem,4vw,2.8rem)}
+  .auth-hero p{font-size:.82rem;max-width:32ch}
+  .auth-panel{padding:40px 42px}
+  .auth-card{width:min(380px,100%)}
+}
+
+@media (max-width:820px){
+  .auth-gate{padding:0;display:block;min-height:100svh}
+  .auth-shell{width:100%;min-height:100svh;display:flex;flex-direction:column;border:0;border-radius:0;overflow:visible}
+  .auth-visual{flex:0 0 auto;min-height:250px;padding:28px 28px 24px}
+  .auth-hero{padding:34px 0 24px;margin:0;max-width:560px}
+  .auth-hero h2{font-size:clamp(2rem,6vw,2.7rem);max-width:12ch}
+  .auth-hero p{font-size:.82rem;max-width:48ch}
+  .auth-steps{display:none}
+  .auth-panel{flex:1;min-height:0;padding:34px 28px calc(42px + env(safe-area-inset-bottom));align-items:flex-start}
+  .auth-card{width:min(520px,100%)}
+}
+
+@media (max-width:600px){
+  .auth-visual{min-height:224px;padding:22px 20px 20px}
+  .auth-brandmark{gap:9px}
+  .auth-logo{width:36px;height:36px;flex-basis:36px}
+  .auth-brandname{font-size:.84rem}
+  .auth-hero{padding:27px 0 8px}
+  .auth-kicker{font-size:.63rem;margin-bottom:10px}
+  .auth-hero h2{font-size:clamp(1.8rem,8vw,2.25rem)}
+  .auth-hero p{font-size:.75rem;line-height:1.5;margin-top:9px}
+  .auth-panel{padding:28px 20px calc(34px + env(safe-area-inset-bottom))}
+  .auth-title{font-size:1.42rem}
+  .auth-sub{font-size:.76rem;max-width:34ch}
+  .auth-tabs{margin-bottom:20px}
+  .auth-field{margin-top:14px}
+  .auth-field input{height:48px;font-size:16px}
+  .auth-actions{margin-top:20px}
+  .auth-actions .auth-primary{min-height:48px}
+  .auth-socials{grid-template-columns:1fr}
+  .auth-social{min-height:46px}
+}
+
+@media (max-width:380px){
+  .auth-visual{min-height:205px;padding:18px 16px 16px}
+  .auth-hero{padding:22px 0 5px}
+  .auth-hero h2{font-size:1.72rem}
+  .auth-hero p{font-size:.72rem}
+  .auth-panel{padding-left:16px;padding-right:16px}
+  .auth-card-head{margin-bottom:18px}
+  .auth-title{font-size:1.32rem}
+  .auth-sub{font-size:.73rem}
+  .auth-tab,.auth-actions button,.auth-social{min-height:44px}
+}
+
 </style>
 </head>
 <body>
@@ -833,8 +911,8 @@ button, input, select, textarea {
     <section class="auth-panel">
       <div class="auth-card">
         <div class="auth-card-head">
-          <div class="auth-title" id="authTitle">Masuk ke akun</div>
-          <p class="auth-sub" id="authSub">Masukkan email dan password untuk melanjutkan ke Daily Spending Tracker.</p>
+          <div class="auth-title" id="authTitle">Keuanganmu, tetap terkendali.</div>
+          <p class="auth-sub" id="authSub">Masuk untuk melanjutkan pencatatan dan memantau pengeluaranmu.</p>
         </div>
         <div class="auth-tabs" role="tablist" aria-label="Autentikasi">
           <button type="button" class="auth-tab active" id="signInTab" role="tab" aria-selected="true">Sign In</button>
@@ -1554,10 +1632,10 @@ button, input, select, textarea {
     $('signUpTab').classList.toggle('active', !login);
     $('signInTab').setAttribute('aria-selected', login ? 'true' : 'false');
     $('signUpTab').setAttribute('aria-selected', login ? 'false' : 'true');
-    $('authTitle').textContent = login ? 'Masuk ke akun' : 'Buat akun';
+    $('authTitle').textContent = login ? 'Keuanganmu, tetap terkendali.' : 'Mulai atur uangmu.';
     $('authSub').textContent = login
-      ? 'Data pengeluaranmu tersimpan di cloud dan bisa dipakai di HP, Mac, atau perangkat lain dengan akun yang sama.'
-      : 'Buat akun untuk menyimpan data pengeluaranmu dan menyinkronkannya di semua perangkat.';
+      ? 'Masuk untuk melanjutkan pencatatan dan memantau pengeluaranmu.'
+      : 'Buat akun untuk menyimpan dan menyinkronkan catatan keuanganmu.';
     $('authSubmit').textContent = login ? 'Masuk' : 'Daftar';
     $('authSwitchText').textContent = login ? 'Belum punya akun?' : 'Sudah punya akun?';
     $('authSwitch').textContent = login ? 'Buat akun' : 'Masuk';
@@ -1585,6 +1663,19 @@ button, input, select, textarea {
       render();
     }
   }
+  (function handleOAuthCallbackError(){
+    var params = new URLSearchParams(window.location.search);
+    var hash = new URLSearchParams((window.location.hash || '').replace(/^#/, ''));
+    var err = params.get('error') || hash.get('error');
+    var desc = params.get('error_description') || hash.get('error_description');
+    if (err) {
+      var friendly = desc ? decodeURIComponent(desc.replace(/\+/g, ' ')) : 'Login sosial tidak dapat diselesaikan.';
+      setAuthMessage(friendly, 'error');
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/([?&])error(?:_code|_description)?=[^&]*&?/g, '$1').replace(/[?&]$/, ''));
+      }
+    }
+  })();
   $('signInTab').onclick = function(){
     setAuthMode('login');
     $('authEmail').focus();
@@ -1597,11 +1688,33 @@ button, input, select, textarea {
     setAuthMode(authMode === 'login' ? 'signup' : 'login');
     $('authEmail').focus();
   };
+  function getOAuthProviderName(provider){
+    return provider === 'apple' ? 'Apple' : 'Google';
+  }
+  async function isOAuthProviderEnabled(provider){
+    try {
+      var res = await fetch(SUPABASE_URL + '/auth/v1/settings', {
+        headers: { 'apikey': SUPABASE_PUBLISHABLE_KEY }
+      });
+      if (!res.ok) return null;
+      var settings = await res.json();
+      if (!settings || !settings.external) return null;
+      return settings.external[provider] === true;
+    } catch(err) {
+      return null;
+    }
+  }
   async function socialLogin(provider){
-    setAuthMessage('Membuka login ' + (provider === 'apple' ? 'Apple' : 'Google') + '…', '');
+    var providerName = getOAuthProviderName(provider);
+    setAuthMessage('Memeriksa login ' + providerName + '…', '');
     $('googleLogin').disabled = true;
     $('appleLogin').disabled = true;
     try {
+      var enabled = await isOAuthProviderEnabled(provider);
+      if (enabled === false) {
+        throw new Error('Login ' + providerName + ' belum diaktifkan di Supabase. Buka Authentication → Sign In / Providers lalu aktifkan ' + providerName + '.');
+      }
+      setAuthMessage('Membuka login ' + providerName + '…', '');
       var result = await supabaseClient.auth.signInWithOAuth({
         provider: provider,
         options: { redirectTo: window.location.href.split('#')[0] }
