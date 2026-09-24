@@ -1468,8 +1468,9 @@ body {
 }
 
 
-<style>
-/* FINAL LIQUID GLASS LAYOUT FIX — preserve original auth geometry */
+/* ===== FINAL LIQUID GLASS POLISH ===== */
+
+/* Preserve the original auth geometry; only skin the UI. */
 @media (min-width:861px){
   .auth-panel{
     display:flex!important;
@@ -1491,6 +1492,7 @@ body {
     margin:0!important;
   }
 }
+
 @media (max-width:860px){
   .auth-panel{
     display:flex!important;
@@ -1510,51 +1512,306 @@ body {
     margin:0!important;
   }
 }
-</style>
 
-/* Warm liquid-glass step cards — match the animated hook tone */
-.auth-step{
-  border-color:rgba(229,188,151,.20)!important;
-  background:
-    linear-gradient(180deg,rgba(229,188,151,.13),rgba(229,188,151,.055))!important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.12),
-    inset 0 -1px 0 rgba(0,0,0,.16),
-    0 12px 34px rgba(34,15,7,.16)!important;
-}
-.auth-step.active{
-  border-color:rgba(229,188,151,.42)!important;
-  background:
-    linear-gradient(180deg,rgba(229,188,151,.96),rgba(229,188,151,.82))!important;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.76),
-    0 18px 42px rgba(34,15,7,.18)!important;
-}
-.auth-step-num{
-  background:rgba(229,188,151,.10)!important;
-  border-color:rgba(229,188,151,.24)!important;
-}
-.auth-step:not(.active) .auth-step-num{
-  color:rgba(229,188,151,.88)!important;
-}
-.auth-step b{color:#f8f5f0!important}
-.auth-step:not(.active) span{color:rgba(229,214,198,.62)!important}
-.auth-step.active b{color:#1d1713!important}
-.auth-step.active span{color:rgba(63,47,38,.76)!important}
-</style>
-
-<style id="warm-type-match">
-/* Warm typography match — sampled from the supplied reference */
+/* Warm / neutral typography that matches the supplied reference. */
 .auth-kicker,
 .auth-kicker-roll-item{
   color:#DFB89A!important;
-  text-shadow:0 1px 14px rgba(223,184,154,.08)!important;
+  text-shadow:0 1px 16px rgba(223,184,154,.08)!important;
 }
-.auth-visual-title{
+.auth-visual-title,
+.auth-title{
+  color:#F5EEE8!important;
+  text-shadow:0 8px 28px rgba(0,0,0,.18)!important;
+}
+.auth-visual-desc,
+.auth-sub{
+  color:rgba(214,204,196,.78)!important;
+  text-shadow:0 4px 18px rgba(0,0,0,.10)!important;
+}
+.auth-field label{
+  color:#F0E8E1!important;
+}
+.auth-password-hint,
+.auth-switch,
+.auth-foot,
+.auth-divider{
+  color:rgba(214,204,196,.60)!important;
+}
+.auth-switch button{
   color:#F5EEE8!important;
 }
-.auth-visual-desc{
-  color:rgba(214,204,196,.78)!important;
+
+/* Every auth surface uses transparent liquid-glass instead of opaque fills. */
+.auth-step,
+.auth-oauth-top .oauth-btn,
+.auth-language select,
+.auth-field input,
+.auth-actions .auth-primary{
+  background:rgba(255,255,255,.055)!important;
+  border:1px solid rgba(255,255,255,.15)!important;
+  backdrop-filter:blur(22px) saturate(135%)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(135%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    inset 0 -1px 0 rgba(0,0,0,.10),
+    0 12px 32px rgba(0,0,0,.10)!important;
+}
+
+.auth-step{
+  border-color:rgba(223,184,154,.16)!important;
+  background:rgba(255,255,255,.052)!important;
+}
+.auth-step:hover{
+  background:rgba(255,255,255,.075)!important;
+  border-color:rgba(255,255,255,.19)!important;
+}
+.auth-step.active{
+  color:#F5EEE8!important;
+  background:rgba(255,255,255,.135)!important;
+  border-color:rgba(255,255,255,.30)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    0 16px 38px rgba(0,0,0,.14)!important;
+}
+.auth-step-num{
+  background:rgba(255,255,255,.075)!important;
+  border-color:rgba(255,255,255,.14)!important;
+  color:rgba(245,238,232,.66)!important;
+}
+.auth-step.active .auth-step-num{
+  background:rgba(12,14,24,.70)!important;
+  border-color:rgba(255,255,255,.18)!important;
+  color:#F5EEE8!important;
+}
+.auth-step b{
+  color:#F5EEE8!important;
+}
+.auth-step span{
+  color:rgba(214,204,196,.60)!important;
+}
+.auth-step.active span{
+  color:rgba(214,204,196,.76)!important;
+}
+
+.auth-oauth-top .oauth-btn{
+  color:#F5EEE8!important;
+}
+.auth-oauth-top .oauth-btn:hover{
+  background:rgba(255,255,255,.085)!important;
+  border-color:rgba(255,255,255,.21)!important;
+}
+.auth-divider:before,
+.auth-divider:after{
+  background:rgba(255,255,255,.12)!important;
+}
+
+.auth-language select{
+  color:#F5EEE8!important;
+  background:rgba(255,255,255,.055)!important;
+  border-color:rgba(255,255,255,.16)!important;
+}
+.auth-language select:hover,
+.auth-language select:focus{
+  background:rgba(255,255,255,.075)!important;
+  border-color:rgba(255,255,255,.22)!important;
+}
+
+.auth-field input{
+  color:#F5EEE8!important;
+}
+.auth-field input:focus{
+  border-color:rgba(223,184,154,.42)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 0 0 3px rgba(223,184,154,.10)!important;
+}
+.auth-field input::placeholder{
+  color:rgba(214,204,196,.48)!important;
+}
+
+/* Keep the main CTA transparent; the text still has strong contrast. */
+.auth-actions .auth-primary{
+  color:#F5EEE8!important;
+  background:rgba(255,255,255,.11)!important;
+  border-color:rgba(255,255,255,.26)!important;
+}
+.auth-actions .auth-primary:hover{
+  color:#fff!important;
+  background:rgba(255,255,255,.16)!important;
+  border-color:rgba(255,255,255,.34)!important;
+}
+
+/* Optical icon alignment stays consistent inside the compact social buttons. */
+.auth-oauth-top .oauth-btn .oauth-content{
+  gap:9px!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.auth-oauth-top .oauth-btn .oauth-icon,
+.auth-oauth-top .oauth-btn .apple-wrap{
+  flex:0 0 25px!important;
+  width:25px!important;
+  height:25px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.auth-oauth-top .oauth-btn .oauth-icon.google{
+  width:25px!important;
+  height:25px!important;
+}
+.auth-oauth-top .oauth-btn .apple-svg{
+  width:24px!important;
+  height:24px!important;
+  display:block!important;
+  transform:translateY(-.7px)!important;
+}
+.auth-oauth-top .oauth-btn .oauth-content > span:last-child{
+  color:#F5EEE8!important;
+  font-size:15px!important;
+  line-height:1!important;
+  font-weight:450!important;
+  letter-spacing:0!important;
+}
+
+@media (max-width:700px){
+  .auth-oauth-top .oauth-btn{
+    min-height:50px!important;
+  }
+  .auth-oauth-top .oauth-btn .oauth-icon,
+  .auth-oauth-top .oauth-btn .apple-wrap{
+    flex-basis:22px!important;
+    width:22px!important;
+    height:22px!important;
+  }
+  .auth-oauth-top .oauth-btn .oauth-icon.google{
+    width:22px!important;
+    height:22px!important;
+  }
+  .auth-oauth-top .oauth-btn .apple-svg{
+    width:21px!important;
+    height:21px!important;
+    transform:translateY(-.6px)!important;
+  }
+  .auth-oauth-top .oauth-btn .oauth-content > span:last-child{
+    font-size:15px!important;
+  }
+
+  .auth-step{
+    border-radius:18px!important;
+  }
+
+  .auth-panel{
+    background:
+      radial-gradient(60% 38% at 78% 12%,rgba(103,78,255,.14),transparent 74%),
+      radial-gradient(50% 46% at 14% 76%,rgba(47,159,255,.09),transparent 74%),
+      linear-gradient(160deg,#0a0d20,#050713)!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .auth-kicker-track{
+    transform:none!important;
+  }
+}
+
+/* FINAL FIX: language selector must float independently and never overlap auth heading */
+@media (min-width:861px){
+  .auth-panel{position:relative!important;overflow:hidden!important;}
+  .auth-language{
+    position:absolute!important;
+    top:22px!important;
+    right:28px!important;
+    width:184px!important;
+    height:64px!important;
+    margin:0!important;
+    z-index:20!important;
+  }
+  .auth-inner{
+    position:relative!important;
+    z-index:3!important;
+    transform:translateY(72px)!important;
+  }
+}
+@media (max-width:860px){
+  .auth-panel{position:relative!important;overflow:auto!important;}
+  .auth-language{
+    position:absolute!important;
+    top:14px!important;
+    right:16px!important;
+    width:170px!important;
+    height:58px!important;
+    margin:0!important;
+    z-index:20!important;
+  }
+  .auth-inner{
+    position:relative!important;
+    z-index:3!important;
+    margin-top:78px!important;
+    transform:none!important;
+  }
+}
+
+</style>
+
+<style>
+/* Match step-card typography: active and inactive states use the same white text. */
+.auth-step b,
+.auth-step.active b{
+  color:#F5EEE8!important;
+}
+.auth-step span,
+.auth-step.active span{
+  color:rgba(245,238,232,.72)!important;
+}
+</style>
+<style>
+/* Final step-number consistency: same glass circle + white number in every state */
+.auth-step .auth-step-num,
+.auth-step.active .auth-step-num{
+  background:rgba(255,255,255,.12)!important;
+  border:1px solid rgba(255,255,255,.30)!important;
+  color:#fff!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.18);
+  backdrop-filter:blur(10px)!important;
+  -webkit-backdrop-filter:blur(10px)!important;
+}
+</style>
+
+<style>
+/* FINAL FOOTER VISIBILITY FIX */
+@media (min-width:861px){
+  .auth-panel{
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+  }
+  .auth-inner{
+    transform:none!important;
+    padding-top:72px!important;
+    box-sizing:border-box!important;
+  }
+}
+.auth-foot{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  position:relative!important;
+  z-index:5!important;
+  visibility:visible!important;
+  opacity:1!important;
+  color:rgba(214,204,196,.60)!important;
+}
+.auth-foot svg{
+  width:14px!important;
+  height:14px!important;
+  flex:0 0 14px!important;
+  display:block!important;
+  color:rgba(214,204,196,.60)!important;
+}
+@media (max-width:700px){
+  .auth-foot{margin-top:12px!important;}
 }
 </style>
 </head>
