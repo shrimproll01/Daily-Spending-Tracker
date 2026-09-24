@@ -2084,6 +2084,70 @@ body {
   }
 }
 </style>
+
+<style>
+/* FINAL RIGHT-PANEL BALANCE + PASSWORD RECOVERY */
+.auth-password-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:-12px 0 24px;
+  min-width:0;
+}
+.auth-password-meta .auth-password-hint{
+  margin:0!important;
+  min-width:0;
+}
+.auth-forgot{
+  flex:0 0 auto;
+  border:0;
+  background:none;
+  padding:0;
+  color:rgba(245,238,232,.82);
+  font:600 .78rem/1.35 var(--font);
+  text-decoration:none;
+  cursor:pointer;
+  transition:color .15s,opacity .15s;
+}
+.auth-forgot:hover{
+  color:#fff!important;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+.auth-forgot:disabled{opacity:.5;cursor:wait}
+
+/* Keep the authentication content visually centered beneath the floating language control. */
+@media (min-width:861px){
+  .auth-panel .auth-inner{
+    padding-top:0!important;
+    transform:translateY(22px)!important;
+  }
+}
+@media (max-width:860px){
+  .auth-panel .auth-inner{
+    padding-top:0!important;
+    margin-top:78px!important;
+    transform:none!important;
+  }
+}
+
+@media (max-width:560px){
+  .auth-password-meta{
+    margin:-8px 0 20px;
+    gap:8px;
+  }
+  .auth-forgot{font-size:.77rem}
+}
+
+@media (max-width:390px){
+  .auth-password-meta{
+    align-items:flex-start;
+  }
+  .auth-forgot{white-space:nowrap}
+}
+</style>
+
 </head>
 <body>
 <div class="auth-gate" id="authGate">
@@ -2164,7 +2228,10 @@ body {
         </div>
         <div class="auth-field"><label for="authEmail" id="emailLabel">Email</label><input id="authEmail" type="email" autocomplete="email" inputmode="email" placeholder="e.g. johnfrans@gmail.com" required></div>
         <div class="auth-field"><label for="authPassword" id="passwordLabel">Password</label><div class="password-wrap"><input id="authPassword" type="password" autocomplete="new-password" minlength="6" placeholder="Enter your password" required><button type="button" class="password-toggle" id="passwordToggle" aria-label="Show password" aria-pressed="false" title="Show password"><svg class="eye-icon eye-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.2 12s3.4-6 9.8-6 9.8 6 9.8 6-3.4 6-9.8 6-9.8-6-9.8-6Z"/><circle cx="12" cy="12" r="2.7"/></svg><svg class="eye-icon eye-closed" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 5.2A10.7 10.7 0 0 1 12 5c6.4 0 9.8 7 9.8 7a16.4 16.4 0 0 1-3.1 3.9M6.3 6.3C3.6 8.1 2.2 12 2.2 12s3.4 6 9.8 6c1.3 0 2.5-.3 3.6-.8"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></button></div></div>
-        <p class="auth-password-hint" id="authPasswordHint">Must be at least 6 characters.</p>
+        <div class="auth-password-meta" id="authPasswordMeta">
+          <p class="auth-password-hint" id="authPasswordHint">Must be at least 6 characters.</p>
+          <button type="button" class="auth-forgot" id="authForgot">Forgot password?</button>
+        </div>
         <div class="auth-actions"><button class="auth-primary" id="authSubmit" type="submit">Sign Up</button></div>
         <p class="auth-msg" id="authMsg" role="status" aria-live="polite"></p>
       </form>
@@ -2931,6 +2998,28 @@ body {
       loginTitle:'আবার স্বাগতম।', loginSub:'খরচ ট্র্যাক করতে এবং আপনার আর্থিক ব্যবস্থাপনা গুছিয়ে রাখতে লগ ইন করুন।', signupTitle:'আপনার অ্যাকাউন্ট তৈরি করুন।', signupSub:'খরচ লেখা শুরু করুন এবং আপনার আর্থিক ব্যবস্থাপনা আরও গোছানো রাখুন।', firstName:'নাম', lastName:'পদবি', firstPlaceholder:'যেমন: রাহুল', lastPlaceholder:'যেমন: দাস', email:'ইমেইল', emailPlaceholder:'যেমন: rahul@email.com', password:'পাসওয়ার্ড', passwordPlaceholder:'পাসওয়ার্ড লিখুন', hint:'কমপক্ষে ৬ অক্ষর হতে হবে।', login:'লগ ইন', signup:'অ্যাকাউন্ট তৈরি করুন', switchLoginText:'ইতিমধ্যে অ্যাকাউন্ট আছে?', switchLogin:'লগ ইন', switchSignupText:'অ্যাকাউন্ট নেই?', switchSignup:'অ্যাকাউন্ট তৈরি করুন', google:'Google', apple:'Apple', or:'অথবা', foot:'অ্যাকাউন্ট-ভিত্তিক অ্যাক্সেসে আপনার ডেটা সুরক্ষিত', show:'পাসওয়ার্ড দেখান', hide:'পাসওয়ার্ড লুকান', invalid:'একটি বৈধ ইমেইল এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড লিখুন।', processingLogin:'লগ ইন হচ্ছে…', processingSignup:'অ্যাকাউন্ট তৈরি হচ্ছে…', signupOk:'অ্যাকাউন্ট তৈরি হয়েছে। নিশ্চিত করতে ইমেইল দেখুন, তারপর লগ ইন করুন।', generic:'কিছু ভুল হয়েছে।'
     }
   };
+  var authResetCopy = {
+    en:{forgot:'Forgot password?', sending:'Sending reset link…', sent:'Check your email for a password reset link.', needEmail:'Enter your email address first.'},
+    id:{forgot:'Lupa password?', sending:'Mengirim link reset…', sent:'Cek email kamu untuk link reset password.', needEmail:'Masukkan email terlebih dahulu.'},
+    es:{forgot:'¿Olvidaste tu contraseña?', sending:'Enviando enlace de restablecimiento…', sent:'Revisa tu correo para restablecer la contraseña.', needEmail:'Ingresa primero tu correo electrónico.'},
+    pt:{forgot:'Esqueceu a senha?', sending:'Enviando link de redefinição…', sent:'Verifique seu e-mail para redefinir a senha.', needEmail:'Digite seu e-mail primeiro.'},
+    fr:{forgot:'Mot de passe oublié ?', sending:'Envoi du lien de réinitialisation…', sent:'Consultez votre e-mail pour réinitialiser votre mot de passe.', needEmail:"Entrez d’abord votre adresse e-mail."},
+    de:{forgot:'Passwort vergessen?', sending:'Reset-Link wird gesendet…', sent:'Prüfe deine E-Mail für den Link zum Zurücksetzen.', needEmail:'Gib zuerst deine E-Mail-Adresse ein.'},
+    it:{forgot:'Hai dimenticato la password?', sending:'Invio del link di reimpostazione…', sent:'Controlla la tua e-mail per reimpostare la password.', needEmail:'Inserisci prima la tua e-mail.'},
+    nl:{forgot:'Wachtwoord vergeten?', sending:'Resetlink wordt verzonden…', sent:'Controleer je e-mail voor de link om je wachtwoord te resetten.', needEmail:'Vul eerst je e-mailadres in.'},
+    tr:{forgot:'Şifreni mi unuttun?', sending:'Sıfırlama bağlantısı gönderiliyor…', sent:'Şifreni sıfırlamak için e-postanı kontrol et.', needEmail:'Önce e-posta adresini gir.'},
+    ar:{forgot:'هل نسيت كلمة المرور؟', sending:'جارٍ إرسال رابط إعادة التعيين…', sent:'تحقق من بريدك الإلكتروني لرابط إعادة تعيين كلمة المرور.', needEmail:'أدخل بريدك الإلكتروني أولاً.'},
+    hi:{forgot:'पासवर्ड भूल गए?', sending:'रीसेट लिंक भेजा जा रहा है…', sent:'पासवर्ड रीसेट करने के लिए अपना ईमेल देखें।', needEmail:'पहले अपना ईमेल दर्ज करें।'},
+    zh:{forgot:'忘记密码？', sending:'正在发送重置链接…', sent:'请检查邮箱以获取密码重置链接。', needEmail:'请先输入邮箱地址。'},
+    ja:{forgot:'パスワードをお忘れですか？', sending:'リセットリンクを送信中…', sent:'パスワード再設定用のリンクをメールで確認してください。', needEmail:'先にメールアドレスを入力してください。'},
+    ko:{forgot:'비밀번호를 잊으셨나요?', sending:'재설정 링크를 보내는 중…', sent:'비밀번호 재설정 링크를 이메일에서 확인하세요.', needEmail:'먼저 이메일 주소를 입력하세요.'},
+    vi:{forgot:'Quên mật khẩu?', sending:'Đang gửi liên kết đặt lại…', sent:'Kiểm tra email để nhận liên kết đặt lại mật khẩu.', needEmail:'Vui lòng nhập email trước.'},
+    tl:{forgot:'Nakalimutan ang password?', sending:'Ipinapadala ang reset link…', sent:'Tingnan ang iyong email para sa password reset link.', needEmail:'Ilagay muna ang iyong email.'},
+    th:{forgot:'ลืมรหัสผ่าน?', sending:'กำลังส่งลิงก์รีเซ็ตรหัสผ่าน…', sent:'ตรวจสอบอีเมลของคุณเพื่อรีเซ็ตรหัสผ่าน', needEmail:'กรุณากรอกอีเมลก่อน'},
+    ru:{forgot:'Забыли пароль?', sending:'Отправляем ссылку для сброса…', sent:'Проверьте почту для получения ссылки на сброс пароля.', needEmail:'Сначала введите адрес электронной почты.'},
+    uk:{forgot:'Забули пароль?', sending:'Надсилаємо посилання для скидання…', sent:'Перевірте електронну пошту для посилання на скидання пароля.', needEmail:'Спочатку введіть електронну адресу.'},
+    bn:{forgot:'পাসওয়ার্ড ভুলে গেছেন?', sending:'রিসেট লিংক পাঠানো হচ্ছে…', sent:'পাসওয়ার্ড রিসেট লিংকের জন্য ইমেইল দেখুন।', needEmail:'আগে আপনার ইমেইল লিখুন।'}
+  };
   function applyAuthLanguage(){
     var c = authCopy[authLang] || authCopy.en, login = authMode === 'login';
     $('authLanguage').value = authLang;
@@ -2945,6 +3034,9 @@ body {
     $('passwordLabel').textContent = c.password;
     $('authPassword').placeholder = c.passwordPlaceholder;
     $('authPasswordHint').textContent = c.hint;
+    $('authForgot').textContent = (authResetCopy[authLang] || authResetCopy.en).forgot;
+    $('authForgot').hidden = !login;
+    $('authPasswordMeta').classList.toggle('is-login', login);
     $('authSubmit').textContent = login ? c.login : c.signup;
     $('authSwitchText').textContent = login ? c.switchSignupText : c.switchLoginText;
     $('authSwitch').textContent = login ? c.switchSignup : c.switchLogin;
@@ -3009,6 +3101,30 @@ body {
     this.setAttribute('aria-pressed', visible ? 'true' : 'false');
     this.setAttribute('aria-label', visible ? authCopy[authLang].hide : authCopy[authLang].show);
     this.setAttribute('title', visible ? authCopy[authLang].hide : authCopy[authLang].show);
+  };
+  $('authForgot').onclick = async function(){
+    if (authMode !== 'login') return;
+    var email = $('authEmail').value.trim();
+    var rc = authResetCopy[authLang] || authResetCopy.en;
+    if (!email) {
+      setAuthMessage(rc.needEmail, 'error');
+      $('authEmail').focus();
+      return;
+    }
+    this.disabled = true;
+    setAuthMessage(rc.sending, '');
+    try {
+      var resetResult = await supabaseClient.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.href.split('#')[0]
+      });
+      if (resetResult.error) throw resetResult.error;
+      setAuthMessage(rc.sent, 'ok');
+    } catch(err) {
+      console.error(err);
+      setAuthMessage(err && err.message ? err.message : authCopy[authLang].generic, 'error');
+    } finally {
+      this.disabled = false;
+    }
   };
   $('authForm').addEventListener('submit', async function(e){
     e.preventDefault();
