@@ -1814,6 +1814,31 @@ body {
   .auth-foot{margin-top:12px!important;}
 }
 </style>
+<style>
+/* FINAL DESKTOP ALIGNMENT — share the same top baseline across both auth columns */
+@media (min-width:861px){
+  .auth-visual{
+    padding-top:56px!important;
+    box-sizing:border-box!important;
+  }
+  .auth-panel{
+    display:flex!important;
+    align-items:flex-start!important;
+    justify-content:center!important;
+    padding-top:56px!important;
+    box-sizing:border-box!important;
+  }
+  .auth-inner{
+    margin:0 auto!important;
+    padding-top:0!important;
+    transform:none!important;
+  }
+  .auth-language{
+    top:22px!important;
+    right:28px!important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="auth-gate" id="authGate">
