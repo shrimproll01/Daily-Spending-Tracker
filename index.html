@@ -386,6 +386,132 @@ body {
   }
 }
 
+
+/* FINAL iPhone/Safari overflow lock */
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 959px) {
+  .wrap,
+  .layout,
+  .main,
+  .side,
+  .sec,
+  .card,
+  .formbox,
+  .formbox form,
+  .formbox .f {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .formbox {
+    left: 0 !important;
+    right: auto !important;
+    width: 100dvw !important;
+    max-width: 100dvw !important;
+    overflow-x: clip !important;
+  }
+
+  .formbox form,
+  .formbox .f,
+  .formbox .money,
+  .formbox .catpick,
+  .formbox .btns {
+    overflow: hidden;
+  }
+
+  .formbox input,
+  .formbox select,
+  .formbox button {
+    box-sizing: border-box;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .formbox .f > input,
+  .formbox input[type="date"],
+  .formbox input[type="text"],
+  .formbox input[type="search"] {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-inline-size: 0 !important;
+    inline-size: 100% !important;
+  }
+
+  /* Money fields: the Rp prefix + input must fit inside the same box. */
+  .formbox .money {
+    display: flex;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .formbox .money span {
+    flex: 0 0 auto;
+  }
+
+  .formbox .money input {
+    flex: 1 1 auto !important;
+    width: 0 !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    min-inline-size: 0 !important;
+  }
+
+  .catpick {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .wrap {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .formbox {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .catpick {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .formbox .form-head,
+  .formbox form,
+  .formbox .f,
+  .formbox .money,
+  .formbox input[type="date"],
+  .formbox .catpick,
+  .formbox .btns {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important}
   .bar i,.item.new,.menu,dialog[open],dialog[open]::backdrop{animation:none!important}
