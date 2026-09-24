@@ -35,6 +35,7 @@ try{var t=localStorage.getItem('pengeluaran:theme');if(t==='light')document.docu
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{scroll-padding-top:16px}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55;
   font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit;color:inherit}
@@ -249,24 +250,48 @@ dialog .btns{margin-top:22px;justify-content:flex-end}
 
 /* HP dan tablet: form jadi lembar dari bawah */
 @media (max-width:959px){
-  .wrap{padding:20px 18px 110px}
-  .top{margin-bottom:28px}
+  .wrap{width:100%;max-width:100%;padding:20px 18px 110px;overflow-x:clip}
+  .top{width:100%;min-width:0;margin-bottom:28px}
+  .tools,.nav{min-width:0;max-width:100%}
+  .nav .label{min-width:0;max-width:45vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .main,.side,.sec,.card{min-width:0;max-width:100%}
   .fab{display:grid}
   body.sheet-open .fab{display:none}
   body.sheet-open{overflow:hidden}
-  .toast{bottom:100px}
+  .toast{bottom:100px;max-width:calc(100vw - 32px);white-space:normal;text-align:center}
   .backdrop{display:block;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:30;opacity:0;pointer-events:none;transition:opacity .2s}
   body.sheet-open .backdrop{opacity:1;pointer-events:auto}
-  .formbox{position:fixed;left:0;right:0;bottom:0;z-index:40;border-radius:20px 20px 0 0;max-height:92vh;overflow:auto;overscroll-behavior:contain;
+  .formbox{position:fixed;left:0;right:0;bottom:0;z-index:40;width:100%;max-width:100%;border-radius:20px 20px 0 0;max-height:92vh;overflow:auto;overscroll-behavior:contain;
     padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(105%);visibility:hidden;transition:transform .25s,visibility 0s .25s}
   body.sheet-open .formbox{transform:none;visibility:visible;transition:transform .25s,visibility 0s}
   .sheet-close{display:block}
   .card:hover{border-color:var(--line)}
+  .list-tools{width:100%;min-width:0}
+  .list-tools input,.list-tools select{min-width:0;max-width:100%;box-sizing:border-box}
+  .item{min-width:0}
+  .txt{min-width:0;overflow:hidden}
+  .ttl{overflow-wrap:anywhere}
+  .amt{min-width:0}
 }
 @media (max-width:480px){
-  .stats>div+div{padding-left:14px}
-  .stats>div{padding-right:8px}
-  .nav .label{min-width:112px}
+  .wrap{padding-left:14px;padding-right:14px}
+  .stats>div+div{padding-left:10px}
+  .stats>div{padding-right:6px}
+  .nav .label{min-width:0;max-width:42vw}
+  .catpick{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .list-tools{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  .list-tools input,.list-tools select{width:100%}
+  .money input{min-width:0}
+  .quick{max-width:100%}
+  .quick button{flex:0 0 auto}
+}
+@media (max-width:360px){
+  .wrap{padding-left:12px;padding-right:12px}
+  .top{gap:8px}
+  .tools{width:100%;justify-content:space-between}
+  .nav .label{max-width:40vw}
+  .total{font-size:2rem}
+  .fab{right:16px}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important}
