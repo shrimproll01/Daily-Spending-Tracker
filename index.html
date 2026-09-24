@@ -293,6 +293,99 @@ dialog .btns{margin-top:22px;justify-content:flex-end}
   .total{font-size:2rem}
   .fab{right:16px}
 }
+
+/* iPhone / Safari hardening: prevent native controls from creating horizontal overflow */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 959px) {
+  .formbox,
+  .formbox form,
+  .formbox .f,
+  .formbox .money,
+  .formbox input,
+  .formbox select,
+  .formbox button {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .formbox {
+    width: 100%;
+    left: 0;
+    right: 0;
+    overflow-x: hidden;
+  }
+
+  .formbox form {
+    width: 100%;
+  }
+
+  .formbox .f > input,
+  .formbox .money,
+  .formbox input[type="date"] {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* iOS Safari can give date inputs an intrinsic width larger than the viewport */
+  .formbox input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+  }
+
+  .formbox .money {
+    box-sizing: border-box;
+  }
+
+  .formbox .money input {
+    min-width: 0;
+    max-width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .catpick {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .catpick label,
+  .catpick label > span {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .formbox {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .formbox .form-head,
+  .formbox form {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .formbox .btns,
+  .formbox .primary,
+  .formbox .ghost {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .formbox .primary {
+    width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important}
   .bar i,.item.new,.menu,dialog[open],dialog[open]::backdrop{animation:none!important}
