@@ -864,7 +864,7 @@ body {
 /* Final spacing: 6cm between hero paragraph and step layout */
 .auth-visual{justify-content:flex-start!important}
 .auth-visual-copy{margin-bottom:0!important}
-.auth-steps{margin-top:3cm!important}
+.auth-steps{margin-top:.8cm!important}
 
 /* Premium rolling kicker: smooth, continuous vertical slot animation */
 .auth-kicker{
@@ -1837,6 +1837,130 @@ body {
     top:22px!important;
     right:28px!important;
   }
+}
+</style>
+
+<style>
+/* FINAL LANGUAGE POSITION — keep the selector clear of the auth heading */
+@media (min-width:861px){
+  .auth-language{
+    top:18px!important;
+    right:20px!important;
+    width:154px!important;
+    height:46px!important;
+    z-index:30!important;
+  }
+  .auth-language select{
+    width:154px!important;
+    min-width:154px!important;
+    max-width:154px!important;
+    height:46px!important;
+    padding:0 34px 0 13px!important;
+    border-radius:14px!important;
+    box-sizing:border-box!important;
+  }
+}
+@media (max-width:860px){
+  .auth-language{
+    top:14px!important;
+    right:16px!important;
+  }
+}
+</style>
+
+<style>
+/* FINAL LANGUAGE OVERLAP FIX — isolate the selector from the auth header on tablet/mobile widths */
+@media (max-width:860px){
+  .auth-panel{position:relative!important;overflow:auto!important;}
+  .auth-language{
+    position:absolute!important;
+    top:12px!important;
+    right:16px!important;
+    width:170px!important;
+    height:46px!important;
+    margin:0!important;
+    z-index:50!important;
+    overflow:hidden!important;
+  }
+  .auth-language select{
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:46px!important;
+    box-sizing:border-box!important;
+  }
+  .auth-inner{
+    position:relative!important;
+    z-index:3!important;
+    width:min(100%,520px)!important;
+    margin:0 auto!important;
+    padding-top:82px!important;
+  }
+}
+@media (max-width:560px){
+  .auth-language{top:10px!important;right:14px!important;width:162px!important;height:44px!important;}
+  .auth-language select{height:44px!important;}
+  .auth-inner{padding-top:76px!important;}
+}
+</style>
+
+
+<style>
+/* Final language/header separation */
+@media (min-width:861px){
+  .auth-language{
+    top:10px!important;
+    right:18px!important;
+    width:142px!important;
+    height:42px!important;
+    z-index:60!important;
+  }
+  .auth-language select{
+    width:142px!important;
+    min-width:142px!important;
+    max-width:142px!important;
+    height:42px!important;
+    padding:0 31px 0 13px!important;
+    border-radius:13px!important;
+  }
+}
+@media (max-width:860px){
+  .auth-language{
+    top:10px!important;
+    right:14px!important;
+    z-index:60!important;
+  }
+}
+</style>
+
+<style>
+/* Liquid Glass center divider */
+.auth-gate{position:relative!important;}
+.auth-visual{border-right:0!important;}
+.auth-panel{border-left:0!important;}
+.auth-gate::after{
+  content:""!important;
+  position:absolute!important;
+  top:0!important;
+  bottom:0!important;
+  left:51.58%!important;
+  width:2px!important;
+  transform:translateX(-1px)!important;
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.015) 0%,
+    rgba(255,255,255,.12) 14%,
+    rgba(164,157,255,.34) 38%,
+    rgba(255,255,255,.18) 52%,
+    rgba(111,195,255,.18) 68%,
+    rgba(255,255,255,.08) 86%,
+    rgba(255,255,255,.01) 100%)!important;
+  box-shadow:0 0 10px rgba(170,160,255,.13), 0 0 2px rgba(255,255,255,.22)!important;
+  opacity:.82!important;
+  pointer-events:none!important;
+  z-index:15!important;
+}
+@media (max-width:860px){
+  .auth-gate::after{display:none!important;}
 }
 </style>
 </head>
