@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Catatan Pengeluaran</title>
 <meta name="theme-color" content="#0B0B0B" id="metaTheme">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 try{var t=localStorage.getItem('pengeluaran:theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}
 </script>
@@ -516,10 +517,59 @@ body {
   *{transition:none!important}
   .bar i,.item.new,.menu,dialog[open],dialog[open]::backdrop{animation:none!important}
 }
+
+/* ---------- auth / account ---------- */
+.auth-gate{min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--bg)}
+.auth-card{width:min(430px,100%);background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.22)}
+.auth-brand{font-size:1.15rem;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.auth-title{font-size:1.6rem;font-weight:600;letter-spacing:-.03em;margin:18px 0 8px}
+.auth-sub{color:var(--muted);font-size:.9rem;margin-bottom:22px}
+.auth-field{display:grid;gap:7px;margin-top:14px}
+.auth-field label{font-size:.78rem;color:var(--muted);font-weight:500}
+.auth-field input{width:100%;height:46px;padding:0 13px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--ink)}
+.auth-actions{display:grid;gap:9px;margin-top:20px}
+.auth-actions button{min-height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);font-weight:500}
+.auth-actions .auth-primary{background:var(--accent);border-color:var(--accent);color:var(--onpine)}
+.auth-actions button:hover{border-color:var(--line2);background:var(--hover)}
+.auth-actions .auth-primary:hover{background:var(--pine-hover);border-color:var(--pine-hover)}
+.auth-switch{margin-top:15px;text-align:center;color:var(--muted);font-size:.82rem}
+.auth-switch button{border:0;background:none;color:var(--accent);padding:0;font:inherit;cursor:pointer}
+.auth-msg{min-height:22px;margin-top:13px;font-size:.82rem;color:var(--muted)}
+.auth-msg.error{color:var(--over)}
+.auth-msg.ok{color:var(--accent)}
+.account{display:flex;align-items:center;gap:8px;margin-left:6px}
+.account-email{max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:.78rem}
+.logoutbtn{height:36px;padding:0 11px;border:1px solid var(--line);background:transparent;border-radius:var(--r-ctl);color:var(--muted);font-size:.8rem}
+.logoutbtn:hover{border-color:var(--line2);background:var(--surface);color:var(--ink)}
+.sync-status{font-size:.72rem;color:var(--faint);margin-top:8px}
+@media(max-width:959px){.account{width:100%;margin-left:0}.account-email{max-width:calc(100vw - 110px)}}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="auth-gate" id="authGate">
+  <div class="auth-card">
+    <div class="auth-brand">Daily Spending Tracker</div>
+    <div class="auth-title" id="authTitle">Masuk ke akun</div>
+    <p class="auth-sub" id="authSub">Data pengeluaranmu tersimpan di cloud dan bisa dipakai di HP, Mac, atau perangkat lain dengan akun yang sama.</p>
+    <form id="authForm" autocomplete="on">
+      <div class="auth-field">
+        <label for="authEmail">Email</label>
+        <input id="authEmail" type="email" autocomplete="email" placeholder="nama@email.com" required>
+      </div>
+      <div class="auth-field">
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password" autocomplete="current-password" minlength="6" placeholder="Minimal 6 karakter" required>
+      </div>
+      <div class="auth-actions">
+        <button class="auth-primary" id="authSubmit" type="submit">Masuk</button>
+      </div>
+      <p class="auth-msg" id="authMsg" role="status" aria-live="polite"></p>
+    </form>
+    <div class="auth-switch"><span id="authSwitchText">Belum punya akun?</span> <button type="button" id="authSwitch">Buat akun</button></div>
+  </div>
+</div>
+
+<div class="wrap" id="app" hidden>
   <header class="top">
     <h1>Catatan Pengeluaran</h1>
     <div class="tools">
@@ -530,6 +580,10 @@ body {
         <button type="button" id="today" class="now" hidden>Bulan ini</button>
       </div>
       <button type="button" class="themebtn" id="theme" aria-label="Ganti tema gelap atau terang">☾ Gelap</button>
+      <div class="account" id="account" hidden>
+        <span class="account-email" id="userEmail"></span>
+        <button type="button" class="logoutbtn" id="logout">Keluar</button>
+      </div>
     </div>
   </header>
 
@@ -662,7 +716,15 @@ body {
 
 <script>
 (function(){
-  var KEY = 'pengeluaran:v1', THEME_KEY = 'pengeluaran:theme';
+  var THEME_KEY = 'pengeluaran:theme';
+  var SUPABASE_URL = 'https://jrpgsssxkguazsowgqdt.supabase.co';
+  var SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_1BlceJtFUcp5kUJTo9wCGg_b3MXAB9h';
+  var supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+    auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
+  });
+  var currentUser = null;
+  var saveChain = Promise.resolve();
+  var authMode = 'login';
   var CATS = [['Makan','🍜'],['Transport','🚗'],['Belanja','🛍️'],['Nongkrong','☕'],['Hiburan','🎮'],['Tagihan','💳'],['Kesehatan','💊'],['Lainnya','📦']];
   var ICON = {}; CATS.forEach(function(c){ ICON[c[0]] = c[1]; });
   var OLDCAT = { 'Makan & minum':'Makan', 'Transportasi':'Transport' };
@@ -694,23 +756,48 @@ body {
   function daysIn(y,m){ return new Date(y, m+1, 0).getDate(); }
   function monthName(y,m,style){ return new Date(y,m,1).toLocaleDateString('id-ID',{month:style}); }
 
-  /* ---------- penyimpanan ---------- */
-  function load(){
-    try {
-      var raw = localStorage.getItem(KEY);
-      if (raw) {
-        var d = JSON.parse(raw);
-        if (d && Array.isArray(d.items)) {
-          state.items = d.items.map(function(i){ i.cat = fixCat(i.cat); return i; });
-          state.budget = Number(d.budget) || 0;
-          state.lastBackup = d.lastBackup || '';
-        }
-      }
-    } catch(e) { /* penyimpanan tidak tersedia */ }
+  /* ---------- penyimpanan cloud ---------- */
+  async function loadCloud(){
+    if (!currentUser) return false;
+    var result = await supabaseClient
+      .from('spending_data')
+      .select('items,budget,last_backup,updated_at')
+      .eq('user_id', currentUser.id)
+      .maybeSingle();
+    if (result.error) {
+      throw result.error;
+    }
+    var d = result.data;
+    if (d) {
+      state.items = Array.isArray(d.items) ? d.items.map(function(i){ i.cat = fixCat(i.cat); return i; }) : [];
+      state.budget = Number(d.budget) || 0;
+      state.lastBackup = d.last_backup || '';
+    } else {
+      state.items = [];
+      state.budget = 0;
+      state.lastBackup = '';
+      await save();
+    }
+    return true;
   }
   function save(){
-    try { localStorage.setItem(KEY, JSON.stringify(state)); }
-    catch(e) { toast('Data tidak bisa disimpan di browser ini. Buat backup agar tidak hilang.'); }
+    if (!currentUser) return Promise.resolve();
+    var snapshot = {
+      user_id: currentUser.id,
+      items: state.items,
+      budget: Number(state.budget) || 0,
+      last_backup: state.lastBackup || '',
+      updated_at: new Date().toISOString()
+    };
+    saveChain = saveChain.then(function(){
+      return supabaseClient.from('spending_data').upsert(snapshot, { onConflict: 'user_id' });
+    }).then(function(result){
+      if (result.error) throw result.error;
+    }).catch(function(err){
+      console.error('Cloud save error:', err);
+      toast('Gagal menyimpan ke cloud. Cek koneksi internet.');
+    });
+    return saveChain;
   }
 
   /* ---------- pesan ---------- */
@@ -1157,6 +1244,106 @@ body {
     if (b.getAttribute('data-act') === 'edit') startEdit(id); else askDelete(id);
   });
 
+  /* ---------- autentikasi ---------- */
+  function setAuthMessage(text, kind){
+    var el = $('authMsg');
+    el.textContent = text || '';
+    el.className = 'auth-msg' + (kind ? ' ' + kind : '');
+  }
+  function setAuthMode(mode){
+    authMode = mode;
+    var login = mode === 'login';
+    $('authTitle').textContent = login ? 'Masuk ke akun' : 'Buat akun';
+    $('authSub').textContent = login
+      ? 'Data pengeluaranmu tersimpan di cloud dan bisa dipakai di HP, Mac, atau perangkat lain dengan akun yang sama.'
+      : 'Buat akun untuk menyimpan data pengeluaranmu dan menyinkronkannya di semua perangkat.';
+    $('authSubmit').textContent = login ? 'Masuk' : 'Daftar';
+    $('authSwitchText').textContent = login ? 'Belum punya akun?' : 'Sudah punya akun?';
+    $('authSwitch').textContent = login ? 'Buat akun' : 'Masuk';
+    $('authPassword').autocomplete = login ? 'current-password' : 'new-password';
+    setAuthMessage('', '');
+  }
+  function showAuth(){
+    $('authGate').hidden = false;
+    $('app').hidden = true;
+    $('account').hidden = true;
+  }
+  async function showApp(session){
+    currentUser = session.user;
+    $('authGate').hidden = true;
+    $('app').hidden = false;
+    $('account').hidden = false;
+    $('userEmail').textContent = currentUser.email || 'Akun';
+    setAuthMessage('', '');
+    try {
+      await loadCloud();
+      render();
+    } catch(err) {
+      console.error(err);
+      toast('Gagal mengambil data dari cloud. Coba refresh.');
+      render();
+    }
+  }
+  $('authSwitch').onclick = function(){
+    setAuthMode(authMode === 'login' ? 'signup' : 'login');
+    $('authEmail').focus();
+  };
+  $('authForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var email = $('authEmail').value.trim();
+    var password = $('authPassword').value;
+    if (!email || password.length < 6) {
+      setAuthMessage('Masukkan email yang valid dan password minimal 6 karakter.', 'error');
+      return;
+    }
+    $('authSubmit').disabled = true;
+    setAuthMessage(authMode === 'login' ? 'Memproses login…' : 'Membuat akun…', '');
+    try {
+      if (authMode === 'login') {
+        var loginResult = await supabaseClient.auth.signInWithPassword({ email: email, password: password });
+        if (loginResult.error) throw loginResult.error;
+        await showApp(loginResult.data.session);
+      } else {
+        var signupResult = await supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+          options: { emailRedirectTo: window.location.href.split('#')[0] }
+        });
+        if (signupResult.error) throw signupResult.error;
+        if (signupResult.data.session) {
+          await showApp(signupResult.data.session);
+        } else {
+          setAuthMessage('Akun berhasil dibuat. Cek email untuk konfirmasi, lalu login.', 'ok');
+          setAuthMode('login');
+          $('authEmail').value = email;
+          $('authPassword').value = '';
+        }
+      }
+    } catch(err) {
+      console.error(err);
+      var msg = err && err.message ? err.message : 'Terjadi kesalahan.';
+      setAuthMessage(msg, 'error');
+    } finally {
+      $('authSubmit').disabled = false;
+    }
+  });
+  $('logout').onclick = async function(){
+    await save();
+    await supabaseClient.auth.signOut();
+    currentUser = null;
+    state = { items: [], budget: 0, lastBackup: '' };
+    showAuth();
+    setAuthMode('login');
+    $('authPassword').value = '';
+  };
+  supabaseClient.auth.onAuthStateChange(function(event, session){
+    if (event === 'SIGNED_OUT') {
+      currentUser = null;
+      state = { items: [], budget: 0, lastBackup: '' };
+      showAuth();
+    }
+  });
+
   /* ---------- tema ---------- */
   function applyTheme(t){
     if (t === 'light') document.documentElement.setAttribute('data-theme','light'); else document.documentElement.removeAttribute('data-theme');
@@ -1215,8 +1402,26 @@ body {
     rd.readAsText(f);
   };
 
-  load(); render();
+  async function boot(){
+    setAuthMode('login');
+    try {
+      var sessionResult = await supabaseClient.auth.getSession();
+      if (sessionResult.error) throw sessionResult.error;
+      if (sessionResult.data.session) {
+        await showApp(sessionResult.data.session);
+      } else {
+        showAuth();
+      }
+    } catch(err) {
+      console.error(err);
+      showAuth();
+      setAuthMessage('Koneksi ke layanan login gagal. Periksa koneksi internet dan konfigurasi Supabase.', 'error');
+    }
+  }
+  boot();
 })();
 </script>
+
+
 </body>
 </html>
