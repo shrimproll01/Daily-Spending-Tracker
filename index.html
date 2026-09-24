@@ -2048,6 +2048,41 @@ body {
 @media (max-width:700px){
   .auth-foot{margin-top:6px!important;}
 }
+
+/* FINAL MOBILE OAUTH ICON FIX — prevent Google SVG clipping and optical misalignment */
+.auth-oauth-top .oauth-btn .oauth-content{overflow:visible!important;line-height:1!important}
+.auth-oauth-top .oauth-btn .oauth-icon,
+.auth-oauth-top .oauth-btn .apple-wrap{
+  flex:0 0 25px!important;width:25px!important;height:25px!important;
+  min-width:25px!important;min-height:25px!important;overflow:visible!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  line-height:0!important;box-sizing:border-box!important;
+}
+.auth-oauth-top .oauth-btn .oauth-icon.google{width:25px!important;height:25px!important}
+.auth-oauth-top .oauth-btn .oauth-icon.google svg{
+  display:block!important;width:25px!important;height:25px!important;
+  min-width:25px!important;min-height:25px!important;overflow:visible!important;flex:none!important;
+}
+.auth-oauth-top .oauth-btn .apple-svg{
+  display:block!important;width:24px!important;height:24px!important;
+  min-width:24px!important;min-height:24px!important;overflow:visible!important;flex:none!important;
+  transform:translateY(-0.35px)!important;
+}
+@media (max-width:700px){
+  .auth-oauth-top .oauth-btn .oauth-icon,
+  .auth-oauth-top .oauth-btn .apple-wrap{
+    flex:0 0 22px!important;width:22px!important;height:22px!important;
+    min-width:22px!important;min-height:22px!important;
+  }
+  .auth-oauth-top .oauth-btn .oauth-icon.google{width:22px!important;height:22px!important}
+  .auth-oauth-top .oauth-btn .oauth-icon.google svg{
+    width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;
+  }
+  .auth-oauth-top .oauth-btn .apple-svg{
+    width:21px!important;height:21px!important;min-width:21px!important;min-height:21px!important;
+    transform:translateY(-0.3px)!important;
+  }
+}
 </style>
 </head>
 <body>
@@ -2996,19 +3031,21 @@ body {
           password: password,
           options: { emailRedirectTo: window.location.href.split('#')[0], data: { first_name: $('authFirstName').value.trim(), last_name: $('authLastName').value.trim() } }
         });
-        if (signupResult.error) throw signupResult.error;
-        if (signupResult.data.session) {
+
+        // With Supabase 'Confirm email' disabled, a new account returns a session
+        // and is immediately signed in. If the email already belongs to an account,
+        // fall back to signing in with the same credentials so users don't get
+        // stuck in a manual confirmation/login loop.
+        if (!signupResult.error && signupResult.data && signupResult.data.session) {
           await showApp(signupResult.data.session);
+        } else if (signupResult.error && /already registered|user already exists/i.test(signupResult.error.message || '')) {
+          var existingLogin = await supabaseClient.auth.signInWithPassword({ email: email, password: password });
+          if (existingLogin.error) throw existingLogin.error;
+          await showApp(existingLogin.data.session);
+        } else if (signupResult.error) {
+          throw signupResult.error;
         } else {
           setAuthMessage(authCopy[authLang].signupOk, 'ok');
-          setAuthMode('login');
-          $('authEmail').value = email;
-          $('authPassword').value = '';
-          $('authPassword').type = 'password';
-          $('passwordToggle').classList.remove('is-visible');
-          $('passwordToggle').setAttribute('aria-pressed','false');
-          $('passwordToggle').setAttribute('aria-label','Tampilkan password');
-          $('passwordToggle').setAttribute('title','Tampilkan password');
         }
       }
     } catch(err) {
