@@ -3857,7 +3857,7 @@ html, body {
     this.disabled = true;
     setRecoveryMessage(c.updating,'','recoveryUpdateMsg');
     try{
-      var updateResult = await supabaseClient.auth.updateUser({password:pw});
+      var updateResult = await supabaseClient.auth.updateUser({ password: pw });
       if (updateResult.error) throw updateResult.error;
       await supabaseClient.auth.signOut();
       $('authEmail').value = lastResetEmail || '';
