@@ -1757,6 +1757,101 @@ body {
 /* Final desktop step alignment */
 @media (min-width:701px){.auth-steps{margin-top:-0.5cm!important;}}
 @media (max-width:700px){.auth-steps{margin-top:16px!important;}}
+
+/* ================= APP HEADER / PROFILE / SETTINGS ================= */
+.top{position:relative;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:nowrap;margin-bottom:34px;min-width:0}
+.top h1{flex:1 1 auto;min-width:0;font-size:clamp(1.25rem,2.2vw,1.55rem);letter-spacing:-.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{display:flex;align-items:center;gap:12px;flex:0 0 auto;min-width:0;flex-wrap:nowrap}
+.nav{flex:0 0 auto}
+.nav button,.themebtn{height:40px;border-radius:12px}
+.nav button{width:40px}
+.nav .label{min-width:138px;font-size:.94rem}
+.nav .now{height:40px}
+.legacy-control{display:none!important}
+.app-header-actions{display:flex;align-items:center;gap:8px;margin-left:2px}
+.app-icon-btn,.profile-trigger{position:relative;width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--muted);transition:background .16s,border-color .16s,color .16s,transform .16s}
+.app-icon-btn:hover,.profile-trigger:hover,.app-icon-btn[aria-expanded="true"],.profile-trigger[aria-expanded="true"]{background:var(--surface);border-color:var(--line2);color:var(--ink);transform:translateY(-1px)}
+.app-icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round}
+.profile-trigger{padding:0;overflow:hidden;border-color:var(--line2);background:rgba(255,255,255,.025)}
+.pfp-art{display:block;width:100%;height:100%}
+.pfp-halo{fill:rgba(245,158,91,.10);stroke:currentColor;stroke-opacity:.25;stroke-width:1}
+.pfp-hair{fill:currentColor;fill-opacity:.82}
+.pfp-face{fill:var(--bg);stroke:currentColor;stroke-opacity:.48;stroke-width:1.15}
+.pfp-line{fill:none;stroke:currentColor;stroke-opacity:.85;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ui-layer{position:fixed;inset:0;z-index:90;pointer-events:none}
+.ui-layer:not([hidden]){display:block}
+.ui-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.22);backdrop-filter:blur(2px);opacity:0;transition:opacity .18s;pointer-events:none}
+.ui-layer.is-open .ui-backdrop{opacity:1;pointer-events:auto}
+.glass-panel{position:absolute;top:14px;right:14px;width:min(380px,calc(100vw - 28px));border:1px solid rgba(255,255,255,.11);border-radius:20px;background:color-mix(in srgb,var(--surface) 88%,transparent);box-shadow:0 22px 55px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.05) inset;backdrop-filter:blur(22px) saturate(135%);-webkit-backdrop-filter:blur(22px) saturate(135%);padding:18px;transform:translateY(-8px) scale(.985);opacity:0;transition:transform .18s ease,opacity .18s ease;pointer-events:none}
+.ui-layer.profile-open #profilePanel,.ui-layer.settings-open #settingsPanel{opacity:1;transform:none;pointer-events:auto}
+.ui-layer.profile-open #profilePanel{animation:panelIn .18s ease both}
+.ui-layer.settings-open #settingsPanel{animation:panelIn .18s ease both}
+@keyframes panelIn{from{opacity:0;transform:translateY(-8px) scale(.985)}to{opacity:1;transform:none}}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.panel-kicker{display:block;color:var(--faint);font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;margin-bottom:5px}
+.panel-head h2{font-size:1.12rem;letter-spacing:-.02em;font-weight:650}
+.panel-close{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--muted);font-size:1.25rem;line-height:1}
+.panel-close:hover{background:var(--hover);color:var(--ink);border-color:var(--line2)}
+.profile-card{border:1px solid var(--line);border-radius:17px;padding:20px;text-align:center;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))}
+.profile-avatar-large{width:86px;height:86px;margin:0 auto 14px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:50%;background:rgba(255,255,255,.02);color:var(--ink);box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.profile-name{font-size:1rem;font-weight:650;letter-spacing:-.01em}
+.profile-email{margin-top:3px;color:var(--muted);font-size:.79rem;word-break:break-word}
+.profile-status{margin-top:11px;display:inline-flex;align-items:center;gap:7px;color:var(--faint);font-size:.72rem}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--glow)}
+.panel-actions{display:grid;gap:8px;margin-top:12px}
+.panel-action{width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) 18px;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);border-radius:14px;background:transparent;padding:12px 13px;color:var(--ink);transition:background .15s,border-color .15s}
+.panel-action:hover{background:var(--hover);border-color:var(--line2)}
+.panel-action-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:var(--surface2);color:var(--muted);font-size:.9rem}
+.panel-action b{display:block;font-size:.82rem;font-weight:600}.panel-action small{display:block;margin-top:2px;color:var(--faint);font-size:.72rem}
+.panel-chevron{color:var(--faint);font-size:1.05rem;text-align:center}
+.danger-action{color:var(--over)}
+.danger-action .panel-action-icon{color:var(--over)}
+.settings-panel{padding:18px}
+.settings-section{padding:14px 0;border-top:1px solid var(--line)}
+.settings-section:first-of-type{border-top:0;padding-top:0}
+.setting-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--ink);text-decoration:none}
+.setting-heading b{display:block;font-size:.82rem;font-weight:650}.setting-heading span{display:block;margin-top:3px;color:var(--faint);font-size:.72rem}
+.theme-switcher{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px;padding:4px;border:1px solid var(--line);background:var(--surface2);border-radius:13px}
+.theme-choice{min-width:0;height:40px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--muted);font-size:.78rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px}
+.theme-choice:hover{color:var(--ink)}
+.theme-choice.active{background:var(--surface);border-color:var(--line2);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.10)}
+.theme-choice-icon{font-size:.9rem;line-height:1}
+.settings-select{margin-top:11px;width:100%;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--ink);padding:0 12px;outline:none}
+.settings-select:focus{border-color:var(--line2);box-shadow:0 0 0 3px var(--glow)}
+.full-action{width:100%;height:44px;margin-top:11px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 12px;border:1px solid rgba(239,107,107,.20);border-radius:12px;background:rgba(239,107,107,.045);color:var(--over);font-size:.8rem;font-weight:650}
+.full-action:hover{background:rgba(239,107,107,.075);border-color:rgba(239,107,107,.32)}
+.settings-foot{margin-top:2px;color:var(--faint);font-size:.68rem;line-height:1.45}
+@media (max-width:1100px) and (min-width:861px){.top{gap:16px}.tools{gap:9px}.nav .label{min-width:118px}.nav .now{padding:0 9px}}
+@media (max-width:860px){
+  .top{margin-bottom:28px;gap:12px;align-items:center}
+  .top h1{font-size:1.22rem}
+  .tools{gap:8px}
+  .nav .label{min-width:108px;font-size:.87rem}
+  .nav button,.app-icon-btn,.profile-trigger{width:38px;height:38px}
+  .nav .now{height:38px;padding:0 9px}
+  .ui-layer{z-index:100}
+  .glass-panel{top:auto;right:10px;bottom:10px;width:calc(100vw - 20px);max-width:520px;border-radius:22px;padding:17px;transform:translateY(12px) scale(.985)}
+  .ui-layer.profile-open #profilePanel,.ui-layer.settings-open #settingsPanel{transform:none}
+}
+@media (max-width:700px){
+  .top{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+  .top h1{text-align:left}
+  .tools{width:100%;justify-content:space-between}
+  .nav{min-width:0;flex:1 1 auto}
+  .nav .label{min-width:0;flex:1 1 auto}
+  .nav .now{display:none!important}
+  .app-header-actions{margin-left:2px}
+}
+@media (max-width:430px){
+  .wrap{padding-left:15px;padding-right:15px}
+  .top h1{font-size:1.16rem}
+  .nav .label{font-size:.83rem}
+  .nav button,.app-icon-btn,.profile-trigger{width:36px;height:36px;border-radius:11px}
+}
+@media (prefers-reduced-motion:reduce){.glass-panel,.ui-backdrop{transition:none!important}.ui-layer.profile-open #profilePanel,.ui-layer.settings-open #settingsPanel{animation:none!important}}
+
+
+body.ui-panel-open{overflow:hidden}
 </style>
 
 <style>
@@ -2776,42 +2871,154 @@ html, body {
 </div>
 <div class="wrap" id="app" hidden>
   <header class="top">
-    <h1>Catatan Pengeluaran</h1>
+    <h1 id="appTitle">Catatan Pengeluaran</h1>
     <div class="tools">
       <div class="nav">
         <button type="button" id="prev" aria-label="Bulan sebelumnya">‹</button>
         <div class="label" id="monthLabel" aria-live="polite"></div>
         <button type="button" id="next" aria-label="Bulan berikutnya">›</button>
-        <button type="button" id="today" class="now" hidden>Bulan ini</button>
+        <button type="button" class="now" id="today" hidden>Bulan ini</button>
       </div>
-      <button type="button" class="themebtn" id="theme" aria-label="Ganti tema gelap atau terang">☾ Gelap</button>
-      <div class="account" id="account" hidden>
+
+      <div class="app-header-actions">
+        <button type="button" class="app-icon-btn" id="settingsBtn" aria-label="Buka pengaturan" aria-expanded="false" aria-controls="settingsPanel">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <button type="button" class="profile-trigger" id="profileBtn" aria-label="Buka profil" aria-expanded="false" aria-controls="profilePanel">
+          <svg class="pfp-art" viewBox="0 0 64 64" aria-hidden="true">
+            <circle class="pfp-halo" cx="32" cy="32" r="28"/>
+            <path class="pfp-hair" d="M19 28c1-10 8-16 14-16 8 0 14 6 14 16v4H19z"/>
+            <circle class="pfp-face" cx="32" cy="32" r="12.5"/>
+            <path class="pfp-line" d="M26 34.5c1.7 1.8 4 2.7 6 2.7s4.3-.9 6-2.7M27 30h.1M37 30h.1"/>
+            <path class="pfp-line" d="M23 42c2.5 4.5 5.5 6.5 9 6.5s6.5-2 9-6.5"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Legacy controls stay in the DOM so existing auth/theme/logout logic remains compatible. -->
+      <button type="button" class="themebtn legacy-control" id="theme" aria-label="Ganti tema gelap atau terang">☾ Gelap</button>
+      <div class="account legacy-control" id="account" hidden>
         <span class="account-email" id="userEmail"></span>
         <button type="button" class="logoutbtn" id="logout">Keluar</button>
       </div>
     </div>
   </header>
 
+  <div class="ui-layer" id="uiLayer" hidden>
+    <div class="ui-backdrop" id="uiBackdrop"></div>
+
+    <section class="glass-panel profile-panel" id="profilePanel" aria-labelledby="profilePanelTitle" hidden>
+      <div class="panel-head">
+        <div>
+          <span class="panel-kicker" id="profilePanelKicker">Akun</span>
+          <h2 id="profilePanelTitle">Profil</h2>
+        </div>
+        <button type="button" class="panel-close" id="profileClose" aria-label="Tutup">×</button>
+      </div>
+      <div class="profile-card">
+        <div class="profile-avatar-large" aria-hidden="true">
+          <svg class="pfp-art" viewBox="0 0 64 64">
+            <circle class="pfp-halo" cx="32" cy="32" r="28"/>
+            <path class="pfp-hair" d="M19 28c1-10 8-16 14-16 8 0 14 6 14 16v4H19z"/>
+            <circle class="pfp-face" cx="32" cy="32" r="12.5"/>
+            <path class="pfp-line" d="M26 34.5c1.7 1.8 4 2.7 6 2.7s4.3-.9 6-2.7M27 30h.1M37 30h.1"/>
+            <path class="pfp-line" d="M23 42c2.5 4.5 5.5 6.5 9 6.5s6.5-2 9-6.5"/>
+          </svg>
+        </div>
+        <div class="profile-name" id="profileName">Saldo</div>
+        <div class="profile-email" id="profileEmail">-</div>
+        <div class="profile-status"><span class="status-dot"></span><span id="profileStatus">Akun tersambung</span></div>
+      </div>
+      <div class="panel-actions">
+        <button type="button" class="panel-action" id="profileSettings">
+          <span class="panel-action-icon">⌘</span>
+          <span><b id="profileSettingsText">Pengaturan</b><small id="profileSettingsSub">Tema, bahasa, dan akun</small></span>
+          <span class="panel-chevron">›</span>
+        </button>
+        <button type="button" class="panel-action danger-action" id="profileLogout">
+          <span class="panel-action-icon">↪</span>
+          <span><b id="profileLogoutText">Keluar</b><small id="profileLogoutSub">Keluar dari akun ini</small></span>
+          <span class="panel-chevron">›</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="glass-panel settings-panel" id="settingsPanel" aria-labelledby="settingsTitle" hidden>
+      <div class="panel-head">
+        <div>
+          <span class="panel-kicker" id="settingsKicker">Preferensi</span>
+          <h2 id="settingsTitle">Pengaturan</h2>
+        </div>
+        <button type="button" class="panel-close" id="settingsClose" aria-label="Tutup">×</button>
+      </div>
+
+      <div class="settings-section">
+        <div class="setting-heading">
+          <div>
+            <b id="appearanceLabel">Tampilan</b>
+            <span id="appearanceSub">Pilih tema untuk Saldo</span>
+          </div>
+        </div>
+        <div class="theme-switcher" role="group" aria-label="Tampilan">
+          <button type="button" class="theme-choice" id="themeDarkChoice">
+            <span class="theme-choice-icon">☾</span><span id="themeDarkText">Gelap</span>
+          </button>
+          <button type="button" class="theme-choice" id="themeLightChoice">
+            <span class="theme-choice-icon">☀</span><span id="themeLightText">Terang</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <label class="setting-heading" for="appLanguage">
+          <div>
+            <b id="languageLabel">Bahasa</b>
+            <span id="languageSub">Bahasa antarmuka Saldo</span>
+          </div>
+        </label>
+        <select class="settings-select" id="appLanguage" aria-label="Bahasa">
+          <option value="id">Bahasa Indonesia</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+
+      <div class="settings-section">
+        <div class="setting-heading">
+          <div>
+            <b id="accountSettingsLabel">Akun</b>
+            <span id="accountSettingsSub">Kelola sesi akun</span>
+          </div>
+        </div>
+        <button type="button" class="full-action" id="settingsLogout">
+          <span id="settingsLogoutText">Keluar</span>
+          <span>↪</span>
+        </button>
+      </div>
+
+      <div class="settings-foot" id="settingsFoot">Preferensi disimpan otomatis di perangkat ini.</div>
+    </section>
+  </div>
+
   <div class="layout">
     <main class="main">
       <section aria-label="Ringkasan bulan">
-        <span class="eyebrow">Total pengeluaran</span>
+        <span class="eyebrow" id="totalEyebrow">Total pengeluaran</span>
         <p class="total" id="total"><span class="cur">Rp</span><span class="num" id="totalNum">0</span></p>
         <p class="delta" id="delta" hidden></p>
         <p class="sub" id="totalSub"></p>
         <div class="today-row" id="todayRow" hidden>
-          <span class="eyebrow">Hari ini</span>
+          <span class="eyebrow" id="todayEyebrow">Hari ini</span>
           <b id="todayAmt">Rp 0</b>
           <span class="cnt" id="todayCnt">0 transaksi</span>
         </div>
         <div class="stats">
-          <div><b id="avg">-</b><span>per hari</span></div>
+          <div><b id="avg">-</b><span id="avgLabel">per hari</span></div>
           <div><b id="maxDay">-</b><span id="maxLbl">tertinggi</span></div>
-          <div><b id="count">0</b><span>catatan</span></div>
+          <div><b id="count">0</b><span id="countLabel">catatan</span></div>
         </div>
         <div class="budget">
           <div class="budget-head">
-            <span class="lbl">Budget bulanan</span>
+            <span class="lbl" id="budgetLabel">Budget bulanan</span>
             <button type="button" class="linkbtn" id="budgetEditBtn" hidden>Ubah</button>
           </div>
           <div id="budgetInfo"></div>
@@ -2824,15 +3031,15 @@ html, body {
 
       <section class="sec" aria-label="Grafik harian">
         <div class="head">
-          <h2>Pengeluaran per hari</h2>
+          <h2 id="chartTitle">Pengeluaran per hari</h2>
           <button type="button" class="chip" id="clearDay" hidden>Tampilkan semua hari</button>
         </div>
         <div class="bars" id="bars"></div>
         <div class="days" id="daysRow"></div>
         <div class="empty-state chart-empty" id="chartEmpty" hidden>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 20V12M12 20V5M19 20v-5"/></svg>
-          <b>Belum ada pengeluaran</b>
-          <span>Tambahkan transaksi untuk melihat grafik pengeluaran harian.</span>
+          <b id="chartEmptyTitle">Belum ada pengeluaran</b>
+          <span id="chartEmptyText">Tambahkan transaksi untuk melihat grafik pengeluaran harian.</span>
         </div>
         <p class="hint" id="chartHint" style="margin-top:12px">Klik satu hari untuk melihat catatannya.</p>
       </section>
@@ -2856,7 +3063,7 @@ html, body {
         </div>
         <form id="form" autocomplete="off">
           <div class="f">
-            <label for="amount">Jumlah</label>
+            <label for="amount" id="amountLabel">Jumlah</label>
             <div class="money"><span>Rp</span><input id="amount" inputmode="numeric" placeholder="35.000" required></div>
             <div class="quick" id="quick" aria-label="Nominal cepat">
               <button type="button" data-q="25000" aria-pressed="false">Rp25K</button>
@@ -2869,8 +3076,8 @@ html, body {
             <span class="lb" id="catLabel">Kategori</span>
             <div class="catpick" id="catpick" role="radiogroup" aria-labelledby="catLabel"></div>
           </div>
-          <div class="f"><label for="date">Tanggal</label><input type="date" id="date" required></div>
-          <div class="f"><label for="noteIn">Catatan (opsional)</label><input id="noteIn" maxlength="80" placeholder="Contoh: makan siang"></div>
+          <div class="f"><label for="date" id="dateLabel">Tanggal</label><input type="date" id="date" required></div>
+          <div class="f"><label for="noteIn" id="noteLabel">Catatan (opsional)</label><input id="noteIn" maxlength="80" placeholder="Contoh: makan siang"></div>
           <p class="hint" id="msg" role="status" aria-live="polite"></p>
           <div class="btns">
             <button class="primary" id="submitBtn" type="submit">Tambahkan</button>
@@ -2880,7 +3087,7 @@ html, body {
       </section>
 
       <section aria-label="Per kategori">
-        <h2>Per kategori</h2>
+        <h2 id="categoryTitle">Per kategori</h2>
         <div class="cats" id="cats"></div>
       </section>
 
@@ -2962,7 +3169,7 @@ html, body {
   function parseDate(s){ var p = s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
   function digits(s){ return Number(String(s).replace(/\D/g,'')) || 0; }
   function daysIn(y,m){ return new Date(y, m+1, 0).getDate(); }
-  function monthName(y,m,style){ return new Date(y,m,1).toLocaleDateString('id-ID',{month:style}); }
+  function monthName(y,m,style){ return new Date(y,m,1).toLocaleDateString(appLang === 'en' ? 'en-US' : 'id-ID',{month:style}); }
 
   /* ---------- penyimpanan cloud ---------- */
   async function loadCloud(){
@@ -3047,7 +3254,7 @@ html, body {
   var todayIso = iso(now.getFullYear(), now.getMonth(), now.getDate());
   var yest = new Date(now); yest.setDate(yest.getDate() - 1);
   var yestIso = iso(yest.getFullYear(), yest.getMonth(), yest.getDate());
-  function relLabel(dt){ return dt === todayIso ? 'Hari ini' : (dt === yestIso ? 'Kemarin' : ''); }
+  function relLabel(dt){ return dt === todayIso ? T('today') : (dt === yestIso ? T('yesterday') : ''); }
   // jam hanya ditampilkan untuk catatan yang dibuat pada tanggal yang sama dengan tanggal catatannya
   function timeOf(i){
     if (i.id > 1e12) {
@@ -3090,17 +3297,17 @@ html, body {
     var isFuture = (y > now.getFullYear()) || (y === now.getFullYear() && m > now.getMonth());
     var elapsed = isCur ? now.getDate() : (isFuture ? 0 : dim);
 
-    $('monthLabel').textContent = new Date(y,m,1).toLocaleDateString('id-ID',{month:'long',year:'numeric'});
+    $('monthLabel').textContent = new Date(y,m,1).toLocaleDateString(appLang === 'en' ? 'en-US' : 'id-ID',{month:'long',year:'numeric'});
     $('today').hidden = isCur;
     setTotal(total, y + '-' + m);
-    $('totalSub').textContent = items.length ? '' : 'Belum ada catatan di bulan ini.';
+    $('totalSub').textContent = items.length ? '' : T('monthEmpty');
     $('count').textContent = items.length;
     $('avg').textContent = elapsed && total ? approx(total/elapsed) : '-';
     var mx = Math.max.apply(null, daily);
     if (mx > 0) {
       $('maxDay').textContent = approx(mx);
-      $('maxLbl').textContent = 'tertinggi · ' + (daily.indexOf(mx)+1) + ' ' + monthName(y,m,'short');
-    } else { $('maxDay').textContent = '-'; $('maxLbl').textContent = 'tertinggi'; }
+      $('maxLbl').textContent = T('highest') + ' · ' + (daily.indexOf(mx)+1) + ' ' + monthName(y,m,'short');
+    } else { $('maxDay').textContent = '-'; $('maxLbl').textContent = T('highest'); }
 
     renderDelta(y, m, isCur, daily);
     renderToday(isCur, items);
@@ -3124,9 +3331,9 @@ html, body {
     daily.forEach(function(v, idx){ if (!isCur || idx + 1 <= now.getDate()) cur += v; });
     if (!prev) { el.hidden = true; return; }
     el.hidden = false;
-    var lbl = ' dari bulan lalu' + (isCur ? ' (s/d tgl ' + cutoff + ')' : '');
+    var lbl = T('fromLast') + (isCur ? ' (' + T('till') + ' ' + cutoff + ')' : '');
     var diff = (cur - prev) / prev * 100;
-    if (Math.abs(diff) < 0.05) { el.className = 'delta'; el.innerHTML = 'Sama seperti bulan lalu' + (isCur ? '<small> (s/d tgl ' + cutoff + ')</small>' : ''); return; }
+    if (Math.abs(diff) < 0.05) { el.className = 'delta'; el.innerHTML = T('sameLast') + (isCur ? '<small> (' + T('till') + ' ' + cutoff + ')</small>' : ''); return; }
     el.className = 'delta ' + (diff > 0 ? 'up' : 'down');
     el.innerHTML = (diff > 0 ? '↑ ' : '↓ ') + pctFmt(diff) + '<small>' + lbl + '</small>';
   }
@@ -3137,7 +3344,7 @@ html, body {
     if (!isCur) return;
     var t = items.filter(function(i){ return i.date === todayIso; });
     $('todayAmt').textContent = rp(t.reduce(function(a,i){ return a + i.amount; }, 0));
-    $('todayCnt').textContent = t.length + ' transaksi';
+    $('todayCnt').textContent = t.length + ' ' + T('transaction');
   }
 
   function renderBudget(total, dim, elapsed){
@@ -3145,7 +3352,7 @@ html, body {
     if (document.activeElement !== $('budget')) $('budget').value = b ? num(b) : '';
     $('budgetEditBtn').hidden = !b;
     if (!b) {
-      box.innerHTML = '<button type="button" class="budget-empty" data-open-budget><span>Budget belum diatur</span><span class="go">Atur budget</span></button>';
+      box.innerHTML = '<button type="button" class="budget-empty" data-open-budget><span>' + T('budgetEmpty') + '</span><span class="go">' + T('setBudget') + '</span></button>';
       return;
     }
     var pct = total / b * 100;
@@ -3154,12 +3361,12 @@ html, body {
     var html = '<div class="budget-fig"><span>' + rp(total) + '<i>/</i>' + rp(b) + '</span><b class="pct ' + cls + '">' + pctFmt(pct) + '</b></div>' +
       '<div class="meter ' + cls + '" role="progressbar" aria-label="Pemakaian budget" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + Math.min(100, Math.round(pct)) + '"><i style="width:' + Math.min(100, pct).toFixed(1) + '%"></i></div>';
     if (left >= 0) {
-      html += '<p class="note">' + (pct >= 80 ? 'Hampir mencapai budget. ' : '') + 'Sisa ' + rp(left) + ' dari budget.';
+      html += '<p class="note">' + (pct >= 80 ? T('almost') : '') + T('remainder') + ' ' + rp(left) + ' ' + T('fromBudget');
       var daysLeft = dim - elapsed;
-      if (daysLeft > 0 && elapsed > 0) html += ' Bisa dipakai sekitar ' + rp(left / daysLeft) + ' per hari untuk ' + daysLeft + ' hari ke depan.';
+      if (daysLeft > 0 && elapsed > 0) html += ' ' + T('perDayBudget') + ' ' + rp(left / daysLeft) + ' ' + T('daysAhead') + ' ' + daysLeft + ' ' + T('days');
       html += '</p>';
     } else {
-      html += '<p class="note over-t">Melebihi budget sebesar ' + rp(-left) + '.</p>';
+      html += '<p class="note over-t">' + T('overBudget') + ' ' + rp(-left) + '.</p>';
     }
     box.innerHTML = html;
   }
@@ -3178,12 +3385,12 @@ html, body {
       var isToday = isCur && d === now.getDate();
       var isSel = view.day === d;
       var cls = 'bar' + (v > 0 ? ' has' : '') + (isToday ? ' today' : '') + (dailyBudget && v > dailyBudget ? ' high' : '') + (isSel ? ' sel' : '');
-      var label = d + ' ' + mLong + ': ' + (v ? rp(v) : 'tidak ada pengeluaran');
+      var label = d + ' ' + mLong + ': ' + (v ? rp(v) : T('noExpense'));
       h += '<button type="button" class="' + cls + '" data-d="' + d + '" data-tip="' + label + '" aria-label="' + label + '"><i style="height:' + (v / scale * 100).toFixed(1) + '%"></i></button>';
       var skip = (!isToday && !isSel && d !== 1 && d % 5 !== 0) ? ' skip' : '';
       r += '<span class="' + (isToday ? 'today' : '') + (isSel ? ' sel' : '') + skip + '">' + d + '</span>';
     }
-    if (dailyBudget) h += '<div class="limit" style="bottom:' + (dailyBudget / scale * 100).toFixed(1) + '%"><b>batas harian ' + rp(dailyBudget) + '</b></div>';
+    if (dailyBudget) h += '<div class="limit" style="bottom:' + (dailyBudget / scale * 100).toFixed(1) + '%"><b>' + T('dailyLimit') + ' ' + rp(dailyBudget) + '</b></div>';
     bars.innerHTML = h; row.innerHTML = r;
     var empty = (mx === 0);
     bars.hidden = empty; row.hidden = empty;
@@ -3208,15 +3415,15 @@ html, body {
     var list = $('list'), shown = filteredItems();
     var filtering = !!(view.q || view.cat);
     $('listTitle').textContent = view.day
-      ? 'Catatan tanggal ' + view.day + ' ' + monthName(view.y, view.m, 'long')
-      : 'Catatan bulan ini';
+      ? (appLang === 'en' ? 'Records for ' : 'Catatan tanggal ') + view.day + ' ' + monthName(view.y, view.m, 'long')
+      : T('list');
     var info = $('filterInfo');
     info.hidden = !filtering;
-    if (filtering) info.innerHTML = shown.length + ' catatan cocok · <button type="button" class="linkbtn" id="resetFilter">Hapus filter</button>';
+    if (filtering) info.innerHTML = shown.length + ' ' + T('match') + ' · <button type="button" class="linkbtn" id="resetFilter">' + T('removeFilter') + '</button>';
     if (!shown.length) {
-      var t = filtering ? ['Tidak ada catatan yang cocok', 'Coba kata kunci atau kategori lain.']
-        : (view.day ? ['Tidak ada pengeluaran di hari ini', 'Pilih hari lain di grafik, atau tambahkan transaksi baru.']
-        : ['Belum ada pengeluaran', 'Tambahkan transaksi pertama kamu untuk mulai melihat pola pengeluaran.']);
+      var t = filtering ? [T('noMatch'), T('noMatchSub')]
+        : (view.day ? [T('emptyDay'), T('emptyDaySub')]
+        : [T('emptyList'), T('emptyListSub')]);
       list.innerHTML = '<div class="empty-state"><b>' + t[0] + '</b><span>' + t[1] + '</span></div>';
       return;
     }
@@ -3225,7 +3432,7 @@ html, body {
     var dates = Object.keys(groups).sort().reverse();
     list.innerHTML = dates.map(function(dt){
       var g = groups[dt], sum = g.reduce(function(a,i){ return a + i.amount; }, 0);
-      var title = parseDate(dt).toLocaleDateString('id-ID',{day:'numeric',month:'long'});
+      var title = parseDate(dt).toLocaleDateString(appLang === 'en' ? 'en-US' : 'id-ID',{day:'numeric',month:'long'});
       return '<div class="day-h"><span class="eyebrow">' + title + '</span><span class="tot">' + rp(sum) + '</span></div>' +
         g.slice().sort(function(a,b){ return b.id - a.id; }).map(function(i){
           var parts = []; if (i.note) parts.push(esc(i.cat));
@@ -3242,7 +3449,7 @@ html, body {
   function renderCats(){
     var byCat = last.byCat, total = last.total;
     var keys = Object.keys(byCat).sort(function(a,b){ return byCat[b] - byCat[a]; });
-    if (!keys.length) { $('cats').innerHTML = '<p class="empty-inline">Kategori pengeluaran akan muncul setelah kamu mencatat transaksi.</p>'; return; }
+    if (!keys.length) { $('cats').innerHTML = '<p class="empty-inline">' + T('categoryEmpty') + '</p>'; return; }
     $('cats').innerHTML = keys.map(function(k){
       var p = total ? byCat[k] / total * 100 : 0, on = view.cat === k;
       return '<button type="button" class="cat' + (on ? ' on' : '') + '" data-cat="' + esc(k) + '" aria-pressed="' + on + '" title="Klik untuk memfilter catatan">' +
@@ -3257,13 +3464,13 @@ html, body {
     box.hidden = false;
     var keys = Object.keys(byCat).sort(function(a,b){ return byCat[b] - byCat[a]; });
     var top = keys[0];
-    var lines = ['<p class="lead">💡 Pengeluaran terbesar ' + (isCur ? 'bulan ini' : 'di bulan ini') + ' adalah <b>' + esc(top) + '</b>.</p>',
-      '<p>Rp' + num(byCat[top]) + ' · ' + Math.round(byCat[top] / total * 100) + '% dari total pengeluaran</p>'];
-    if (elapsed) lines.push('<p>Rata-rata pengeluaran harian kamu ' + rp(total / elapsed) + '.</p>');
+    var lines = ['<p class="lead">💡 ' + T('biggest') + ' ' + (isCur ? T('inMonth') : T('inThisMonth')) + ' <b>' + esc(top) + '</b>.</p>',
+      '<p>Rp' + num(byCat[top]) + ' · ' + Math.round(byCat[top] / total * 100) + '% ' + T('totalSpend') + '</p>'];
+    if (elapsed) lines.push('<p>' + T('dailyAverage') + ' ' + rp(total / elapsed) + '.</p>');
     if (isCur && elapsed >= 3 && elapsed < dim) {
       var proj = total / elapsed * dim;
-      var l = 'Dengan pola ini, total bulan ini sekitar ' + rp(proj) + '.';
-      if (state.budget && proj > state.budget) l += ' Itu melewati budget sekitar ' + rp(proj - state.budget) + '.';
+      var l = T('projection') + ' ' + rp(proj) + '.';
+      if (state.budget && proj > state.budget) l += ' ' + T('overBy') + ' ' + rp(proj - state.budget) + '.';
       lines.push('<p>' + l + '</p>');
     }
     $('insight').innerHTML = lines.join('');
@@ -3271,7 +3478,7 @@ html, body {
 
   function fmtLong(s){ return parseDate(s).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}); }
   function renderBackup(){
-    $('backupInfo').textContent = state.lastBackup ? 'Terakhir dicadangkan: ' + fmtLong(state.lastBackup) + '.' : (state.items.length ? 'Belum pernah dicadangkan.' : '');
+    $('backupInfo').textContent = state.lastBackup ? T('backupLast') + ': ' + fmtLong(state.lastBackup) + '.' : (state.items.length ? T('backupNever') : '');
   }
 
   /* ---------- kategori & filter ---------- */
@@ -3374,7 +3581,7 @@ html, body {
 
   function stopEdit(){
     editId = null;
-    $('formTitle').innerHTML = '<span class="plus">+</span>Tambah pengeluaran';
+    $('formTitle').innerHTML = '<span class="plus">+</span>' + T('add');
     $('submitBtn').textContent = 'Tambahkan';
     $('cancelEdit').hidden = true;
     $('amount').value = ''; $('noteIn').value = ''; syncQuick();
@@ -3431,7 +3638,7 @@ html, body {
     editId = it.id;
     $('amount').value = num(it.amount); syncQuick();
     $('date').value = it.date; setCat(it.cat); $('noteIn').value = it.note || '';
-    $('formTitle').textContent = 'Edit pengeluaran';
+    $('formTitle').textContent = appLang === 'en' ? 'Edit spending' : 'Edit pengeluaran';
     $('submitBtn').textContent = 'Simpan perubahan';
     $('cancelEdit').hidden = false;
     if (mobileMQ.matches) openSheet();
@@ -3778,16 +3985,19 @@ html, body {
   }
 
   function showAuth(){
+    if (typeof closeLayer === 'function') closeLayer();
     $('authGate').hidden = false;
     $('app').hidden = true;
     $('account').hidden = true;
   }
   async function showApp(session){
     currentUser = session.user;
+    applyAppLanguage();
     $('authGate').hidden = true;
     $('app').hidden = false;
     $('account').hidden = false;
-    $('userEmail').textContent = currentUser.email || 'Akun';
+    $('userEmail').textContent = currentUser.email || T('signedFallback');
+    $('profileEmail').textContent = currentUser.email || T('signedFallback');
     setAuthMessage('', '');
     try {
       await loadCloud();
@@ -3977,6 +4187,106 @@ html, body {
     theme = theme === 'light' ? 'dark' : 'light'; applyTheme(theme);
     try { localStorage.setItem(THEME_KEY, theme); } catch(e) {}
   };
+
+  /* ---------- app UI / profile / settings ---------- */
+  var APP_LANG_KEY = 'saldo:app-language';
+  var appLang = 'id';
+  try { appLang = localStorage.getItem(APP_LANG_KEY) || 'id'; } catch(e) {}
+  if (appLang !== 'id' && appLang !== 'en') appLang = 'id';
+
+  var appCopy = {
+    id:{
+      title:'Catatan Pengeluaran', previous:'Bulan sebelumnya', next:'Bulan berikutnya', thisMonth:'Bulan ini',
+      total:'Total pengeluaran', today:'Hari ini', yesterday:'Kemarin', perDay:'per hari', highest:'tertinggi', records:'catatan',
+      monthlyBudget:'Budget bulanan', edit:'Ubah', save:'Simpan', chart:'Pengeluaran per hari', showAll:'Tampilkan semua hari',
+      chartEmpty:'Belum ada pengeluaran', chartEmptySub:'Tambahkan transaksi untuk melihat grafik pengeluaran harian.', chartHint:'Klik satu hari untuk melihat catatannya.',
+      list:'Catatan bulan ini', search:'Cari catatan', filter:'Filter kategori', add:'Tambah pengeluaran', amount:'Jumlah', category:'Kategori', date:'Tanggal', note:'Catatan (opsional)',
+      notePlaceholder:'Contoh: makan siang', addButton:'Tambahkan', cancel:'Batal', categoryTitle:'Per kategori', insight:'Insight',
+      export:'Export CSV', backup:'Backup', restore:'Restore', settings:'Pengaturan', preferences:'Preferensi', appearance:'Tampilan', appearanceSub:'Pilih tema untuk Saldo',
+      language:'Bahasa', languageSub:'Bahasa antarmuka Saldo', account:'Akun', accountSub:'Kelola sesi akun', dark:'Gelap', light:'Terang', close:'Tutup',
+      profile:'Profil', signed:'Akun tersambung', profileSettings:'Pengaturan', profileSettingsSub:'Tema, bahasa, dan akun', logout:'Keluar', logoutSub:'Keluar dari akun ini',
+      settingsFoot:'Preferensi disimpan otomatis di perangkat ini.', signedFallback:'Akun', emptyList:'Belum ada pengeluaran', emptyListSub:'Tambahkan transaksi pertama kamu untuk mulai melihat pola pengeluaran.',
+      emptyDay:'Tidak ada pengeluaran di hari ini', emptyDaySub:'Pilih hari lain di grafik, atau tambahkan transaksi baru.', noMatch:'Tidak ada catatan yang cocok', noMatchSub:'Coba kata kunci atau kategori lain.',
+      match:'catatan cocok', removeFilter:'Hapus filter', highestSuffix:'tertinggi', noExpense:'tidak ada pengeluaran', dailyLimit:'batas harian', transaction:'transaksi',
+      budgetEmpty:'Budget belum diatur', setBudget:'Atur budget', almost:'Hampir mencapai budget. ', remainder:'Sisa', fromBudget:'dari budget.', perDayBudget:'Bisa dipakai sekitar', daysAhead:'per hari untuk', days:'hari ke depan.', overBudget:'Melebihi budget sebesar',
+      monthEmpty:'Belum ada catatan di bulan ini.', sameLast:'Sama seperti bulan lalu', fromLast:' dari bulan lalu', till:'s/d tgl', highestDay:'tertinggi', categoryEmpty:'Kategori pengeluaran akan muncul setelah kamu mencatat transaksi.', biggest:'Pengeluaran terbesar', inMonth:'bulan ini', inThisMonth:'di bulan ini', totalSpend:'dari total pengeluaran', dailyAverage:'Rata-rata pengeluaran harian kamu', projection:'Dengan pola ini, total bulan ini sekitar', overBy:'Itu melewati budget sekitar', backupLast:'Terakhir dicadangkan', backupNever:'Belum pernah dicadangkan.'
+    },
+    en:{
+      title:'Spending Notes', previous:'Previous month', next:'Next month', thisMonth:'This month',
+      total:'Total spending', today:'Today', yesterday:'Yesterday', perDay:'per day', highest:'highest', records:'records',
+      monthlyBudget:'Monthly budget', edit:'Edit', save:'Save', chart:'Spending per day', showAll:'Show all days',
+      chartEmpty:'No spending yet', chartEmptySub:'Add a transaction to see your daily spending chart.', chartHint:'Click a day to see its records.',
+      list:'This month’s records', search:'Search records', filter:'Filter category', add:'Add spending', amount:'Amount', category:'Category', date:'Date', note:'Note (optional)',
+      notePlaceholder:'e.g. lunch', addButton:'Add transaction', cancel:'Cancel', categoryTitle:'By category', insight:'Insight',
+      export:'Export CSV', backup:'Backup', restore:'Restore', settings:'Settings', preferences:'Preferences', appearance:'Appearance', appearanceSub:'Choose a theme for Saldo',
+      language:'Language', languageSub:'Saldo interface language', account:'Account', accountSub:'Manage your account session', dark:'Dark', light:'Light', close:'Close',
+      profile:'Profile', signed:'Account connected', profileSettings:'Settings', profileSettingsSub:'Theme, language, and account', logout:'Sign out', logoutSub:'Sign out of this account',
+      settingsFoot:'Preferences are saved automatically on this device.', signedFallback:'Account', emptyList:'No spending yet', emptyListSub:'Add your first transaction to start seeing your spending pattern.',
+      emptyDay:'No spending on this day', emptyDaySub:'Choose another day in the chart, or add a new transaction.', noMatch:'No matching records', noMatchSub:'Try another keyword or category.',
+      match:'matching records', removeFilter:'Clear filter', highestSuffix:'highest', noExpense:'no spending', dailyLimit:'daily limit', transaction:'transactions',
+      budgetEmpty:'Budget not set', setBudget:'Set budget', almost:'Near your budget. ', remainder:'Remaining', fromBudget:'from budget.', perDayBudget:'About', daysAhead:'per day for', days:'days ahead.', overBudget:'Over budget by',
+      monthEmpty:'No records this month.', sameLast:'Same as last month', fromLast:' from last month', till:'through', highestDay:'highest', categoryEmpty:'Spending categories will appear after you record a transaction.', biggest:'Biggest spending', inMonth:'this month', inThisMonth:'this month', totalSpend:'of total spending', dailyAverage:'Your average daily spending is', projection:'At this pace, this month will be around', overBy:'That is over budget by', backupLast:'Last backed up', backupNever:'Never backed up.'
+    }
+  };
+  function T(k){ return (appCopy[appLang] || appCopy.id)[k] || (appCopy.id[k] || k); }
+
+  function setText(id, text){ var el=$(id); if(el) el.textContent=text; }
+  function applyAppLanguage(){
+    document.documentElement.lang = appLang === 'en' ? 'en' : 'id';
+    setText('appTitle',T('title')); setText('totalEyebrow',T('total')); setText('todayEyebrow',T('today')); setText('avgLabel',T('perDay')); setText('countLabel',T('records')); setText('budgetLabel',T('monthlyBudget'));
+    setText('chartTitle',T('chart')); setText('clearDay',T('showAll')); setText('chartEmptyTitle',T('chartEmpty')); setText('chartEmptyText',T('chartEmptySub')); setText('chartHint',T('chartHint'));
+    setText('categoryTitle',T('categoryTitle')); setText('amountLabel',T('amount')); setText('catLabel',T('category')); setText('dateLabel',T('date')); setText('noteLabel',T('note')); setText('submitBtn', editId ? (appLang==='en'?'Save changes':'Simpan perubahan') : T('addButton')); setText('cancelEdit',T('cancel'));
+    setText('profilePanelKicker',T('account')); setText('profilePanelTitle',T('profile')); setText('profileStatus',T('signed')); setText('profileSettingsText',T('profileSettings')); setText('profileSettingsSub',T('profileSettingsSub')); setText('profileLogoutText',T('logout')); setText('profileLogoutSub',T('logoutSub'));
+    setText('settingsKicker',T('preferences')); setText('settingsTitle',T('settings')); setText('appearanceLabel',T('appearance')); setText('appearanceSub',T('appearanceSub')); setText('themeDarkText',T('dark')); setText('themeLightText',T('light')); setText('languageLabel',T('language')); setText('languageSub',T('languageSub')); setText('accountSettingsLabel',T('account')); setText('accountSettingsSub',T('accountSub')); setText('settingsLogoutText',T('logout')); setText('settingsFoot',T('settingsFoot'));
+    setText('exportCsv',T('export')); setText('exportJson',T('backup')); setText('importBtn',T('restore'));
+    var q=$('q'); if(q){q.placeholder=T('search');q.setAttribute('aria-label',T('search'));}
+    var fc=$('fcat'); if(fc) fc.setAttribute('aria-label',T('filter'));
+    $('prev').setAttribute('aria-label',T('previous')); $('next').setAttribute('aria-label',T('next')); $('today').textContent=T('thisMonth');
+    if($('profileClose')){$('profileClose').setAttribute('aria-label',T('close'));$('settingsClose').setAttribute('aria-label',T('close'));}
+    var langSelect=$('appLanguage'); if(langSelect) langSelect.value=appLang;
+    setText('themeDarkText',T('dark')); setText('themeLightText',T('light'));
+    try { localStorage.setItem(APP_LANG_KEY,appLang); } catch(e) {}
+    render();
+  }
+
+  function openLayer(kind){
+    var layer=$('uiLayer'); if(!layer) return;
+    layer.hidden=false; layer.classList.remove('profile-open','settings-open');
+    var profile=kind==='profile';
+    layer.classList.add(profile?'profile-open':'settings-open');
+    $('profilePanel').hidden=!profile; $('settingsPanel').hidden=profile;
+    $('profileBtn').setAttribute('aria-expanded',profile?'true':'false'); $('settingsBtn').setAttribute('aria-expanded',profile?'false':'true');
+    if(profile && currentUser){ $('profileEmail').textContent=currentUser.email || T('signedFallback'); }
+    document.body.classList.add('ui-panel-open');
+  }
+  function closeLayer(){
+    var layer=$('uiLayer'); if(!layer) return;
+    layer.classList.remove('profile-open','settings-open'); layer.hidden=true;
+    $('profilePanel').hidden=true; $('settingsPanel').hidden=true;
+    $('profileBtn').setAttribute('aria-expanded','false'); $('settingsBtn').setAttribute('aria-expanded','false');
+    document.body.classList.remove('ui-panel-open');
+  }
+  function chooseTheme(next){
+    theme=next; applyTheme(theme);
+    try{localStorage.setItem(THEME_KEY,theme);}catch(e){}
+    syncThemeChoices();
+  }
+  function syncThemeChoices(){
+    if($('themeDarkChoice')) $('themeDarkChoice').classList.toggle('active',theme==='dark');
+    if($('themeLightChoice')) $('themeLightChoice').classList.toggle('active',theme==='light');
+  }
+  $('profileBtn').onclick=function(){ var layer=$('uiLayer'); if(layer && layer.classList.contains('profile-open')) closeLayer(); else openLayer('profile'); };
+  $('settingsBtn').onclick=function(){ var layer=$('uiLayer'); if(layer && layer.classList.contains('settings-open')) closeLayer(); else openLayer('settings'); };
+  $('profileClose').onclick=closeLayer; $('settingsClose').onclick=closeLayer; $('uiBackdrop').onclick=closeLayer;
+  $('profileSettings').onclick=function(){openLayer('settings');};
+  $('profileLogout').onclick=function(){closeLayer();$('logout').click();};
+  $('settingsLogout').onclick=function(){closeLayer();$('logout').click();};
+  $('themeDarkChoice').onclick=function(){chooseTheme('dark');};
+  $('themeLightChoice').onclick=function(){chooseTheme('light');};
+  $('appLanguage').onchange=function(){appLang=this.value==='en'?'en':'id';applyAppLanguage();closeLayer();};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLayer();});
+  syncThemeChoices();
+  applyAppLanguage();
 
   /* ---------- export, backup, restore ---------- */
   function download(name, text, type){
