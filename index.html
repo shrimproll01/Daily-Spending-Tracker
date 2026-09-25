@@ -3178,7 +3178,7 @@ body{background:var(--bg);color:var(--ink)}
     <aside class="side">
       <section class="card formbox" id="formbox" aria-label="Tambah pengeluaran">
         <div class="form-head">
-          <h2 id="formTitle"><span class="plus">+</span>Tambah pengeluaran</h2>
+          <h2 id="formTitle">Tambah pengeluaran</h2>
           <button type="button" class="sheet-close" id="sheetClose" aria-label="Tutup formulir">×</button>
         </div>
         <form id="form" autocomplete="off">
@@ -3229,7 +3229,7 @@ body{background:var(--bg);color:var(--ink)}
   </div>
 </div>
 
-<button type="button" class="fab" id="fab" aria-label="Tambah pengeluaran">+</button>
+<button type="button" class="fab" id="fab" aria-label="Tambah pengeluaran"></button>
 <div class="backdrop" id="backdrop"></div>
 <div class="tip" id="tip" hidden></div>
 <div class="menu" id="menu" role="menu" hidden>
@@ -3602,10 +3602,12 @@ body{background:var(--bg);color:var(--ink)}
   }
 
   /* ---------- kategori & filter ---------- */
-  $('catpick').innerHTML = CATS.map(function(c, idx){
-    return '<label><input type="radio" name="cat" value="' + c[0] + '"' + (idx === 0 ? ' checked' : '') + '><span><span class="e">' + c[1] + '</span>' + c[0] + '</span></label>';
-  }).join('');
-  $('fcat').innerHTML = '<option value="">Semua kategori</option>' + CATS.map(function(c){ return '<option value="' + c[0] + '">' + c[1] + ' ' + c[0] + '</option>'; }).join('');
+  function renderCategoryChoices(){
+    var names=(panelCats[appLang] || panelCats.en);
+    $('catpick').innerHTML = CATS.map(function(c,idx){ return '<label><input type="radio" name="cat" value="'+c[0]+'"'+(idx===0?' checked':'')+'><span><span class="e">'+c[1]+'</span>'+esc(names[idx])+'</span></label>'; }).join('');
+    $('fcat').innerHTML = '<option value="">'+(appLang==='id'?'Semua kategori':appLang==='en'?'All categories':'All categories')+'</option>'+CATS.map(function(c,idx){ return '<option value="'+c[0]+'">'+c[1]+' '+esc(names[idx])+'</option>'; }).join('');
+  }
+  renderCategoryChoices();
   function getCat(){ var r = document.querySelector('input[name=cat]:checked'); return r ? r.value : 'Makan'; }
   function setCat(c){
     var r = document.querySelector('input[name=cat][value="' + c + '"]') || document.querySelector('input[name=cat][value="Lainnya"]');
@@ -3701,8 +3703,8 @@ body{background:var(--bg);color:var(--ink)}
 
   function stopEdit(){
     editId = null;
-    $('formTitle').innerHTML = '<span class="plus">+</span>' + T('add');
-    $('submitBtn').textContent = 'Tambahkan';
+    $('formTitle').textContent = T('add');
+    $('submitBtn').textContent = T('addButton');
     $('cancelEdit').hidden = true;
     $('amount').value = ''; $('noteIn').value = ''; syncQuick();
   }
@@ -4353,14 +4355,58 @@ body{background:var(--bg);color:var(--ink)}
       monthEmpty:'No records this month.', sameLast:'Same as last month', fromLast:' from last month', till:'through', highestDay:'highest', categoryEmpty:'Spending categories will appear after you record a transaction.', biggest:'Biggest spending', inMonth:'this month', inThisMonth:'this month', totalSpend:'of total spending', dailyAverage:'Your average daily spending is', projection:'At this pace, this month will be around', overBy:'That is over budget by', backupLast:'Last backed up', backupNever:'Never backed up.'
     }
   };
-  function T(k){ return (appCopy[appLang] || appCopy.en || appCopy.id)[k] || (appCopy.en[k] || appCopy.id[k] || k); }
+  var panelCopy = {
+    id:{add:'Tambah pengeluaran',amount:'Jumlah',category:'Kategori',date:'Tanggal',note:'Catatan (opsional)',notePlaceholder:'Contoh: makan siang',addButton:'Tambahkan',cancel:'Batal'},
+    en:{add:'Add spending',amount:'Amount',category:'Category',date:'Date',note:'Note (optional)',notePlaceholder:'e.g. lunch',addButton:'Add transaction',cancel:'Cancel'},
+    es:{add:'Añadir gasto',amount:'Importe',category:'Categoría',date:'Fecha',note:'Nota (opcional)',notePlaceholder:'p. ej. almuerzo',addButton:'Añadir transacción',cancel:'Cancelar'},
+    pt:{add:'Adicionar despesa',amount:'Valor',category:'Categoria',date:'Data',note:'Nota (opcional)',notePlaceholder:'ex.: almoço',addButton:'Adicionar transação',cancel:'Cancelar'},
+    fr:{add:'Ajouter une dépense',amount:'Montant',category:'Catégorie',date:'Date',note:'Note (facultatif)',notePlaceholder:'ex. déjeuner',addButton:'Ajouter la transaction',cancel:'Annuler'},
+    de:{add:'Ausgabe hinzufügen',amount:'Betrag',category:'Kategorie',date:'Datum',note:'Notiz (optional)',notePlaceholder:'z. B. Mittagessen',addButton:'Transaktion hinzufügen',cancel:'Abbrechen'},
+    it:{add:'Aggiungi spesa',amount:'Importo',category:'Categoria',date:'Data',note:'Nota (opzionale)',notePlaceholder:'es. pranzo',addButton:'Aggiungi transazione',cancel:'Annulla'},
+    nl:{add:'Uitgave toevoegen',amount:'Bedrag',category:'Categorie',date:'Datum',note:'Notitie (optioneel)',notePlaceholder:'bijv. lunch',addButton:'Transactie toevoegen',cancel:'Annuleren'},
+    tr:{add:'Harcama ekle',amount:'Tutar',category:'Kategori',date:'Tarih',note:'Not (isteğe bağlı)',notePlaceholder:'ör. öğle yemeği',addButton:'İşlem ekle',cancel:'İptal'},
+    ar:{add:'إضافة مصروف',amount:'المبلغ',category:'الفئة',date:'التاريخ',note:'ملاحظة (اختياري)',notePlaceholder:'مثال: الغداء',addButton:'إضافة معاملة',cancel:'إلغاء'},
+    hi:{add:'खर्च जोड़ें',amount:'राशि',category:'श्रेणी',date:'तारीख',note:'नोट (वैकल्पिक)',notePlaceholder:'जैसे: दोपहर का भोजन',addButton:'लेन-देन जोड़ें',cancel:'रद्द करें'},
+    bn:{add:'খরচ যোগ করুন',amount:'পরিমাণ',category:'ক্যাটাগরি',date:'তারিখ',note:'নোট (ঐচ্ছিক)',notePlaceholder:'যেমন: দুপুরের খাবার',addButton:'লেনদেন যোগ করুন',cancel:'বাতিল'},
+    zh:{add:'添加支出',amount:'金额',category:'类别',date:'日期',note:'备注（可选）',notePlaceholder:'例如：午餐',addButton:'添加交易',cancel:'取消'},
+    ja:{add:'支出を追加',amount:'金額',category:'カテゴリー',date:'日付',note:'メモ（任意）',notePlaceholder:'例：昼食',addButton:'取引を追加',cancel:'キャンセル'},
+    ko:{add:'지출 추가',amount:'금액',category:'카테고리',date:'날짜',note:'메모 (선택사항)',notePlaceholder:'예: 점심',addButton:'거래 추가',cancel:'취소'},
+    vi:{add:'Thêm khoản chi',amount:'Số tiền',category:'Danh mục',date:'Ngày',note:'Ghi chú (tùy chọn)',notePlaceholder:'ví dụ: ăn trưa',addButton:'Thêm giao dịch',cancel:'Hủy'},
+    tl:{add:'Magdagdag ng gastos',amount:'Halaga',category:'Kategorya',date:'Petsa',note:'Tala (opsyonal)',notePlaceholder:'hal. tanghalian',addButton:'Magdagdag ng transaksyon',cancel:'Kanselahin'},
+    th:{add:'เพิ่มค่าใช้จ่าย',amount:'จำนวนเงิน',category:'หมวดหมู่',date:'วันที่',note:'หมายเหตุ (ไม่บังคับ)',notePlaceholder:'เช่น อาหารกลางวัน',addButton:'เพิ่มรายการ',cancel:'ยกเลิก'},
+    ru:{add:'Добавить расход',amount:'Сумма',category:'Категория',date:'Дата',note:'Заметка (необязательно)',notePlaceholder:'например, обед',addButton:'Добавить операцию',cancel:'Отмена'},
+    uk:{add:'Додати витрату',amount:'Сума',category:'Категорія',date:'Дата',note:'Нотатка (необов’язково)',notePlaceholder:'наприклад, обід',addButton:'Додати операцію',cancel:'Скасувати'}
+  };
+  var panelCats = {
+    id:['Makan','Transport','Belanja','Nongkrong','Hiburan','Tagihan','Kesehatan','Lainnya'],
+    en:['Food','Transport','Shopping','Hangout','Entertainment','Bills','Health','Other'],
+    es:['Comida','Transporte','Compras','Salidas','Entretenimiento','Facturas','Salud','Otros'],
+    pt:['Alimentação','Transporte','Compras','Passeios','Entretenimento','Contas','Saúde','Outros'],
+    fr:['Repas','Transport','Achats','Sorties','Loisirs','Factures','Santé','Autres'],
+    de:['Essen','Transport','Einkaufen','Ausgehen','Unterhaltung','Rechnungen','Gesundheit','Sonstiges'],
+    it:['Cibo','Trasporti','Shopping','Uscite','Intrattenimento','Bollette','Salute','Altro'],
+    nl:['Eten','Vervoer','Winkelen','Uitgaan','Entertainment','Rekeningen','Gezondheid','Overig'],
+    tr:['Yemek','Ulaşım','Alışveriş','Sosyalleşme','Eğlence','Faturalar','Sağlık','Diğer'],
+    ar:['طعام','مواصلات','تسوق','خروج','ترفيه','فواتير','صحة','أخرى'],
+    hi:['खाना','परिवहन','खरीदारी','बाहर जाना','मनोरंजन','बिल','स्वास्थ्य','अन्य'],
+    bn:['খাবার','যাতায়াত','কেনাকাটা','আড্ডা','বিনোদন','বিল','স্বাস্থ্য','অন্যান্য'],
+    zh:['餐饮','交通','购物','聚会','娱乐','账单','健康','其他'],
+    ja:['食事','交通','買い物','外食・交流','娯楽','請求','健康','その他'],
+    ko:['식사','교통','쇼핑','외식·모임','여가','청구서','건강','기타'],
+    vi:['Ăn uống','Di chuyển','Mua sắm','Gặp gỡ','Giải trí','Hóa đơn','Sức khỏe','Khác'],
+    tl:['Pagkain','Transportasyon','Shopping','Gala','Libangan','Bayarin','Kalusugan','Iba pa'],
+    th:['อาหาร','เดินทาง','ช้อปปิ้ง','สังสรรค์','บันเทิง','บิล','สุขภาพ','อื่นๆ'],
+    ru:['Еда','Транспорт','Покупки','Встречи','Развлечения','Счета','Здоровье','Другое'],
+    uk:['Їжа','Транспорт','Покупки','Зустрічі','Розваги','Рахунки','Здоров’я','Інше']
+  };
+  function T(k){ var pc=panelCopy[appLang]; if(pc && pc[k]) return pc[k]; var ac=appCopy[appLang] || appCopy.en || appCopy.id; return ac[k] || (appCopy.en[k] || appCopy.id[k] || k); }
 
   function setText(id, text){ var el=$(id); if(el) el.textContent=text; }
   function applyAppLanguage(){
-    document.documentElement.lang = appLang === 'en' ? 'en' : 'id';
+    document.documentElement.lang = appLang; document.documentElement.dir = appLang === 'ar' ? 'rtl' : 'ltr';
     setText('appTitle',T('title')); setText('totalEyebrow',T('total')); setText('todayEyebrow',T('today')); setText('avgLabel',T('perDay')); setText('countLabel',T('records')); setText('budgetLabel',T('monthlyBudget'));
     setText('chartTitle',T('chart')); setText('clearDay',T('showAll')); setText('chartEmptyTitle',T('chartEmpty')); setText('chartEmptyText',T('chartEmptySub')); setText('chartHint',T('chartHint'));
-    setText('categoryTitle',T('categoryTitle')); setText('amountLabel',T('amount')); setText('catLabel',T('category')); setText('dateLabel',T('date')); setText('noteLabel',T('note')); setText('submitBtn', editId ? (appLang==='en'?'Save changes':'Simpan perubahan') : T('addButton')); setText('cancelEdit',T('cancel'));
+    setText('categoryTitle',T('categoryTitle')); setText('amountLabel',T('amount')); setText('catLabel',T('category')); setText('dateLabel',T('date')); setText('noteLabel',T('note')); setText('formTitle',T('add')); setText('submitBtn', editId ? (appLang==='en'?'Save changes':'Simpan perubahan') : T('addButton')); setText('cancelEdit',T('cancel')); if($('noteIn')) $('noteIn').placeholder=T('notePlaceholder'); if($('formbox')) $('formbox').setAttribute('aria-label',T('add')); if($('fab')) $('fab').setAttribute('aria-label',T('add'));
     setText('profilePanelKicker',T('account')); setText('profilePanelTitle',T('profile')); setText('profileStatus',T('signed')); setText('profileSettingsText',T('profileSettings')); setText('profileSettingsSub',T('profileSettingsSub')); setText('profileLogoutText',T('logout')); setText('profileLogoutSub',T('logoutSub'));
     setText('settingsKicker',T('preferences')); setText('settingsTitle',T('settings')); setText('appearanceLabel',T('appearance')); setText('appearanceSub',T('appearanceSub')); setText('themeDarkText',T('dark')); setText('themeLightText',T('light')); setText('languageLabel',T('language')); setText('languageSub',T('languageSub')); setText('accountSettingsLabel',T('account')); setText('accountSettingsSub',T('accountSub')); setText('settingsLogoutText',T('logout')); setText('settingsFoot',T('settingsFoot'));
     setText('exportCsv',T('export')); setText('exportJson',T('backup')); setText('importBtn',T('restore'));
@@ -4370,6 +4416,7 @@ body{background:var(--bg);color:var(--ink)}
     if($('profileClose')){$('profileClose').setAttribute('aria-label',T('close'));$('settingsClose').setAttribute('aria-label',T('close'));}
     var langSelect=$('appLanguage'); if(langSelect) langSelect.value=appLang;
     setText('themeDarkText',T('dark')); setText('themeLightText',T('light'));
+    if (typeof renderCategoryChoices === 'function') renderCategoryChoices();
     try { localStorage.setItem(APP_LANG_KEY,appLang); localStorage.setItem('saldo:auth-language',appLang); } catch(e) {}
     if (typeof authLang !== 'undefined') { authLang = appLang; if($('authLanguage')) $('authLanguage').value = appLang; }
     render();
@@ -4541,8 +4588,76 @@ body{background:var(--bg);color:var(--ink)}
 </script>
 
 
+
+<style id="final-surrounding-color-fix">
+/* FINAL LIGHT MODE: make the add-expense card belong to the surrounding canvas. */
+:root[data-theme="light"] .formbox{
+  background:rgba(255,255,255,.72)!important;
+  color:var(--ink)!important;
+  border:1px solid rgba(0,0,0,.08)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.10),0 1px 0 rgba(255,255,255,.95) inset!important;
+  backdrop-filter:blur(24px) saturate(120%)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(120%)!important;
+}
+:root[data-theme="light"] .formbox .form-head h2,
+:root[data-theme="light"] .formbox .f>label,
+:root[data-theme="light"] .formbox .f>.lb{color:var(--ink)!important}
+:root[data-theme="light"] .formbox .money,
+:root[data-theme="light"] .formbox .f>input,
+:root[data-theme="light"] .formbox input[type="date"]{
+  background:rgba(255,255,255,.68)!important;
+  border-color:rgba(0,0,0,.09)!important;
+  color:var(--ink)!important;
+}
+:root[data-theme="light"] .formbox .money span{color:var(--muted)!important}
+:root[data-theme="light"] .formbox .quick button,
+:root[data-theme="light"] .formbox .catpick label>span{
+  background:rgba(255,255,255,.42)!important;
+  border-color:rgba(0,0,0,.09)!important;
+  color:var(--muted)!important;
+}
+:root[data-theme="light"] .formbox .quick button:hover,
+:root[data-theme="light"] .formbox .catpick label:hover>span{
+  background:rgba(255,255,255,.72)!important;
+  border-color:rgba(0,0,0,.16)!important;
+  color:var(--ink)!important;
+}
+:root[data-theme="light"] .formbox .catpick input:checked+span{
+  background:rgba(0,0,0,.055)!important;
+  border-color:rgba(0,0,0,.28)!important;
+  color:var(--ink)!important;
+}
+:root[data-theme="light"] .formbox .primary{
+  background:#171717!important;
+  border-color:#171717!important;
+  color:#fff!important;
+}
+:root[data-theme="light"] .formbox .primary:hover{background:#000!important;border-color:#000!important}
+:root[data-theme="light"] .formbox .ghost{
+  border-color:rgba(0,0,0,.10)!important;
+  color:var(--ink)!important;
+}
+
+/* Floating action button: no plus symbol; use a quiet glass circle that matches its surroundings. */
+.fab{
+  font-size:0!important;
+  background:rgba(255,255,255,.12)!important;
+  color:transparent!important;
+  border:1px solid rgba(255,255,255,.20)!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.22),0 1px 0 rgba(255,255,255,.22) inset!important;
+  backdrop-filter:blur(18px)!important;
+  -webkit-backdrop-filter:blur(18px)!important;
+}
+.fab:hover{background:rgba(255,255,255,.18)!important}
+:root[data-theme="light"] .fab{
+  background:rgba(255,255,255,.72)!important;
+  border-color:rgba(0,0,0,.09)!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.12),0 1px 0 rgba(255,255,255,.95) inset!important;
+}
+:root[data-theme="light"] .fab:hover{background:rgba(255,255,255,.9)!important}
+</style>
 </body>
-</html>
+\n<style id="final-comfort-ux">\n/* Comfort-first neutral palette: readable without pure-white glare. */\n:root{--comfort-text:#EAE9E5;--comfort-muted:#8E8D89}\n:root[data-theme="light"]{--comfort-text:#2A2926;--comfort-muted:#73716C}\n.formbox{\n  background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.025))!important;\n  border-color:rgba(255,255,255,.12)!important;\n  box-shadow:0 20px 60px rgba(0,0,0,.22),0 1px 0 rgba(255,255,255,.08) inset!important;\n  backdrop-filter:blur(22px) saturate(108%)!important;-webkit-backdrop-filter:blur(22px) saturate(108%)!important;\n}\n.formbox .form-head h2,.formbox .f>label,.formbox .f>.lb{color:var(--comfort-text)!important}\n.formbox .money,.formbox .f>input,.formbox input[type="date"]{background:rgba(255,255,255,.035)!important;border-color:rgba(255,255,255,.10)!important;color:var(--comfort-text)!important}\n.formbox .money span{color:var(--comfort-muted)!important}\n.formbox .quick button,.formbox .catpick label>span{background:rgba(255,255,255,.025)!important;border-color:rgba(255,255,255,.09)!important;color:var(--comfort-muted)!important}\n.formbox .quick button:hover,.formbox .catpick label:hover>span{background:rgba(255,255,255,.055)!important;border-color:rgba(255,255,255,.15)!important;color:var(--comfort-text)!important}\n.formbox .catpick input:checked+span{background:rgba(255,255,255,.07)!important;border-color:rgba(255,255,255,.62)!important;color:var(--comfort-text)!important}\n.formbox .primary{background:#EAE9E5!important;border-color:#EAE9E5!important;color:#171716!important}\n.formbox .primary:hover{background:#F0EFEB!important;border-color:#F0EFEB!important}\n:root[data-theme="light"] .formbox{\n  background:linear-gradient(145deg,rgba(255,255,255,.58),rgba(242,241,237,.48))!important;\n  border-color:rgba(30,29,27,.09)!important;\n  box-shadow:0 20px 60px rgba(30,29,27,.08),0 1px 0 rgba(255,255,255,.70) inset!important;\n  backdrop-filter:blur(24px) saturate(105%)!important;-webkit-backdrop-filter:blur(24px) saturate(105%)!important;\n}\n:root[data-theme="light"] .formbox .form-head h2,:root[data-theme="light"] .formbox .f>label,:root[data-theme="light"] .formbox .f>.lb{color:#35342F!important}\n:root[data-theme="light"] .formbox .money,:root[data-theme="light"] .formbox .f>input,:root[data-theme="light"] .formbox input[type="date"]{background:rgba(250,249,246,.56)!important;border-color:rgba(30,29,27,.08)!important;color:#292825!important}\n:root[data-theme="light"] .formbox .money span{color:#77756F!important}\n:root[data-theme="light"] .formbox .quick button,:root[data-theme="light"] .formbox .catpick label>span{background:rgba(255,255,255,.28)!important;border-color:rgba(30,29,27,.08)!important;color:#77756F!important}\n:root[data-theme="light"] .formbox .quick button:hover,:root[data-theme="light"] .formbox .catpick label:hover>span{background:rgba(255,255,255,.48)!important;border-color:rgba(30,29,27,.13)!important;color:#292825!important}\n:root[data-theme="light"] .formbox .catpick input:checked+span{background:rgba(35,34,31,.045)!important;border-color:rgba(35,34,31,.27)!important;color:#292825!important}\n:root[data-theme="light"] .formbox .primary{background:#292825!important;border-color:#292825!important;color:#F1F0EC!important}\n:root[data-theme="light"] .formbox .primary:hover{background:#1F1E1C!important;border-color:#1F1E1C!important}\n\n/* No plus glyph: keep the floating control intentionally minimal. */\n.fab{font-size:0!important;color:transparent!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 10px 28px rgba(0,0,0,.18),0 1px 0 rgba(255,255,255,.10) inset!important;backdrop-filter:blur(18px) saturate(105%)!important;-webkit-backdrop-filter:blur(18px) saturate(105%)!important}\n.fab:hover{background:rgba(255,255,255,.09)!important}\n:root[data-theme="light"] .fab{background:rgba(255,255,255,.56)!important;border-color:rgba(30,29,27,.08)!important;box-shadow:0 10px 28px rgba(30,29,27,.09),0 1px 0 rgba(255,255,255,.70) inset!important}\n:root[data-theme="light"] .fab:hover{background:rgba(255,255,255,.70)!important}\n.form-head .plus{display:none!important}\n</style>\n</html>
 
 <style id="final-oauth-copy-layout">
 /* FINAL OAUTH COPY + COMPACT BALANCE */
