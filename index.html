@@ -2808,6 +2808,55 @@ body{background:var(--bg);color:var(--ink)}
 :root[data-theme="light"] .profile-card{background:linear-gradient(145deg,rgba(255,255,255,.68),rgba(255,255,255,.38));border-color:rgba(255,255,255,.78)}
 :root[data-theme="light"] .panel-action{background:rgba(255,255,255,.48);border-color:rgba(255,255,255,.72)}
 </style>
+<style id="final-comfort-ux">
+/* Comfort-first neutral palette: readable without pure-white glare. */
+:root{--comfort-text:#EAE9E5;--comfort-muted:#8E8D89}
+:root[data-theme="light"]{--comfort-text:#2A2926;--comfort-muted:#73716C}
+.formbox{
+  background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.025))!important;
+  border-color:rgba(255,255,255,.12)!important;
+  box-shadow:0 20px 60px rgba(0,0,0,.22),0 1px 0 rgba(255,255,255,.08) inset!important;
+  backdrop-filter:blur(22px) saturate(108%)!important;-webkit-backdrop-filter:blur(22px) saturate(108%)!important;
+}
+.formbox .form-head h2,.formbox .f>label,.formbox .f>.lb{color:var(--comfort-text)!important}
+.formbox .money,.formbox .f>input,.formbox input[type="date"]{background:rgba(255,255,255,.035)!important;border-color:rgba(255,255,255,.10)!important;color:var(--comfort-text)!important}
+.formbox .money span{color:var(--comfort-muted)!important}
+.formbox .quick button,.formbox .catpick label>span{background:rgba(255,255,255,.025)!important;border-color:rgba(255,255,255,.09)!important;color:var(--comfort-muted)!important}
+.formbox .quick button:hover,.formbox .catpick label:hover>span{background:rgba(255,255,255,.055)!important;border-color:rgba(255,255,255,.15)!important;color:var(--comfort-text)!important}
+.formbox .catpick input:checked+span{background:rgba(255,255,255,.07)!important;border-color:rgba(255,255,255,.62)!important;color:var(--comfort-text)!important}
+.formbox .primary{background:#EAE9E5!important;border-color:#EAE9E5!important;color:#171716!important}
+.formbox .primary:hover{background:#F0EFEB!important;border-color:#F0EFEB!important}
+:root[data-theme="light"] .formbox{
+  background:linear-gradient(145deg,rgba(255,255,255,.58),rgba(242,241,237,.48))!important;
+  border-color:rgba(30,29,27,.09)!important;
+  box-shadow:0 20px 60px rgba(30,29,27,.08),0 1px 0 rgba(255,255,255,.70) inset!important;
+  backdrop-filter:blur(24px) saturate(105%)!important;-webkit-backdrop-filter:blur(24px) saturate(105%)!important;
+}
+:root[data-theme="light"] .formbox .form-head h2,:root[data-theme="light"] .formbox .f>label,:root[data-theme="light"] .formbox .f>.lb{color:#35342F!important}
+:root[data-theme="light"] .formbox .money,:root[data-theme="light"] .formbox .f>input,:root[data-theme="light"] .formbox input[type="date"]{background:rgba(250,249,246,.56)!important;border-color:rgba(30,29,27,.08)!important;color:#292825!important}
+:root[data-theme="light"] .formbox .money span{color:#77756F!important}
+:root[data-theme="light"] .formbox .quick button,:root[data-theme="light"] .formbox .catpick label>span{background:rgba(255,255,255,.28)!important;border-color:rgba(30,29,27,.08)!important;color:#77756F!important}
+:root[data-theme="light"] .formbox .quick button:hover,:root[data-theme="light"] .formbox .catpick label:hover>span{background:rgba(255,255,255,.48)!important;border-color:rgba(30,29,27,.13)!important;color:#292825!important}
+:root[data-theme="light"] .formbox .catpick input:checked+span{background:rgba(35,34,31,.045)!important;border-color:rgba(35,34,31,.27)!important;color:#292825!important}
+:root[data-theme="light"] .formbox .primary{background:#292825!important;border-color:#292825!important;color:#F1F0EC!important}
+:root[data-theme="light"] .formbox .primary:hover{background:#1F1E1C!important;border-color:#1F1E1C!important}
+
+/* No plus glyph: keep the floating control intentionally minimal. */
+.fab{font-size:0!important;color:transparent!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 10px 28px rgba(0,0,0,.18),0 1px 0 rgba(255,255,255,.10) inset!important;backdrop-filter:blur(18px) saturate(105%)!important;-webkit-backdrop-filter:blur(18px) saturate(105%)!important}
+.fab:hover{background:rgba(255,255,255,.09)!important}
+:root[data-theme="light"] .fab{background:rgba(255,255,255,.56)!important;border-color:rgba(30,29,27,.08)!important;box-shadow:0 10px 28px rgba(30,29,27,.09),0 1px 0 rgba(255,255,255,.70) inset!important}
+:root[data-theme="light"] .fab:hover{background:rgba(255,255,255,.70)!important}
+.form-head .plus{display:none!important}
+</style>
+</html>
+
+<style id="final-v3-cleanup">
+/* FINAL V3 CLEANUP: no stray literal escape text and no decorative plus glyph. */
+.form-head h2::before,.form-head h2::after{content:none!important;display:none!important;}
+.form-head .plus{display:none!important;}
+.auth-forgot{position:relative;z-index:100;pointer-events:auto;cursor:pointer;}
+.auth-password-meta{position:relative;z-index:99;pointer-events:auto;}
+</style>
 </head>
 <body>
 <div class="auth-gate" id="authGate">
@@ -3604,8 +3653,12 @@ body{background:var(--bg);color:var(--ink)}
   /* ---------- kategori & filter ---------- */
   function renderCategoryChoices(){
     var names=(panelCats[appLang] || panelCats.en);
-    $('catpick').innerHTML = CATS.map(function(c,idx){ return '<label><input type="radio" name="cat" value="'+c[0]+'"'+(idx===0?' checked':'')+'><span><span class="e">'+c[1]+'</span>'+esc(names[idx])+'</span></label>'; }).join('');
-    $('fcat').innerHTML = '<option value="">'+(appLang==='id'?'Semua kategori':appLang==='en'?'All categories':'All categories')+'</option>'+CATS.map(function(c,idx){ return '<option value="'+c[0]+'">'+c[1]+' '+esc(names[idx])+'</option>'; }).join('');
+    var current = 'Makan';
+    var selected = document.querySelector('input[name=cat]:checked');
+    if (selected && selected.value) current = selected.value;
+    $('catpick').innerHTML = CATS.map(function(c,idx){ return '<label><input type="radio" name="cat" value="'+c[0]+'"'+(c[0]===current?' checked':'')+'><span><span class="e">'+c[1]+'</span>'+esc(names[idx])+'</span></label>'; }).join('');
+    var allLabel = (panelCopy[appLang] && panelCopy[appLang].allCategories) || (appLang==='id'?'Semua kategori':'All categories');
+    $('fcat').innerHTML = '<option value="">'+esc(allLabel)+'</option>'+CATS.map(function(c,idx){ return '<option value="'+c[0]+'">'+c[1]+' '+esc(names[idx])+'</option>'; }).join('');
   }
   renderCategoryChoices();
   function getCat(){ var r = document.querySelector('input[name=cat]:checked'); return r ? r.value : 'Makan'; }
@@ -3996,11 +4049,20 @@ body{background:var(--bg);color:var(--ink)}
   }
   $('tabLogin').onclick = function(){ setAuthMode('login'); $('authEmail').focus(); };
   $('tabSignup').onclick = function(){ setAuthMode('signup'); $('authFirstName').focus(); };
-  $('authLanguage').onchange = function(){
-    authLang = this.value;
-    try { localStorage.setItem('saldo:app-language', authLang); } catch(e) {}
+  function syncLanguageEverywhere(next){
+    var lang = supportedLoginLanguages.indexOf(next) !== -1 ? next : 'en';
+    authLang = lang;
+    appLang = lang;
+    try {
+      localStorage.setItem('saldo:auth-language', lang);
+      localStorage.setItem('saldo:app-language', lang);
+    } catch(e) {}
+    if ($('authLanguage')) $('authLanguage').value = lang;
+    if ($('appLanguage')) $('appLanguage').value = lang;
     applyAuthLanguage();
-  };
+    applyAppLanguage();
+  }
+  $('authLanguage').onchange = function(){ syncLanguageEverywhere(this.value); };
   var recoveryScreen = 'forgot';
   var lastResetEmail = '';
   function recoveryText(){ return recoveryCopy[authLang] || recoveryCopy.en; }
@@ -4134,11 +4196,20 @@ body{background:var(--bg);color:var(--ink)}
       render();
     }
   }
-  $('authSwitch').onclick = function(){
+  function toggleAuthMode(){
     var next = authMode === 'login' ? 'signup' : 'login';
     setAuthMode(next);
-    $(next === 'signup' ? 'authFirstName' : 'authEmail').focus();
-  };
+    var target = $(next === 'signup' ? 'authFirstName' : 'authEmail');
+    if (target) setTimeout(function(){ target.focus(); }, 0);
+  }
+  // Delegated handler: keeps the login/sign-up switch clickable even if a decorative layer sits above it.
+  document.addEventListener('click', function(e){
+    var btn = e.target && e.target.closest ? e.target.closest('#authSwitch') : null;
+    if (btn && $('authGate') && !$('authGate').hidden && !$('authRecoveryView').hidden) return;
+    if (btn && $('authGate') && !$('authGate').hidden && $('authAccountView') && !$('authAccountView').hidden){
+      e.preventDefault(); e.stopPropagation(); toggleAuthMode();
+    }
+  }, true);
   $('passwordToggle').onclick = function(){
     var input = $('authPassword');
     var visible = input.type === 'password';
@@ -4148,13 +4219,33 @@ body{background:var(--bg);color:var(--ink)}
     this.setAttribute('aria-label', visible ? authCopy[authLang].hide : authCopy[authLang].show);
     this.setAttribute('title', visible ? authCopy[authLang].hide : authCopy[authLang].show);
   };
-  $('authForgot').onclick = function(){
+  function openForgotPassword(){
     if (authMode !== 'login') return;
     lastResetEmail = $('authEmail').value.trim();
     $('recoveryEmail').value = lastResetEmail;
     setRecoveryMessage('', '');
     setRecoveryMessage('', '', 'recoveryUpdateMsg');
     showRecovery('forgot');
+  }
+  // Capture-phase delegation makes the control reliable even if a glass/decorative
+  // layer is accidentally placed above the original button in the stacking order.
+  document.addEventListener('click', function(e){
+    var btn = e.target && e.target.closest ? e.target.closest('#authForgot') : null;
+    if (!btn || !$('authGate') || $('authGate').hidden || $('authRecoveryView').hidden) return;
+    e.preventDefault();
+    e.stopPropagation();
+    openForgotPassword();
+  }, true);
+  document.addEventListener('pointerup', function(e){
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    var btn = e.target && e.target.closest ? e.target.closest('#authForgot') : null;
+    if (!btn || !$('authGate') || $('authGate').hidden || $('authRecoveryView').hidden) return;
+    e.preventDefault();
+    openForgotPassword();
+  }, true);
+  $('authForgot').onclick = function(e){
+    if (e) e.preventDefault();
+    openForgotPassword();
   };
   $('recoverySend').onclick = async function(){
     var c = recoveryText();
@@ -4317,7 +4408,7 @@ body{background:var(--bg);color:var(--ink)}
   /* ---------- app UI / profile / settings ---------- */
   var APP_LANG_KEY = 'saldo:app-language';
   var appLang = 'id';
-  try { appLang = localStorage.getItem(APP_LANG_KEY) || localStorage.getItem('saldo:auth-language') || 'id'; } catch(e) {}
+  try { appLang = localStorage.getItem('saldo:auth-language') || localStorage.getItem(APP_LANG_KEY) || 'id'; } catch(e) {}
   var supportedLoginLanguages = ['en','id','es','pt','fr','de','it','nl','tr','ar','hi','bn','zh','ja','ko','vi','tl','th','ru','uk'];
   if (supportedLoginLanguages.indexOf(appLang) === -1) appLang = 'id';
 
@@ -4356,26 +4447,26 @@ body{background:var(--bg);color:var(--ink)}
     }
   };
   var panelCopy = {
-    id:{add:'Tambah pengeluaran',amount:'Jumlah',category:'Kategori',date:'Tanggal',note:'Catatan (opsional)',notePlaceholder:'Contoh: makan siang',addButton:'Tambahkan',cancel:'Batal'},
-    en:{add:'Add spending',amount:'Amount',category:'Category',date:'Date',note:'Note (optional)',notePlaceholder:'e.g. lunch',addButton:'Add transaction',cancel:'Cancel'},
-    es:{add:'Añadir gasto',amount:'Importe',category:'Categoría',date:'Fecha',note:'Nota (opcional)',notePlaceholder:'p. ej. almuerzo',addButton:'Añadir transacción',cancel:'Cancelar'},
-    pt:{add:'Adicionar despesa',amount:'Valor',category:'Categoria',date:'Data',note:'Nota (opcional)',notePlaceholder:'ex.: almoço',addButton:'Adicionar transação',cancel:'Cancelar'},
-    fr:{add:'Ajouter une dépense',amount:'Montant',category:'Catégorie',date:'Date',note:'Note (facultatif)',notePlaceholder:'ex. déjeuner',addButton:'Ajouter la transaction',cancel:'Annuler'},
-    de:{add:'Ausgabe hinzufügen',amount:'Betrag',category:'Kategorie',date:'Datum',note:'Notiz (optional)',notePlaceholder:'z. B. Mittagessen',addButton:'Transaktion hinzufügen',cancel:'Abbrechen'},
-    it:{add:'Aggiungi spesa',amount:'Importo',category:'Categoria',date:'Data',note:'Nota (opzionale)',notePlaceholder:'es. pranzo',addButton:'Aggiungi transazione',cancel:'Annulla'},
-    nl:{add:'Uitgave toevoegen',amount:'Bedrag',category:'Categorie',date:'Datum',note:'Notitie (optioneel)',notePlaceholder:'bijv. lunch',addButton:'Transactie toevoegen',cancel:'Annuleren'},
-    tr:{add:'Harcama ekle',amount:'Tutar',category:'Kategori',date:'Tarih',note:'Not (isteğe bağlı)',notePlaceholder:'ör. öğle yemeği',addButton:'İşlem ekle',cancel:'İptal'},
-    ar:{add:'إضافة مصروف',amount:'المبلغ',category:'الفئة',date:'التاريخ',note:'ملاحظة (اختياري)',notePlaceholder:'مثال: الغداء',addButton:'إضافة معاملة',cancel:'إلغاء'},
-    hi:{add:'खर्च जोड़ें',amount:'राशि',category:'श्रेणी',date:'तारीख',note:'नोट (वैकल्पिक)',notePlaceholder:'जैसे: दोपहर का भोजन',addButton:'लेन-देन जोड़ें',cancel:'रद्द करें'},
-    bn:{add:'খরচ যোগ করুন',amount:'পরিমাণ',category:'ক্যাটাগরি',date:'তারিখ',note:'নোট (ঐচ্ছিক)',notePlaceholder:'যেমন: দুপুরের খাবার',addButton:'লেনদেন যোগ করুন',cancel:'বাতিল'},
-    zh:{add:'添加支出',amount:'金额',category:'类别',date:'日期',note:'备注（可选）',notePlaceholder:'例如：午餐',addButton:'添加交易',cancel:'取消'},
-    ja:{add:'支出を追加',amount:'金額',category:'カテゴリー',date:'日付',note:'メモ（任意）',notePlaceholder:'例：昼食',addButton:'取引を追加',cancel:'キャンセル'},
-    ko:{add:'지출 추가',amount:'금액',category:'카테고리',date:'날짜',note:'메모 (선택사항)',notePlaceholder:'예: 점심',addButton:'거래 추가',cancel:'취소'},
-    vi:{add:'Thêm khoản chi',amount:'Số tiền',category:'Danh mục',date:'Ngày',note:'Ghi chú (tùy chọn)',notePlaceholder:'ví dụ: ăn trưa',addButton:'Thêm giao dịch',cancel:'Hủy'},
-    tl:{add:'Magdagdag ng gastos',amount:'Halaga',category:'Kategorya',date:'Petsa',note:'Tala (opsyonal)',notePlaceholder:'hal. tanghalian',addButton:'Magdagdag ng transaksyon',cancel:'Kanselahin'},
-    th:{add:'เพิ่มค่าใช้จ่าย',amount:'จำนวนเงิน',category:'หมวดหมู่',date:'วันที่',note:'หมายเหตุ (ไม่บังคับ)',notePlaceholder:'เช่น อาหารกลางวัน',addButton:'เพิ่มรายการ',cancel:'ยกเลิก'},
-    ru:{add:'Добавить расход',amount:'Сумма',category:'Категория',date:'Дата',note:'Заметка (необязательно)',notePlaceholder:'например, обед',addButton:'Добавить операцию',cancel:'Отмена'},
-    uk:{add:'Додати витрату',amount:'Сума',category:'Категорія',date:'Дата',note:'Нотатка (необов’язково)',notePlaceholder:'наприклад, обід',addButton:'Додати операцію',cancel:'Скасувати'}
+    id:{add:'Tambah pengeluaran',amount:'Jumlah',category:'Kategori',date:'Tanggal',note:'Catatan (opsional)',notePlaceholder:'Contoh: makan siang',addButton:'Tambahkan',cancel:'Batal',allCategories:'Semua kategori'},
+    en:{add:'Add spending',amount:'Amount',category:'Category',date:'Date',note:'Note (optional)',notePlaceholder:'e.g. lunch',addButton:'Add transaction',cancel:'Cancel',allCategories:'All categories'},
+    es:{add:'Añadir gasto',amount:'Importe',category:'Categoría',date:'Fecha',note:'Nota (opcional)',notePlaceholder:'p. ej. almuerzo',addButton:'Añadir transacción',cancel:'Cancelar',allCategories:'Todas las categorías'},
+    pt:{add:'Adicionar despesa',amount:'Valor',category:'Categoria',date:'Data',note:'Nota (opcional)',notePlaceholder:'ex.: almoço',addButton:'Adicionar transação',cancel:'Cancelar',allCategories:'Todas as categorias'},
+    fr:{add:'Ajouter une dépense',amount:'Montant',category:'Catégorie',date:'Date',note:'Note (facultatif)',notePlaceholder:'ex. déjeuner',addButton:'Ajouter la transaction',cancel:'Annuler',allCategories:'Toutes les catégories'},
+    de:{add:'Ausgabe hinzufügen',amount:'Betrag',category:'Kategorie',date:'Datum',note:'Notiz (optional)',notePlaceholder:'z. B. Mittagessen',addButton:'Transaktion hinzufügen',cancel:'Abbrechen',allCategories:'Alle Kategorien'},
+    it:{add:'Aggiungi spesa',amount:'Importo',category:'Categoria',date:'Data',note:'Nota (opzionale)',notePlaceholder:'es. pranzo',addButton:'Aggiungi transazione',cancel:'Annulla',allCategories:'Tutte le categorie'},
+    nl:{add:'Uitgave toevoegen',amount:'Bedrag',category:'Categorie',date:'Datum',note:'Notitie (optioneel)',notePlaceholder:'bijv. lunch',addButton:'Transactie toevoegen',cancel:'Annuleren',allCategories:'Alle categorieën'},
+    tr:{add:'Harcama ekle',amount:'Tutar',category:'Kategori',date:'Tarih',note:'Not (isteğe bağlı)',notePlaceholder:'ör. öğle yemeği',addButton:'İşlem ekle',cancel:'İptal',allCategories:'Tüm kategoriler'},
+    ar:{add:'إضافة مصروف',amount:'المبلغ',category:'الفئة',date:'التاريخ',note:'ملاحظة (اختياري)',notePlaceholder:'مثال: الغداء',addButton:'إضافة معاملة',cancel:'إلغاء',allCategories:'جميع الفئات'},
+    hi:{add:'खर्च जोड़ें',amount:'राशि',category:'श्रेणी',date:'तारीख',note:'नोट (वैकल्पिक)',notePlaceholder:'जैसे: दोपहर का भोजन',addButton:'लेन-देन जोड़ें',cancel:'रद्द करें',allCategories:'सभी श्रेणियाँ'},
+    bn:{add:'খরচ যোগ করুন',amount:'পরিমাণ',category:'ক্যাটাগরি',date:'তারিখ',note:'নোট (ঐচ্ছিক)',notePlaceholder:'যেমন: দুপুরের খাবার',addButton:'লেনদেন যোগ করুন',cancel:'বাতিল',allCategories:'সব বিভাগ'},
+    zh:{add:'添加支出',amount:'金额',category:'类别',date:'日期',note:'备注（可选）',notePlaceholder:'例如：午餐',addButton:'添加交易',cancel:'取消',allCategories:'所有类别'},
+    ja:{add:'支出を追加',amount:'金額',category:'カテゴリー',date:'日付',note:'メモ（任意）',notePlaceholder:'例：昼食',addButton:'取引を追加',cancel:'キャンセル',allCategories:'すべてのカテゴリー'},
+    ko:{add:'지출 추가',amount:'금액',category:'카테고리',date:'날짜',note:'메모 (선택사항)',notePlaceholder:'예: 점심',addButton:'거래 추가',cancel:'취소',allCategories:'모든 카테고리'},
+    vi:{add:'Thêm khoản chi',amount:'Số tiền',category:'Danh mục',date:'Ngày',note:'Ghi chú (tùy chọn)',notePlaceholder:'ví dụ: ăn trưa',addButton:'Thêm giao dịch',cancel:'Hủy',allCategories:'Tất cả danh mục'},
+    tl:{add:'Magdagdag ng gastos',amount:'Halaga',category:'Kategorya',date:'Petsa',note:'Tala (opsyonal)',notePlaceholder:'hal. tanghalian',addButton:'Magdagdag ng transaksyon',cancel:'Kanselahin',allCategories:'Lahat ng kategorya'},
+    th:{add:'เพิ่มค่าใช้จ่าย',amount:'จำนวนเงิน',category:'หมวดหมู่',date:'วันที่',note:'หมายเหตุ (ไม่บังคับ)',notePlaceholder:'เช่น อาหารกลางวัน',addButton:'เพิ่มรายการ',cancel:'ยกเลิก',allCategories:'ทุกหมวดหมู่'},
+    ru:{add:'Добавить расход',amount:'Сумма',category:'Категория',date:'Дата',note:'Заметка (необязательно)',notePlaceholder:'например, обед',addButton:'Добавить операцию',cancel:'Отмена',allCategories:'Все категории'},
+    uk:{add:'Додати витрату',amount:'Сума',category:'Категорія',date:'Дата',note:'Нотатка (необов’язково)',notePlaceholder:'наприклад, обід',addButton:'Додати операцію',cancel:'Скасувати',allCategories:'Усі категорії'}
   };
   var panelCats = {
     id:['Makan','Transport','Belanja','Nongkrong','Hiburan','Tagihan','Kesehatan','Lainnya'],
@@ -4457,10 +4548,7 @@ body{background:var(--bg);color:var(--ink)}
   $('themeDarkChoice').onclick=function(){chooseTheme('dark');};
   $('themeLightChoice').onclick=function(){chooseTheme('light');};
   $('appLanguage').onchange=function(){
-    appLang = this.value;
-    if (supportedLoginLanguages.indexOf(appLang) === -1) appLang = 'en';
-    applyAppLanguage();
-    if (typeof authLang !== 'undefined') { authLang = appLang; try { localStorage.setItem('saldo:auth-language',appLang); } catch(e) {} if($('authLanguage')) $('authLanguage').value = appLang; applyAuthLanguage(); }
+    syncLanguageEverywhere(this.value);
     closeLayer();
   };
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLayer();});
@@ -4657,7 +4745,7 @@ body{background:var(--bg);color:var(--ink)}
 :root[data-theme="light"] .fab:hover{background:rgba(255,255,255,.9)!important}
 </style>
 </body>
-\n<style id="final-comfort-ux">\n/* Comfort-first neutral palette: readable without pure-white glare. */\n:root{--comfort-text:#EAE9E5;--comfort-muted:#8E8D89}\n:root[data-theme="light"]{--comfort-text:#2A2926;--comfort-muted:#73716C}\n.formbox{\n  background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.025))!important;\n  border-color:rgba(255,255,255,.12)!important;\n  box-shadow:0 20px 60px rgba(0,0,0,.22),0 1px 0 rgba(255,255,255,.08) inset!important;\n  backdrop-filter:blur(22px) saturate(108%)!important;-webkit-backdrop-filter:blur(22px) saturate(108%)!important;\n}\n.formbox .form-head h2,.formbox .f>label,.formbox .f>.lb{color:var(--comfort-text)!important}\n.formbox .money,.formbox .f>input,.formbox input[type="date"]{background:rgba(255,255,255,.035)!important;border-color:rgba(255,255,255,.10)!important;color:var(--comfort-text)!important}\n.formbox .money span{color:var(--comfort-muted)!important}\n.formbox .quick button,.formbox .catpick label>span{background:rgba(255,255,255,.025)!important;border-color:rgba(255,255,255,.09)!important;color:var(--comfort-muted)!important}\n.formbox .quick button:hover,.formbox .catpick label:hover>span{background:rgba(255,255,255,.055)!important;border-color:rgba(255,255,255,.15)!important;color:var(--comfort-text)!important}\n.formbox .catpick input:checked+span{background:rgba(255,255,255,.07)!important;border-color:rgba(255,255,255,.62)!important;color:var(--comfort-text)!important}\n.formbox .primary{background:#EAE9E5!important;border-color:#EAE9E5!important;color:#171716!important}\n.formbox .primary:hover{background:#F0EFEB!important;border-color:#F0EFEB!important}\n:root[data-theme="light"] .formbox{\n  background:linear-gradient(145deg,rgba(255,255,255,.58),rgba(242,241,237,.48))!important;\n  border-color:rgba(30,29,27,.09)!important;\n  box-shadow:0 20px 60px rgba(30,29,27,.08),0 1px 0 rgba(255,255,255,.70) inset!important;\n  backdrop-filter:blur(24px) saturate(105%)!important;-webkit-backdrop-filter:blur(24px) saturate(105%)!important;\n}\n:root[data-theme="light"] .formbox .form-head h2,:root[data-theme="light"] .formbox .f>label,:root[data-theme="light"] .formbox .f>.lb{color:#35342F!important}\n:root[data-theme="light"] .formbox .money,:root[data-theme="light"] .formbox .f>input,:root[data-theme="light"] .formbox input[type="date"]{background:rgba(250,249,246,.56)!important;border-color:rgba(30,29,27,.08)!important;color:#292825!important}\n:root[data-theme="light"] .formbox .money span{color:#77756F!important}\n:root[data-theme="light"] .formbox .quick button,:root[data-theme="light"] .formbox .catpick label>span{background:rgba(255,255,255,.28)!important;border-color:rgba(30,29,27,.08)!important;color:#77756F!important}\n:root[data-theme="light"] .formbox .quick button:hover,:root[data-theme="light"] .formbox .catpick label:hover>span{background:rgba(255,255,255,.48)!important;border-color:rgba(30,29,27,.13)!important;color:#292825!important}\n:root[data-theme="light"] .formbox .catpick input:checked+span{background:rgba(35,34,31,.045)!important;border-color:rgba(35,34,31,.27)!important;color:#292825!important}\n:root[data-theme="light"] .formbox .primary{background:#292825!important;border-color:#292825!important;color:#F1F0EC!important}\n:root[data-theme="light"] .formbox .primary:hover{background:#1F1E1C!important;border-color:#1F1E1C!important}\n\n/* No plus glyph: keep the floating control intentionally minimal. */\n.fab{font-size:0!important;color:transparent!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 10px 28px rgba(0,0,0,.18),0 1px 0 rgba(255,255,255,.10) inset!important;backdrop-filter:blur(18px) saturate(105%)!important;-webkit-backdrop-filter:blur(18px) saturate(105%)!important}\n.fab:hover{background:rgba(255,255,255,.09)!important}\n:root[data-theme="light"] .fab{background:rgba(255,255,255,.56)!important;border-color:rgba(30,29,27,.08)!important;box-shadow:0 10px 28px rgba(30,29,27,.09),0 1px 0 rgba(255,255,255,.70) inset!important}\n:root[data-theme="light"] .fab:hover{background:rgba(255,255,255,.70)!important}\n.form-head .plus{display:none!important}\n</style>\n</html>
+
 
 <style id="final-oauth-copy-layout">
 /* FINAL OAUTH COPY + COMPACT BALANCE */
@@ -4777,4 +4865,23 @@ body{background:var(--bg);color:var(--ink)}
     transform:translateY(-1.1px)!important;
   }
 }
+</style>
+
+<style id="final-auth-interaction-fix">
+/* FINAL INTERACTION FIX: decorative auth layers never intercept clicks. */
+.auth-gate,.auth-panel,.auth-inner,.auth-account-view,.auth-form,.auth-switch,.auth-switch button,
+.auth-actions,.auth-actions button,.oauth-grid,.oauth-btn,.auth-language,.auth-language select,
+.auth-field,.auth-field input,.password-toggle{pointer-events:auto!important;}
+.auth-panel::before,.auth-panel::after,.auth-gate::before,.auth-gate::after,.auth-visual::before,.auth-visual::after{pointer-events:none!important;}
+.auth-switch{position:relative!important;z-index:90!important;}
+.auth-switch button{position:relative!important;z-index:91!important;cursor:pointer!important;}
+.auth-actions,.oauth-grid,.auth-form{position:relative!important;z-index:10!important;}
+
+/* FINAL PASSWORD-RECOVERY CLICK FIX. Keep the forgot-password control above
+   decorative/glass layers and handle it through capture-phase delegation too. */
+.auth-password-meta{position:relative!important;z-index:95!important;pointer-events:auto!important;}
+.auth-forgot{position:relative!important;z-index:96!important;pointer-events:auto!important;cursor:pointer!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent;}
+.auth-forgot::before,.auth-forgot::after{pointer-events:none!important;}
+.auth-recovery-view,.auth-recovery-view *{pointer-events:auto;}
+.auth-recovery-view{position:relative!important;z-index:95!important;}
 </style>
