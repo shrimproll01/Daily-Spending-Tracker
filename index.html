@@ -1773,16 +1773,22 @@ body {
 .app-icon-btn:hover,.profile-trigger:hover,.app-icon-btn[aria-expanded="true"],.profile-trigger[aria-expanded="true"]{background:var(--surface);border-color:var(--line2);color:var(--ink);transform:translateY(-1px)}
 .app-icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round}
 .profile-trigger{padding:0;overflow:hidden;border-color:var(--line2);background:rgba(255,255,255,.025)}
-.pfp-art{display:block;width:100%;height:100%}
-.pfp-halo{fill:rgba(245,158,91,.10);stroke:currentColor;stroke-opacity:.25;stroke-width:1}
-.pfp-hair{fill:currentColor;fill-opacity:.82}
-.pfp-face{fill:var(--bg);stroke:currentColor;stroke-opacity:.48;stroke-width:1.15}
-.pfp-line{fill:none;stroke:currentColor;stroke-opacity:.85;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.pfp-art{display:block;width:100%;height:100%;color:#fff}
+.pfp-halo{fill:rgba(255,255,255,.06);stroke:currentColor;stroke-opacity:.24;stroke-width:1}
+.pfp-hair{fill:currentColor;fill-opacity:.84}
+.pfp-face{fill:var(--bg);stroke:currentColor;stroke-opacity:.52;stroke-width:1.15}
+.pfp-line{fill:none;stroke:currentColor;stroke-opacity:.9;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+:root[data-theme="light"] .pfp-art{color:#111}
+:root[data-theme="light"] .pfp-halo{fill:rgba(0,0,0,.035);stroke-opacity:.2}
+:root[data-theme="light"] .profile-trigger{background:rgba(0,0,0,.025)}
 .ui-layer{position:fixed;inset:0;z-index:90;pointer-events:none}
 .ui-layer:not([hidden]){display:block}
 .ui-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.22);backdrop-filter:blur(2px);opacity:0;transition:opacity .18s;pointer-events:none}
 .ui-layer.is-open .ui-backdrop{opacity:1;pointer-events:auto}
-.glass-panel{position:absolute;top:14px;right:14px;width:min(380px,calc(100vw - 28px));border:1px solid rgba(255,255,255,.11);border-radius:20px;background:color-mix(in srgb,var(--surface) 88%,transparent);box-shadow:0 22px 55px rgba(0,0,0,.28),0 1px 0 rgba(255,255,255,.05) inset;backdrop-filter:blur(22px) saturate(135%);-webkit-backdrop-filter:blur(22px) saturate(135%);padding:18px;transform:translateY(-8px) scale(.985);opacity:0;transition:transform .18s ease,opacity .18s ease;pointer-events:none}
+.glass-panel{position:absolute;top:14px;right:14px;width:min(380px,calc(100vw - 28px));border:1px solid rgba(255,255,255,.26);border-radius:24px;background:linear-gradient(135deg,rgba(255,255,255,.19),rgba(255,255,255,.07));box-shadow:0 24px 70px rgba(0,0,0,.34),0 1px 0 rgba(255,255,255,.34) inset,0 -1px 0 rgba(255,255,255,.06) inset;backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);padding:18px;transform:translateY(-8px) scale(.985);opacity:0;transition:transform .18s ease,opacity .18s ease;pointer-events:none;overflow:hidden}
+.glass-panel::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 42%,rgba(255,255,255,.04));pointer-events:none}
+.glass-panel>*{position:relative;z-index:1}
+:root[data-theme="light"] .glass-panel{background:linear-gradient(135deg,rgba(255,255,255,.68),rgba(255,255,255,.34));border-color:rgba(255,255,255,.72);box-shadow:0 24px 60px rgba(0,0,0,.16),0 1px 0 rgba(255,255,255,.9) inset,0 -1px 0 rgba(0,0,0,.04) inset}
 .ui-layer.profile-open #profilePanel,.ui-layer.settings-open #settingsPanel{opacity:1;transform:none;pointer-events:auto}
 .ui-layer.profile-open #profilePanel{animation:panelIn .18s ease both}
 .ui-layer.settings-open #settingsPanel{animation:panelIn .18s ease both}
@@ -1792,16 +1798,20 @@ body {
 .panel-head h2{font-size:1.12rem;letter-spacing:-.02em;font-weight:650}
 .panel-close{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--muted);font-size:1.25rem;line-height:1}
 .panel-close:hover{background:var(--hover);color:var(--ink);border-color:var(--line2)}
-.profile-card{border:1px solid var(--line);border-radius:17px;padding:20px;text-align:center;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))}
-.profile-avatar-large{width:86px;height:86px;margin:0 auto 14px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:50%;background:rgba(255,255,255,.02);color:var(--ink);box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.profile-card{border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:20px;text-align:center;background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.035));box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 8px 28px rgba(0,0,0,.08);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%)}
+:root[data-theme="light"] .profile-card{background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border-color:rgba(255,255,255,.7)}
+.profile-avatar-large{width:86px;height:86px;margin:0 auto 14px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.22);border-radius:50%;background:rgba(255,255,255,.06);color:#fff;box-shadow:0 10px 28px rgba(0,0,0,.18),0 1px 0 rgba(255,255,255,.18) inset;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+:root[data-theme="light"] .profile-avatar-large{color:#111;background:rgba(255,255,255,.34);border-color:rgba(0,0,0,.12);box-shadow:0 10px 24px rgba(0,0,0,.10),0 1px 0 rgba(255,255,255,.8) inset}
 .profile-name{font-size:1rem;font-weight:650;letter-spacing:-.01em}
 .profile-email{margin-top:3px;color:var(--muted);font-size:.79rem;word-break:break-word}
 .profile-status{margin-top:11px;display:inline-flex;align-items:center;gap:7px;color:var(--faint);font-size:.72rem}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--glow)}
 .panel-actions{display:grid;gap:8px;margin-top:12px}
-.panel-action{width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) 18px;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);border-radius:14px;background:transparent;padding:12px 13px;color:var(--ink);transition:background .15s,border-color .15s}
+.panel-action{width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) 18px;align-items:center;gap:10px;text-align:left;border:1px solid rgba(255,255,255,.17);border-radius:16px;background:rgba(255,255,255,.055);padding:12px 13px;color:var(--ink);transition:background .15s,border-color .15s;box-shadow:0 1px 0 rgba(255,255,255,.08) inset;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+:root[data-theme="light"] .panel-action{background:rgba(255,255,255,.42);border-color:rgba(255,255,255,.68)}
 .panel-action:hover{background:var(--hover);border-color:var(--line2)}
-.panel-action-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:var(--surface2);color:var(--muted);font-size:.9rem}
+.panel-action-icon{width:30px;height:30px;display:grid;place-items:center;border-radius:10px;background:rgba(255,255,255,.10);color:var(--muted);font-size:.9rem;box-shadow:0 1px 0 rgba(255,255,255,.10) inset}
+:root[data-theme="light"] .panel-action-icon{background:rgba(0,0,0,.045)}
 .panel-action b{display:block;font-size:.82rem;font-weight:600}.panel-action small{display:block;margin-top:2px;color:var(--faint);font-size:.72rem}
 .panel-chevron{color:var(--faint);font-size:1.05rem;text-align:center}
 .danger-action{color:var(--over)}
@@ -1811,12 +1821,14 @@ body {
 .settings-section:first-of-type{border-top:0;padding-top:0}
 .setting-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--ink);text-decoration:none}
 .setting-heading b{display:block;font-size:.82rem;font-weight:650}.setting-heading span{display:block;margin-top:3px;color:var(--faint);font-size:.72rem}
-.theme-switcher{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px;padding:4px;border:1px solid var(--line);background:var(--surface2);border-radius:13px}
+.theme-switcher{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px;padding:4px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);border-radius:15px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+:root[data-theme="light"] .theme-switcher{background:rgba(255,255,255,.4);border-color:rgba(255,255,255,.65)}
 .theme-choice{min-width:0;height:40px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--muted);font-size:.78rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px}
 .theme-choice:hover{color:var(--ink)}
 .theme-choice.active{background:var(--surface);border-color:var(--line2);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.10)}
 .theme-choice-icon{font-size:.9rem;line-height:1}
-.settings-select{margin-top:11px;width:100%;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--ink);padding:0 12px;outline:none}
+.settings-select{margin-top:11px;width:100%;height:44px;border:1px solid rgba(255,255,255,.18);border-radius:13px;background:rgba(255,255,255,.08);color:var(--ink);padding:0 12px;outline:none;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+:root[data-theme="light"] .settings-select{background:rgba(255,255,255,.48);border-color:rgba(255,255,255,.7)}
 .settings-select:focus{border-color:var(--line2);box-shadow:0 0 0 3px var(--glow)}
 .full-action{width:100%;height:44px;margin-top:11px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 12px;border:1px solid rgba(239,107,107,.20);border-radius:12px;background:rgba(239,107,107,.045);color:var(--over);font-size:.8rem;font-weight:650}
 .full-action:hover{background:rgba(239,107,107,.075);border-color:rgba(239,107,107,.32)}
@@ -2706,6 +2718,96 @@ html, body {
   }
 }
 </style>
+
+<style id="final-login-palette">
+/* FINAL LOGIN-MATCHED PALETTE — elegant, neutral, minimal */
+:root{
+  color-scheme:dark;
+  --bg:#0B0B0B;
+  --surface:#121212;
+  --surface2:#181818;
+  --line:#242424;
+  --line2:#343434;
+  --hover:#1A1A1A;
+  --ink:#F5F5F5;
+  --muted:#858585;
+  --faint:#5F5F5F;
+  --pine:#F4F4F4;
+  --pine-hover:#FFFFFF;
+  --onpine:#111111;
+  --accent:#F4F4F4;
+  --bar:#4B4B4B;
+  --barsoft:#222222;
+  --over:#E86B6B;
+  --onover:#111111;
+  --warn:#D8B46A;
+  --tint:rgba(255,255,255,.055);
+  --tint-line:rgba(255,255,255,.24);
+  --glow:rgba(255,255,255,.08);
+}
+
+/* Keep the light theme restrained and aligned with the same neutral language. */
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F7F7F5;
+  --surface:#FFFFFF;
+  --surface2:#F1F1EF;
+  --line:#E5E5E2;
+  --line2:#D2D2CE;
+  --hover:#ECECEA;
+  --ink:#171717;
+  --muted:#686868;
+  --faint:#969696;
+  --pine:#171717;
+  --pine-hover:#000000;
+  --onpine:#FFFFFF;
+  --accent:#171717;
+  --bar:#BDBDB8;
+  --barsoft:#E8E8E5;
+  --over:#C94A4A;
+  --onover:#FFFFFF;
+  --warn:#8C6B18;
+  --tint:rgba(0,0,0,.045);
+  --tint-line:rgba(0,0,0,.18);
+  --glow:rgba(0,0,0,.07);
+}
+
+/* Login uses a clean black canvas and white/soft-gray typography. */
+body{background:var(--bg);color:var(--ink)}
+.top h1,.sec>h2,.head h2,.side h2,.form-head h2,.ttl,.amt,.stats b,.today-row b{color:var(--ink)}
+.eyebrow,.sub,.today-row .cnt,.stats span,.budget-head .lbl,.note,.f>label,.f>.lb,.txt small,.cat-h .r,.empty-inline,.insight p,.data p,.hint,.panel-kicker,.profile-email,.profile-status,.panel-action small,.setting-heading span,.settings-foot{color:var(--muted)}
+
+/* Neutral primary controls, matching the login page's white CTA. */
+.primary,.auth-actions .auth-primary{background:var(--pine);color:var(--onpine);border-color:var(--pine)}
+.primary:hover,.auth-actions .auth-primary:hover{background:var(--pine-hover);border-color:var(--pine-hover)}
+.linkbtn,.pct,.days span.today,.days span.sel,.form-head .plus{color:var(--accent)}
+
+/* Keep glass surfaces neutral rather than orange-tinted. */
+.card{background:rgba(18,18,18,.92);border-color:var(--line)}
+.money,.list-tools input,.list-tools select,.catpick label>span,.auth-field input{background:var(--surface2)}
+.nav button,.themebtn,.app-icon-btn,.profile-trigger{color:var(--muted);border-color:var(--line)}
+.nav button:hover,.themebtn:hover,.app-icon-btn:hover,.profile-trigger:hover,.app-icon-btn[aria-expanded="true"],.profile-trigger[aria-expanded="true"]{background:var(--surface);border-color:var(--line2);color:var(--ink)}
+
+/* Softer glass highlight: white/smoke only, no colored cast. */
+.glass-panel{background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.045));border-color:rgba(255,255,255,.20);box-shadow:0 24px 70px rgba(0,0,0,.34),0 1px 0 rgba(255,255,255,.24) inset,0 -1px 0 rgba(255,255,255,.05) inset}
+.glass-panel::before{background:linear-gradient(135deg,rgba(255,255,255,.13),transparent 42%,rgba(255,255,255,.025))}
+.profile-card{background:linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.025));border-color:rgba(255,255,255,.15)}
+.panel-action{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.13)}
+.panel-action:hover{background:rgba(255,255,255,.075);border-color:rgba(255,255,255,.20)}
+
+/* Profile avatar remains white in dark mode and black in light mode. */
+.pfp-art{color:#fff}
+:root[data-theme="light"] .pfp-art{color:#111}
+
+/* Reduce the visual noise of the chart/empty states. */
+.chart-empty{background:rgba(255,255,255,.012)}
+.budget-empty{border-color:var(--line2)}
+
+/* Light-mode glass */
+:root[data-theme="light"] .glass-panel{background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,255,255,.48));border-color:rgba(255,255,255,.82);box-shadow:0 24px 60px rgba(0,0,0,.14),0 1px 0 rgba(255,255,255,.95) inset,0 -1px 0 rgba(0,0,0,.035) inset}
+:root[data-theme="light"] .profile-card{background:linear-gradient(145deg,rgba(255,255,255,.68),rgba(255,255,255,.38));border-color:rgba(255,255,255,.78)}
+:root[data-theme="light"] .panel-action{background:rgba(255,255,255,.48);border-color:rgba(255,255,255,.72)}
+</style>
 </head>
 <body>
 <div class="auth-gate" id="authGate">
@@ -2976,9 +3078,27 @@ html, body {
             <span id="languageSub">Bahasa antarmuka Saldo</span>
           </div>
         </label>
-        <select class="settings-select" id="appLanguage" aria-label="Bahasa">
-          <option value="id">Bahasa Indonesia</option>
+        <select class="settings-select" id="appLanguage" aria-label="Language">
           <option value="en">English</option>
+          <option value="id">Bahasa Indonesia</option>
+          <option value="es">Español</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="it">Italiano</option>
+          <option value="nl">Nederlands</option>
+          <option value="tr">Türkçe</option>
+          <option value="ar">العربية</option>
+          <option value="hi">हिन्दी</option>
+          <option value="bn">বাংলা</option>
+          <option value="zh">简体中文</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+          <option value="vi">Tiếng Việt</option>
+          <option value="tl">Filipino</option>
+          <option value="th">ไทย</option>
+          <option value="ru">Русский</option>
+          <option value="uk">Українська</option>
         </select>
       </div>
 
@@ -3874,7 +3994,11 @@ html, body {
   }
   $('tabLogin').onclick = function(){ setAuthMode('login'); $('authEmail').focus(); };
   $('tabSignup').onclick = function(){ setAuthMode('signup'); $('authFirstName').focus(); };
-  $('authLanguage').onchange = function(){ authLang = this.value; applyAuthLanguage(); };
+  $('authLanguage').onchange = function(){
+    authLang = this.value;
+    try { localStorage.setItem('saldo:app-language', authLang); } catch(e) {}
+    applyAuthLanguage();
+  };
   var recoveryScreen = 'forgot';
   var lastResetEmail = '';
   function recoveryText(){ return recoveryCopy[authLang] || recoveryCopy.en; }
@@ -4191,8 +4315,9 @@ html, body {
   /* ---------- app UI / profile / settings ---------- */
   var APP_LANG_KEY = 'saldo:app-language';
   var appLang = 'id';
-  try { appLang = localStorage.getItem(APP_LANG_KEY) || 'id'; } catch(e) {}
-  if (appLang !== 'id' && appLang !== 'en') appLang = 'id';
+  try { appLang = localStorage.getItem(APP_LANG_KEY) || localStorage.getItem('saldo:auth-language') || 'id'; } catch(e) {}
+  var supportedLoginLanguages = ['en','id','es','pt','fr','de','it','nl','tr','ar','hi','bn','zh','ja','ko','vi','tl','th','ru','uk'];
+  if (supportedLoginLanguages.indexOf(appLang) === -1) appLang = 'id';
 
   var appCopy = {
     id:{
@@ -4228,7 +4353,7 @@ html, body {
       monthEmpty:'No records this month.', sameLast:'Same as last month', fromLast:' from last month', till:'through', highestDay:'highest', categoryEmpty:'Spending categories will appear after you record a transaction.', biggest:'Biggest spending', inMonth:'this month', inThisMonth:'this month', totalSpend:'of total spending', dailyAverage:'Your average daily spending is', projection:'At this pace, this month will be around', overBy:'That is over budget by', backupLast:'Last backed up', backupNever:'Never backed up.'
     }
   };
-  function T(k){ return (appCopy[appLang] || appCopy.id)[k] || (appCopy.id[k] || k); }
+  function T(k){ return (appCopy[appLang] || appCopy.en || appCopy.id)[k] || (appCopy.en[k] || appCopy.id[k] || k); }
 
   function setText(id, text){ var el=$(id); if(el) el.textContent=text; }
   function applyAppLanguage(){
@@ -4245,7 +4370,8 @@ html, body {
     if($('profileClose')){$('profileClose').setAttribute('aria-label',T('close'));$('settingsClose').setAttribute('aria-label',T('close'));}
     var langSelect=$('appLanguage'); if(langSelect) langSelect.value=appLang;
     setText('themeDarkText',T('dark')); setText('themeLightText',T('light'));
-    try { localStorage.setItem(APP_LANG_KEY,appLang); } catch(e) {}
+    try { localStorage.setItem(APP_LANG_KEY,appLang); localStorage.setItem('saldo:auth-language',appLang); } catch(e) {}
+    if (typeof authLang !== 'undefined') { authLang = appLang; if($('authLanguage')) $('authLanguage').value = appLang; }
     render();
   }
 
@@ -4283,7 +4409,13 @@ html, body {
   $('settingsLogout').onclick=function(){closeLayer();$('logout').click();};
   $('themeDarkChoice').onclick=function(){chooseTheme('dark');};
   $('themeLightChoice').onclick=function(){chooseTheme('light');};
-  $('appLanguage').onchange=function(){appLang=this.value==='en'?'en':'id';applyAppLanguage();closeLayer();};
+  $('appLanguage').onchange=function(){
+    appLang = this.value;
+    if (supportedLoginLanguages.indexOf(appLang) === -1) appLang = 'en';
+    applyAppLanguage();
+    if (typeof authLang !== 'undefined') { authLang = appLang; try { localStorage.setItem('saldo:auth-language',appLang); } catch(e) {} if($('authLanguage')) $('authLanguage').value = appLang; applyAuthLanguage(); }
+    closeLayer();
+  };
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLayer();});
   syncThemeChoices();
   applyAppLanguage();
