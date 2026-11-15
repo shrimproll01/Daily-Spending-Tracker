@@ -2857,6 +2857,207 @@ body{background:var(--bg);color:var(--ink)}
 .auth-forgot{position:relative;z-index:100;pointer-events:auto;cursor:pointer;}
 .auth-password-meta{position:relative;z-index:99;pointer-events:auto;}
 </style>
+
+<style id="saldo-finance-dashboard-refresh">
+/* SALDO — Finance dashboard refresh */
+ :root{
+  color-scheme:dark;
+  --bg:#11101B; --surface:#1B1928; --surface2:#242136; --line:#302C43; --line2:#403A59; --hover:#27233A;
+  --ink:#F4F1FF; --muted:#A39DB8; --faint:#706A83;
+  --pine:#9A7BFF; --pine-hover:#AD96FF; --onpine:#171326; --accent:#A58CFF;
+  --bar:#7256C8; --barsoft:#302A43; --over:#F08089; --onover:#21151A; --warn:#E5B968;
+  --tint:rgba(154,123,255,.12); --tint-line:rgba(154,123,255,.38); --glow:rgba(154,123,255,.18);
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F5F4FA; --surface:#FFFFFF; --surface2:#F0EEF8; --line:#E8E5F1; --line2:#D8D2E8; --hover:#F1EFF8;
+  --ink:#211D35; --muted:#77728B; --faint:#A7A2B5;
+  --pine:#7047EB; --pine-hover:#6038D8; --onpine:#FFFFFF; --accent:#7047EB;
+  --bar:#B9A8F4; --barsoft:#EAE5F8; --over:#E16D79; --onover:#FFFFFF; --warn:#D49A42;
+  --tint:rgba(112,71,235,.09); --tint-line:rgba(112,71,235,.34); --glow:rgba(112,71,235,.15);
+}
+#app{
+  max-width:1180px;
+  padding:28px 28px 110px;
+}
+#app .top{margin-bottom:30px;align-items:center}
+#app .top h1{font-family:'Manrope',var(--font);font-size:1.45rem;font-weight:750;letter-spacing:-.045em}
+#app .tools{gap:12px}
+#app .nav{padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 5px 18px rgba(36,26,70,.035)}
+#app .nav button{border:0;border-radius:10px}
+#app .nav .label{min-width:128px;color:var(--ink);font-size:.84rem}
+#app .app-icon-btn,#app .profile-trigger{width:42px;height:42px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+#app .layout{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:28px;align-items:start}
+#app .main{min-width:0}
+#app .hero-card{
+  position:relative;overflow:hidden;
+  padding:27px 28px 23px;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:25px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 94% 8%,rgba(255,255,255,.24),transparent 29%),
+    linear-gradient(120deg,#6540D8 0%,#7957E9 54%,#A18AF5 100%);
+  box-shadow:0 18px 42px rgba(103,68,209,.20),0 1px 0 rgba(255,255,255,.22) inset;
+}
+#app .hero-card .eyebrow,
+#app .hero-card .sub,
+#app .hero-card .today-row .cnt,
+#app .hero-card .stats span,
+#app .hero-card .budget-head .lbl{color:rgba(255,255,255,.76)!important}
+#app .hero-card .total{font-family:'Manrope',var(--font);font-size:clamp(2.1rem,6vw,3.15rem);font-weight:800;letter-spacing:-.055em;margin:12px 0 8px}
+#app .hero-card .total .num{color:#fff}
+#app .hero-card .total .cur{color:rgba(255,255,255,.78)}
+#app .hero-card .delta{color:#D7FFE9}
+#app .hero-card .stats{border-color:rgba(255,255,255,.19);margin-top:24px;padding-top:19px}
+#app .hero-card .stats>div+div{border-color:rgba(255,255,255,.19)}
+#app .hero-card .stats b,#app .hero-card .today-row b{color:#fff}
+#app .hero-card .budget{border-color:rgba(255,255,255,.19);margin-top:21px;padding-top:17px}
+#app .hero-card .linkbtn,#app .hero-card .pct{color:#fff}
+#app .hero-card .budget-empty{border-color:rgba(255,255,255,.4);color:#fff;background:rgba(255,255,255,.10)}
+#app .hero-card .budget-empty .go{color:#fff}
+#app .hero-card .meter{background:rgba(255,255,255,.22)}
+#app .hero-card .meter i{background:#BDF3D8}
+#app .hero-card .meter.warn i{background:#FFE0A1}
+#app .hero-card .meter.over i{background:#FFC0C4}
+#app .hero-card .budget-fig i{color:rgba(255,255,255,.58)}
+#app .hero-card .budget-fig{color:#fff}
+#app .quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:17px}
+#app .quick-action{
+  min-width:0;display:flex;align-items:center;gap:12px;text-align:left;
+  padding:14px 15px;border:1px solid var(--line);border-radius:17px;
+  background:var(--surface);color:var(--ink);
+  box-shadow:0 5px 18px rgba(36,26,70,.035);
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+}
+#app .quick-action:hover{transform:translateY(-2px);border-color:var(--line2);box-shadow:0 10px 24px rgba(36,26,70,.08)}
+#app .quick-action-icon{flex:0 0 38px;width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:#EEE9FF;color:#7047EB;font-size:1.35rem;font-weight:600}
+#app .quick-action .budget-icon{background:#E4F7EF;color:#299A72}
+#app .quick-action b{display:block;font-size:.84rem;font-weight:700;line-height:1.25}
+#app .quick-action small{display:block;color:var(--muted);font-size:.72rem;margin-top:3px;line-height:1.3}
+#app .quick-action-arrow{margin-left:auto;color:var(--faint);font-size:1rem}
+#app .sec{margin-top:25px;padding:22px 22px 18px;border:1px solid var(--line);border-radius:21px;background:var(--surface);box-shadow:0 5px 18px rgba(36,26,70,.025)}
+#app .sec>h2,#app .head h2,#app .side h2{font-family:'Manrope',var(--font);font-weight:750;letter-spacing:-.025em}
+#app .bars{height:150px;margin-top:24px;border-bottom-color:var(--line)}
+#app .bar i{max-width:19px;border-radius:7px 7px 3px 3px}
+#app .bar.has i{background:#B9A8F4}
+#app .bar.today i,#app .bar.sel i{background:#7047EB}
+#app .bar.high i{background:#E16D79}
+#app .chart-empty{border-color:var(--line);background:var(--surface2)}
+#app .list-tools input,#app .list-tools select{background:var(--surface2);border-color:var(--line);border-radius:12px}
+#app .item{padding:12px 8px;border-bottom:1px solid var(--line);border-radius:0}
+#app .item:last-child{border-bottom:0}
+#app .ico{border:0;background:#F0ECFF;color:#7047EB}
+#app .amt{font-weight:700}
+#app .side{gap:22px;margin-top:0}
+#app .formbox{
+  position:sticky;top:20px;padding:22px;
+  background:var(--surface)!important;border:1px solid var(--line)!important;
+  border-radius:22px;box-shadow:0 12px 32px rgba(36,26,70,.055)!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+#app .form-head{margin-bottom:17px}
+#app .form-head h2{font-family:'Manrope',var(--font);font-size:1.05rem}
+#app .formbox .money,#app .formbox .f>input,#app .formbox input[type="date"]{
+  background:var(--surface2)!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:12px;
+}
+#app .formbox .money span{color:var(--muted)!important}
+#app .formbox .quick button,#app .formbox .catpick label>span{
+  background:var(--surface2)!important;border-color:var(--line)!important;color:var(--muted)!important;border-radius:11px;
+}
+#app .formbox .catpick input:checked+span{background:var(--tint)!important;border-color:var(--accent)!important;color:var(--ink)!important}
+#app .formbox .primary{background:var(--pine)!important;border-color:var(--pine)!important;color:var(--onpine)!important;border-radius:12px}
+#app .formbox .primary:hover{background:var(--pine-hover)!important}
+#app .formbox .ghost{border-radius:12px}
+#app .cats{padding:10px 14px;border:1px solid var(--line);border-radius:17px;background:var(--surface)}
+#app .cat{padding:13px 4px}
+#app .cat .meter{height:5px;border-radius:99px;background:var(--barsoft)}
+#app .cat .meter i{background:#B9A8F4}
+#app .cat.on .meter i{background:#7047EB}
+#app .insight{padding:19px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+#app .data{padding-top:18px}
+#app .data .ghost{border-radius:10px}
+#app .fab{
+  width:56px;height:56px;border-radius:19px;
+  background:#7047EB!important;color:#fff!important;border:0!important;
+  box-shadow:0 10px 26px rgba(112,71,235,.35)!important;
+  font-size:0!important;
+}
+#app .fab::before{content:"＋";font-size:1.8rem;color:#fff;line-height:1}
+#app .fab:hover{background:#6038D8!important}
+.mobile-tabbar{display:none}
+:root:not([data-theme="light"]) #app .hero-card{background:radial-gradient(circle at 94% 8%,rgba(255,255,255,.20),transparent 29%),linear-gradient(120deg,#49318F 0%,#6245B5 55%,#8067CE 100%)}
+:root:not([data-theme="light"]) #app .quick-action-icon{background:rgba(154,123,255,.18);color:#BBA8FF}
+:root:not([data-theme="light"]) #app .quick-action .budget-icon{background:rgba(84,198,165,.15);color:#69D5AE}
+:root:not([data-theme="light"]) #app .ico{background:rgba(154,123,255,.16);color:#BBA8FF}
+:root:not([data-theme="light"]) #app .bar.has i{background:#7256C8}
+:root:not([data-theme="light"]) #app .bar.today i,:root:not([data-theme="light"]) #app .bar.sel i{background:#B09AFF}
+:root:not([data-theme="light"]) #app .cat .meter i{background:#7256C8}
+:root:not([data-theme="light"]) #app .cat.on .meter i{background:#A58CFF}
+:root:not([data-theme="light"]) #app .formbox .primary{background:#9A7BFF!important;border-color:#9A7BFF!important;color:#171326!important}
+:root:not([data-theme="light"]) #app .formbox .primary:hover{background:#AD96FF!important}
+:root:not([data-theme="light"]) #app .formbox .money,:root:not([data-theme="light"]) #app .formbox .f>input,:root:not([data-theme="light"]) #app .formbox input[type="date"]{background:var(--surface2)!important;border-color:var(--line)!important;color:var(--ink)!important}
+:root:not([data-theme="light"]) #app .formbox .quick button,:root:not([data-theme="light"]) #app .formbox .catpick label>span{background:var(--surface2)!important;border-color:var(--line)!important;color:var(--muted)!important}
+@media(max-width:959px){
+  #app{padding:20px 18px calc(112px + env(safe-area-inset-bottom,0px))}
+  #app .layout{display:block}
+  #app .top{margin-bottom:20px}
+  #app .top h1{font-size:1.25rem}
+  #app .side{margin-top:22px;gap:20px}
+  #app .formbox{position:fixed;top:auto;bottom:0;z-index:40}
+  #app .quick-actions{gap:9px}
+  #app .quick-action{padding:12px 10px;gap:9px}
+  #app .quick-action-icon{width:34px;height:34px;flex-basis:34px}
+  #app .quick-action b{font-size:.78rem}
+  #app .quick-action small{font-size:.67rem}
+  .mobile-tabbar{
+    position:fixed;z-index:25;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));
+    display:flex;align-items:center;justify-content:space-around;gap:3px;
+    min-height:66px;padding:7px 8px;
+    background:rgba(255,255,255,.88);border:1px solid rgba(224,219,239,.9);
+    border-radius:22px;box-shadow:0 12px 34px rgba(31,23,60,.13);
+    backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);
+  }
+  .mobile-tab{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;background:none;color:#8D879F;text-decoration:none;font:inherit;padding:3px 0}
+  .mobile-tab .tab-icon{font-size:1.25rem;line-height:1.1}
+  .mobile-tab small{font-size:.62rem;font-weight:600;letter-spacing:.01em}
+  .mobile-tab.active{color:#7047EB}
+  .mobile-tab-add{flex:0 0 48px;width:48px;height:48px;border:0;border-radius:17px;background:#7047EB;color:#fff;font-size:1.8rem;line-height:1;box-shadow:0 7px 16px rgba(112,71,235,.30)}
+  :root:not([data-theme="light"]) .mobile-tabbar{background:rgba(27,25,40,.91);border-color:rgba(91,81,124,.7);box-shadow:0 12px 34px rgba(0,0,0,.35)}
+  :root:not([data-theme="light"]) .mobile-tab{color:#A39DB8}
+  :root:not([data-theme="light"]) .mobile-tab.active{color:#BBA8FF}
+  :root:not([data-theme="light"]) .mobile-tab-add{background:#9A7BFF;color:#171326}
+  body.sheet-open .mobile-tabbar{opacity:0;pointer-events:none}
+  #app .fab{display:none!important}
+}
+@media(max-width:480px){
+  #app{padding-left:14px;padding-right:14px}
+  #app .hero-card{padding:22px 19px 19px;border-radius:22px}
+  #app .hero-card .total{font-size:2.25rem}
+  #app .hero-card .stats{gap:0}
+  #app .hero-card .stats b{font-size:.94rem}
+  #app .hero-card .stats span{font-size:.68rem}
+  #app .sec{padding:18px 15px 15px;border-radius:18px}
+  #app .bars{height:130px;gap:3px}
+  #app .days{gap:2px;font-size:.62rem}
+  #app .item{grid-template-columns:auto minmax(0,1fr) auto auto;gap:9px}
+  #app .ico{width:34px;height:34px}
+  #app .amt{font-size:.82rem}
+  #app .top{gap:10px}
+  #app .tools{width:100%;justify-content:space-between}
+  #app .nav{flex:1;justify-content:space-between}
+  #app .nav .label{flex:1}
+  #app .app-header-actions{display:flex;gap:7px}
+}
+@media(max-width:360px){
+  #app .quick-actions{grid-template-columns:1fr}
+  #app .hero-card .total{font-size:2rem}
+}
+@media(prefers-reduced-motion:reduce){
+  #app *,#mobileTabbar *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
+</style>
+
 </head>
 <body>
 <div class="auth-gate" id="authGate">
@@ -3170,7 +3371,7 @@ body{background:var(--bg);color:var(--ink)}
 
   <div class="layout">
     <main class="main">
-      <section aria-label="Ringkasan bulan">
+      <section class="hero-card" aria-label="Ringkasan bulan">
         <span class="eyebrow" id="totalEyebrow">Total pengeluaran</span>
         <p class="total" id="total"><span class="cur">Rp</span><span class="num" id="totalNum">0</span></p>
         <p class="delta" id="delta" hidden></p>
@@ -3198,7 +3399,20 @@ body{background:var(--bg);color:var(--ink)}
         </div>
       </section>
 
-      <section class="sec" aria-label="Grafik harian">
+      <section class="quick-actions" aria-label="Aksi cepat">
+        <button type="button" class="quick-action primary-action" id="quickAddExpense">
+          <span class="quick-action-icon">＋</span>
+          <span><b>Tambah transaksi</b><small>Catat pengeluaran baru</small></span>
+          <span class="quick-action-arrow">↗</span>
+        </button>
+        <button type="button" class="quick-action" id="quickSetBudget">
+          <span class="quick-action-icon budget-icon">◷</span>
+          <span><b>Atur budget</b><small>Kelola batas bulanan</small></span>
+          <span class="quick-action-arrow">↗</span>
+        </button>
+      </section>
+
+      <section class="sec chart-section" id="chartSection" aria-label="Grafik harian">
         <div class="head">
           <h2 id="chartTitle">Pengeluaran per hari</h2>
           <button type="button" class="chip" id="clearDay" hidden>Tampilkan semua hari</button>
@@ -3213,7 +3427,7 @@ body{background:var(--bg);color:var(--ink)}
         <p class="hint" id="chartHint" style="margin-top:12px">Klik satu hari untuk melihat catatannya.</p>
       </section>
 
-      <section class="sec" aria-label="Catatan bulan ini">
+      <section class="sec transactions-section" id="transactionsSection" aria-label="Catatan bulan ini">
         <h2 id="listTitle">Catatan bulan ini</h2>
         <div class="list-tools">
           <input type="search" id="q" placeholder="Cari catatan" aria-label="Cari catatan">
@@ -3278,6 +3492,21 @@ body{background:var(--bg);color:var(--ink)}
   </div>
 </div>
 
+<nav class="mobile-tabbar" id="mobileTabbar" aria-label="Navigasi utama">
+  <a class="mobile-tab active" href="#app" aria-label="Beranda">
+    <span class="tab-icon">⌂</span><small>Home</small>
+  </a>
+  <a class="mobile-tab" href="#chartSection" aria-label="Grafik">
+    <span class="tab-icon">▥</span><small>Analytics</small>
+  </a>
+  <button type="button" class="mobile-tab-add" id="mobileAdd" aria-label="Tambah transaksi">＋</button>
+  <a class="mobile-tab" href="#transactionsSection" aria-label="Transaksi">
+    <span class="tab-icon">⇄</span><small>Activity</small>
+  </a>
+  <button type="button" class="mobile-tab" id="mobileBudget" aria-label="Atur budget">
+    <span class="tab-icon">◷</span><small>Budget</small>
+  </button>
+</nav>
 <button type="button" class="fab" id="fab" aria-label="Tambah pengeluaran"></button>
 <div class="backdrop" id="backdrop"></div>
 <div class="tip" id="tip" hidden></div>
@@ -3719,6 +3948,8 @@ body{background:var(--bg);color:var(--ink)}
   function applyBudget(){ state.budget = digits($('budget').value); save(); closeBudget(); render(); }
   $('budgetInfo').addEventListener('click', function(e){ if (e.target.closest('[data-open-budget]')) openBudget(); });
   $('budgetEditBtn').onclick = openBudget;
+  if ($('quickSetBudget')) $('quickSetBudget').onclick = openBudget;
+  if ($('mobileBudget')) $('mobileBudget').onclick = openBudget;
   $('budgetSave').onclick = applyBudget;
   $('budget').addEventListener('change', applyBudget);
   $('budget').addEventListener('keydown', function(e){
@@ -3751,6 +3982,8 @@ body{background:var(--bg);color:var(--ink)}
   function openSheet(){ document.body.classList.add('sheet-open'); setTimeout(function(){ $('amount').focus(); }, 280); }
   function closeSheet(){ document.body.classList.remove('sheet-open'); }
   $('fab').onclick = function(){ if (editId) { stopEdit(); render(); } openSheet(); };
+  if ($('quickAddExpense')) $('quickAddExpense').onclick = function(){ $('fab').click(); };
+  if ($('mobileAdd')) $('mobileAdd').onclick = function(){ $('fab').click(); };
   $('backdrop').onclick = function(){ closeSheet(); if (editId) { stopEdit(); render(); } };
   $('sheetClose').onclick = function(){ closeSheet(); if (editId) { stopEdit(); render(); } };
 
